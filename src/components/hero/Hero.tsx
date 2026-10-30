@@ -77,14 +77,16 @@ export function Hero() {
       className="hero shell"
       aria-label="Introduction"
     >
-      <div className="hero__fallback" aria-hidden="true">
-        <svg className="hero__fallback-rings" viewBox="0 0 400 400">
-          <circle cx="200" cy="200" r="188" />
-          <circle cx="200" cy="200" r="142" />
-          <ellipse cx="200" cy="200" rx="64" ry="176" />
-          <ellipse cx="200" cy="200" rx="176" ry="58" />
-        </svg>
-      </div>
+      {webgl === false ? (
+        <div className="hero__fallback" aria-hidden="true">
+          <svg className="hero__fallback-rings" viewBox="0 0 400 400">
+            <circle cx="200" cy="200" r="188" />
+            <circle cx="200" cy="200" r="142" />
+            <ellipse cx="200" cy="200" rx="64" ry="176" />
+            <ellipse cx="200" cy="200" rx="176" ry="58" />
+          </svg>
+        </div>
+      ) : null}
 
       {showScene ? (
         <div className="hero__canvas">
