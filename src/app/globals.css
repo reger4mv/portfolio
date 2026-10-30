@@ -1417,7 +1417,8 @@ html.has-cursor [data-cursor] {
 
 .matte__media {
   position: absolute;
-  inset: -12%;
+  /* Overhang is generous enough that the ±11% parallax never exposes an edge. */
+  inset: -16%;
   will-change: transform;
 }
 
@@ -1906,9 +1907,16 @@ html.has-cursor [data-cursor] {
   padding-block: var(--section-y);
 }
 
+/* Stage is usually the height of its contents; the effect grows it to
+   add travel. The sticky viewport holds while the stage scrolls. */
+.creed__stage {
+  position: relative;
+}
+
 .creed__pin {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem);
+  padding-block: clamp(1.5rem, 4vh, 2.5rem);
 }
 
 .creed__intro {
@@ -2025,6 +2033,8 @@ html.has-cursor [data-cursor] {
 
 @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
   .creed__pin {
+    position: sticky;
+    top: 0;
     height: 100svh;
     align-content: center;
     gap: clamp(1.5rem, 4vh, 3rem);
@@ -2342,7 +2352,11 @@ a.channel:hover .channel__arrow {
 @media (min-width: 1024px) and (max-height: 760px) and (prefers-reduced-motion: no-preference) {
   .creed__pin {
     padding-block: calc(var(--nav-h) + 0.75rem) 1.25rem;
-    gap: 1.25rem;
+    gap: 1rem;
+  }
+
+  .creed__statement {
+    font-size: clamp(1.5rem, 3.1vw, 2.6rem);
   }
 
   .creed__statement {

@@ -63,7 +63,8 @@ export function Navigation() {
       const indicator = indicatorRef.current;
       if (!list || !indicator) return;
       const link = list.querySelector<HTMLElement>(`[data-nav-item="${active}"]`);
-      if (!link) {
+      // The list is display:none below 980px — nothing to point at.
+      if (!link || link.offsetWidth === 0) {
         indicator.style.opacity = "0";
         return;
       }
