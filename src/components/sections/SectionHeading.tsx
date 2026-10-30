@@ -18,7 +18,7 @@ export function SectionHeading({
         </span>
       </div>
       {note ? (
-        <p className="section-head__note" data-wipe>
+        <p className="section-head__note" data-wipe="right">
           {note}
         </p>
       ) : null}

@@ -4,6 +4,7 @@ import { site } from "@/data/site";
 import { publishedSocials } from "@/data/social";
 import { BackToTop } from "@/components/footer/BackToTop";
 import { useMagnetic } from "@/hooks/useMagnetic";
+import { SplitText } from "@/components/ui/SplitText";
 
 function SocialLink({ label, href }: { label: string; href: string }) {
   const ref = useMagnetic<HTMLAnchorElement>(0.3);
@@ -23,8 +24,13 @@ export function Footer() {
     <footer className="footer shell">
       <div className="footer__top">
         <p className="footer__mark">
-          {site.firstName}
-          <span>{site.lastName.toLowerCase()}</span>
+          <span className="footer__mark-line">
+            <span className="sr-only">{site.firstName}</span>
+            <SplitText text={site.firstName} />
+          </span>
+          <span className="footer__sub">
+            <SplitText text={site.lastName.toLowerCase()} />
+          </span>
         </p>
         <p className="footer__note">
           {site.footerNote[0]}

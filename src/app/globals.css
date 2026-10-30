@@ -656,6 +656,7 @@ svg {
   background: var(--bone);
   border-color: var(--bone);
   mix-blend-mode: normal;
+  isolation: isolate;
 }
 
 .cursor[data-mode="drag"] .cursor__ring {
@@ -1282,7 +1283,6 @@ html.has-cursor [data-cursor] {
     transform 0.6s var(--ease-out),
     color 0.4s var(--ease-out);
   transition-delay: calc(var(--i, 0) * 14ms);
-  will-change: transform;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -2214,6 +2214,10 @@ a.channel:hover .channel__arrow {
   padding-bottom: clamp(2rem, 5vw, 4rem);
 }
 
+.footer__mark-line {
+  display: block;
+}
+
 .footer__mark {
   font-size: clamp(2.6rem, 9vw, 7.5rem);
   font-weight: 500;
@@ -2223,7 +2227,7 @@ a.channel:hover .channel__arrow {
   color: var(--fg);
 }
 
-.footer__mark span {
+.footer__sub {
   display: block;
   font-family: var(--font-serif);
   font-style: italic;
@@ -2232,6 +2236,26 @@ a.channel:hover .channel__arrow {
   text-transform: none;
   color: var(--fg-muted);
   padding-top: 0.5em;
+}
+
+/* The name breaks apart slightly on hover — the only interactive detail
+   down here, and it costs nothing. */
+@media (hover: hover) and (pointer: fine) {
+  .footer__mark:hover .split__char:nth-child(odd) {
+    transform: translateY(-0.04em);
+    color: var(--accent);
+  }
+
+  .footer__mark:hover .split__char:nth-child(even) {
+    transform: translateY(0.04em);
+  }
+}
+
+.footer__mark .split__char {
+  transition:
+    transform 0.55s var(--ease-out),
+    color 0.45s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 16ms);
 }
 
 .footer__note {

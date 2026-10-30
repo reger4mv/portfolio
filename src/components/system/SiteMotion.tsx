@@ -89,9 +89,14 @@ export function SiteMotion() {
 
       /* ── labels draw left → right ──────────────────────── */
       gsap.utils.toArray<HTMLElement>("[data-wipe]").forEach((el, index) => {
+        // Right-aligned labels reveal from their own edge, not the page edge.
+        const from =
+          el.dataset.wipe === "right"
+            ? "inset(0% 0% 0% 100%)"
+            : "inset(0% 100% 0% 0%)";
         gsap.fromTo(
           el,
-          { clipPath: "inset(0% 100% 0% 0%)" },
+          { clipPath: from },
           {
             clipPath: "inset(0% 0% 0% 0%)",
             duration: 1.1,

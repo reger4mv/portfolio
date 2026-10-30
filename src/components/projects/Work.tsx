@@ -1,25 +1,9 @@
 import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { SplitText } from "@/components/ui/SplitText";
 
 const VARIANTS: Record<string, "a" | "b" | "c"> = { "01": "a", "02": "b", "03": "c" };
-
-/** Splits a word so hover can displace alternate characters. Cheap, no library. */
-function SplitChars({ text }: { text: string }) {
-  return (
-    <span className="split" aria-hidden="true">
-      {text.split("").map((char, index) => (
-        <span
-          className="split__char"
-          key={`${char}-${index}`}
-          style={{ "--i": index } as React.CSSProperties}
-        >
-          {char === " " ? "\u00a0" : char}
-        </span>
-      ))}
-    </span>
-  );
-}
 
 function Facts({ project }: { project: Project }) {
   return (
@@ -75,7 +59,7 @@ function ProjectEntry({ project }: { project: Project }) {
     <div className="project__text">
       <h3 className="project__title" id={`project-${project.slug}`}>
         <span className="sr-only">{project.name}</span>
-        <SplitChars text={project.name} />
+        <SplitText text={project.name} />
       </h3>
       <p className="project__tagline" data-reveal>
         {project.tagline}

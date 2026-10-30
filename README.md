@@ -149,6 +149,34 @@ If any of that changes, edit the data files and the UI follows.
 
 ---
 
+## Interaction layer
+
+Everything below is opt-in per element, respects `prefers-reduced-motion`, and is
+disabled entirely on coarse pointers unless noted.
+
+| Piece | Where | Notes |
+| --- | --- | --- |
+| `Cursor` | global | Four states — default / link / view / drag — with contextual labels from `data-cursor` + `data-cursor-label`. The ring leans toward the centre of the hovered element. |
+| `useMagnetic` | nav links, channels, socials, back-to-top | Leans by a fraction of the pointer offset, eases back on leave. Never intercepts clicks. |
+| `Plate` (`matte`) | project imagery | Clip-path aperture entry (rise / wipe / scale — one per project), media parallax behind the clipped frame, 2–4° pointer tilt, caption fade. |
+| `SplitText` | project titles, footer name | Per-character hover displacement. `aria-hidden`; the accessible name comes from an `sr-only` sibling. |
+| `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
+| Nav indicator | nav | A single hairline slides to the active section instead of five underlines flickering. |
+| Skills marker | capabilities | One marker slides between rows; the detail panel wipes on change. |
+| Creed track | approach | Desktop only: the section pins and the four principles move sideways. Below 1024 px, or with reduced motion, it is a plain vertical list. |
+
+### Motion vocabulary
+
+`SiteMotion` owns one GSAP + Lenis instance, but each primitive is a different
+gesture, so no two sections arrive the same way:
+
+`data-lines` masked line reveal · `data-roll` number/prose roll · `data-wipe` clip-path
+label draw (direction-aware) · `data-mask` copy unclipping from the top · `data-grow`
+vertical rules extending · `data-draw` hairlines drawing · `data-shift` opposing
+scrub drift · `data-reveal` / `-group` the plain fade, used sparingly.
+
+---
+
 ## Architecture
 
 ```
@@ -166,7 +194,9 @@ src/
     sections/         about, skills index, approach, shared section heading
     contact/          channels from data/social.ts
     footer/           footer + back to top
-    cursor/           fine-pointer cursor (dot + lagging ring)
+    cursor/           fine-pointer cursor: states + contextual labels
+    interaction/      magnetic wrapper, scroll progress
+    ui/               Plate (matte image system), SplitText
     system/           motion controller, scene error boundary
   scenes/
     MainScene.tsx          hero canvas: camera, scroll response, framing

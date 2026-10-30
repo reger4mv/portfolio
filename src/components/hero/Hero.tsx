@@ -68,6 +68,41 @@ export function Hero() {
     return () => ctx.revert();
   }, []);
 
+  /**
+   * A restrained pointer reaction on the headline: each line slides by a
+   * couple of pixels in opposite directions. Skipped for coarse pointers and
+   * reduced motion, and it never touches the entrance/scroll transforms
+   * because it only writes `x` on the line boxes.
+   */
+  useEffect(() => {
+    const title = titleRef.current;
+    if (!title) return;
+    const fine = window.matchMedia("(pointer: fine)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!fine || reduce) return;
+
+    const lines = Array.from(title.querySelectorAll<HTMLElement>(".hero__line"));
+    if (!lines.length) return;
+
+    const setters = lines.map((line) =>
+      gsap.quickTo(line, "x", { duration: 1.1, ease: "power3.out" }),
+    );
+
+    const onMove = (event: PointerEvent) => {
+      const nx = event.clientX / window.innerWidth - 0.5;
+      setters.forEach((set, index) => {
+        const dir = index % 2 === 0 ? 1 : -1;
+        set(nx * 9 * dir);
+      });
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      lines.forEach((line) => gsap.set(line, { clearProps: "x" }));
+    };
+  }, []);
+
   const showScene = webgl === true;
 
   return (
