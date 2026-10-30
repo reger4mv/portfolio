@@ -2,7 +2,24 @@ import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 
-const VARIANTS: Record<string, string> = { "01": "a", "02": "b", "03": "c" };
+const VARIANTS: Record<string, "a" | "b" | "c"> = { "01": "a", "02": "b", "03": "c" };
+
+/** Splits a word so hover can displace alternate characters. Cheap, no library. */
+function SplitChars({ text }: { text: string }) {
+  return (
+    <span className="split" aria-hidden="true">
+      {text.split("").map((char, index) => (
+        <span
+          className="split__char"
+          key={`${char}-${index}`}
+          style={{ "--i": index } as React.CSSProperties}
+        >
+          {char === " " ? "\u00a0" : char}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 function Facts({ project }: { project: Project }) {
   return (
@@ -34,6 +51,7 @@ function Facts({ project }: { project: Project }) {
               href={project.link.href}
               target="_blank"
               rel="noreferrer noopener"
+              data-cursor="link"
             >
               {project.link.label}
               <span aria-hidden="true">↗</span>
@@ -53,10 +71,11 @@ function Facts({ project }: { project: Project }) {
 function ProjectEntry({ project }: { project: Project }) {
   const variant = VARIANTS[project.index] ?? "a";
 
-  const heading = (
-    <>
-      <h3 className="project__title" id={`project-${project.slug}`} data-reveal>
-        {project.name}
+  const text = (
+    <div className="project__text">
+      <h3 className="project__title" id={`project-${project.slug}`}>
+        <span className="sr-only">{project.name}</span>
+        <SplitChars text={project.name} />
       </h3>
       <p className="project__tagline" data-reveal>
         {project.tagline}
@@ -64,12 +83,7 @@ function ProjectEntry({ project }: { project: Project }) {
       <p className="project__desc" data-reveal>
         {project.description}
       </p>
-    </>
-  );
-
-  const plate = (
-    <div className="project__plate-wrap">
-      <ProjectPlate project={project} caption={project.plateCaption} />
+      <Facts project={project} />
     </div>
   );
 
@@ -80,28 +94,33 @@ function ProjectEntry({ project }: { project: Project }) {
       style={
         { ["--project-accent" as string]: project.accent } as React.CSSProperties
       }
+      id={`work-${project.slug}`}
     >
-      <div className="project__head">
-        <span className="project__index">{project.index}</span>
-        <span className="project__discipline">{project.discipline}</span>
+      <header className="project__head">
+        <span className="roll">
+          <span className="project__index" data-roll>
+            {project.index}
+          </span>
+        </span>
+        <span className="project__discipline" data-wipe>
+          {project.discipline}
+        </span>
         <span className="project__status">{project.statusLabel}</span>
-      </div>
+      </header>
 
       {variant === "b" ? (
-        <div className="project__body">
-          {plate}
-          <div className="project__meta-grid">
-            <div className="project__text">{heading}</div>
-            <Facts project={project} />
+        <div className="project__body project__body--split">
+          <div className="project__sticky">
+            <ProjectPlate project={project} />
           </div>
+          {text}
         </div>
       ) : (
-        <div className="project__body">
-          <div className="project__text">
-            {heading}
-            <Facts project={project} />
+        <div className={`project__body project__body--${variant}`}>
+          {text}
+          <div className="project__plate-wrap">
+            <ProjectPlate project={project} />
           </div>
-          {plate}
         </div>
       )}
     </article>
@@ -117,16 +136,22 @@ export function Work() {
         note="Concept · In progress · Ongoing"
       />
 
-      <h2 className="display work__heading" id="work-title" data-lines>
-        <span className="line">
-          <span>Things I&apos;m</span>
-        </span>
-        <span className="line">
-          <span>
-            building<em>.</em>
+      <div className="work__intro">
+        <h2 className="display work__heading" id="work-title" data-lines>
+          <span className="line">
+            <span>Things I&apos;m</span>
           </span>
-        </span>
-      </h2>
+          <span className="line">
+            <span>
+              building<em>.</em>
+            </span>
+          </span>
+        </h2>
+        <p className="work__note" data-reveal>
+          Three projects, at three different stages. Each one is labelled for
+          what it is right now rather than what it might become.
+        </p>
+      </div>
 
       <div className="work__list">
         {projects.map((project) => (

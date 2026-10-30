@@ -1,13 +1,18 @@
 "use client";
 
 import { scrollToId } from "@/lib/scroll";
+import { useMagnetic } from "@/hooks/useMagnetic";
 
 export function BackToTop() {
+  const ref = useMagnetic<HTMLButtonElement>(0.35);
+
   return (
     <button
+      ref={ref}
       type="button"
       className="footer__top-link"
       onClick={() => scrollToId("top")}
+      data-cursor="link"
     >
       Back to top
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">

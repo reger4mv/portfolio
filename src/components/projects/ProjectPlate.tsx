@@ -1,12 +1,13 @@
+import { Plate, type PlateVariant } from "@/components/ui/Plate";
 import type { Project } from "@/data/projects";
 
 /**
- * Project plates.
+ * Project imagery.
  *
- * No product screenshots were supplied for these projects, so each
- * plate is an abstract identity study drawn from the project's own
- * geometry — not a fake screenshot. If a real image is added to
- * `projects.ts`, it replaces the study automatically.
+ * No product screenshots were supplied, so each plate carries an abstract
+ * identity study drawn from that project's own geometry — an object, not a
+ * fake screenshot. If a real image is added to `projects.ts`, it replaces the
+ * study and inherits the same plate treatment.
  */
 
 function SignalArc({ accent }: { accent: string }) {
@@ -64,7 +65,6 @@ function SignalArc({ accent }: { accent: string }) {
 }
 
 function NodeStack({ accent }: { accent: string }) {
-  const planes = [0, 1, 2, 3];
   return (
     <svg
       className="plate__figure"
@@ -73,7 +73,7 @@ function NodeStack({ accent }: { accent: string }) {
       role="img"
       aria-label="Identity study: floating planes connected by an axis"
     >
-      {planes.map((p) => {
+      {[0, 1, 2, 3].map((p) => {
         const y = 150 + p * 62;
         const w = 210 - p * 26;
         return (
@@ -131,7 +131,7 @@ function NodeStack({ accent }: { accent: string }) {
       </text>
       <text
         x="132"
-        y="430"
+        y="404"
         fill="#858585"
         fontSize="10"
         letterSpacing="4"
@@ -169,10 +169,17 @@ function Aperture({ accent }: { accent: string }) {
       aria-label="Identity study: a seven-blade aperture"
     >
       <circle cx="300" cy="300" r="248" fill="none" stroke="#414145" strokeWidth="1" />
-      <circle cx="300" cy="300" r="196" fill="none" stroke={accent} strokeWidth="1" opacity="0.5" />
+      <circle
+        cx="300"
+        cy="300"
+        r="196"
+        fill="none"
+        stroke={accent}
+        strokeWidth="1"
+        opacity="0.5"
+      />
       <circle cx="300" cy="300" r="120" fill="none" stroke={accent} strokeWidth="1.4" />
       {points.map(([x, y], i) => {
-        const a = (i / blades) * Math.PI * 2 - Math.PI / 2;
         const next = points[(i + 1) % blades];
         return (
           <path
@@ -183,13 +190,16 @@ function Aperture({ accent }: { accent: string }) {
             strokeOpacity={0.22}
             strokeWidth="1"
             opacity={0.95}
-            transform={`rotate(${0} 300 300)`}
-            style={{ transformOrigin: "300px 300px", rotate: `${a * 0.02}rad` }}
           />
         );
       })}
       <circle cx="300" cy="300" r="34" fill="#090909" stroke="#5a5a5a" strokeWidth="1" />
-      <path d="M300 52v40M300 508v40M52 300h40M508 300h40" stroke="#858585" strokeWidth="1" opacity="0.45" />
+      <path
+        d="M300 52v40M300 508v40M52 300h40M508 300h40"
+        stroke="#858585"
+        strokeWidth="1"
+        opacity="0.45"
+      />
     </svg>
   );
 }
@@ -200,19 +210,32 @@ const marks = {
   aperture: Aperture,
 };
 
-export function ProjectPlate({
-  project,
-  caption,
-}: {
-  project: Project;
-  caption: string;
-}) {
+const TREATMENT: Record<string, { variant: PlateVariant; parallax: number; tilt: number }> = {
+  kaminari: { variant: "rise", parallax: 11, tilt: 3.5 },
+  totem: { variant: "wipe", parallax: 7, tilt: 2 },
+  regera: { variant: "scale", parallax: 13, tilt: 4 },
+};
+
+export function ProjectPlate({ project }: { project: Project }) {
   const Mark = marks[project.mark];
+  const treatment = TREATMENT[project.slug] ?? {
+    variant: "rise" as PlateVariant,
+    parallax: 10,
+    tilt: 3,
+  };
 
   return (
-    <div
-      className={`plate plate--${project.slug === "kaminari" ? "a" : project.slug === "totem" ? "b" : "c"}`}
-      style={{ ["--project-accent" as string]: project.accent }}
+    <Plate
+      variant={treatment.variant}
+      parallax={treatment.parallax}
+      tilt={treatment.tilt}
+      className={`project-plate project-plate--${project.slug}`}
+      caption={
+        <>
+          <span className="mono">{project.plateCaption}</span>
+          <span className="mono matte__index">{project.index}</span>
+        </>
+      }
     >
       {project.preview ? (
         // eslint-disable-next-line @next/next/no-img-element
@@ -226,10 +249,6 @@ export function ProjectPlate({
       ) : (
         <Mark accent={project.accent} />
       )}
-      <div className="plate__caption">
-        <span className="mono">{caption}</span>
-        <span className="mono plate__caption-mark">{project.index}</span>
-      </div>
-    </div>
+    </Plate>
   );
 }
