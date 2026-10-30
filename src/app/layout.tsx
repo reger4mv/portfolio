@@ -9,7 +9,7 @@ import "@fontsource/ibm-plex-mono/latin-400.css";
 import "@fontsource/ibm-plex-mono/latin-500.css";
 import "./globals.css";
 
-import { site } from "@/data/site";
+import { asset, site, siteUrl, withBase } from "@/data/site";
 
 export const metadata: Metadata = {
   title: `${site.fullName} — Creative Developer`,
@@ -25,16 +25,36 @@ export const metadata: Metadata = {
     "interactive web",
     "portfolio",
   ],
+  metadataBase: new URL(siteUrl),
+  alternates: { canonical: "/" },
+  icons: {
+    icon: [
+      { url: withBase("/favicon-32.png"), sizes: "32x32", type: "image/png" },
+      { url: withBase("/apple-icon.png"), sizes: "180x180", type: "image/png" },
+    ],
+    apple: [{ url: withBase("/apple-icon.png"), sizes: "180x180" }],
+  },
   openGraph: {
     title: `${site.fullName} — Creative Developer`,
     description: site.metaDescription,
     type: "website",
     locale: "en_US",
+    url: siteUrl,
+    siteName: site.fullName,
+    images: [
+      {
+        url: asset("/og.png"),
+        width: 1200,
+        height: 630,
+        alt: `${site.fullName} — creative developer, Nepal`,
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.fullName} — Creative Developer`,
     description: site.metaDescription,
+    images: [asset("/og.png")],
   },
   robots: { index: true, follow: true },
 };

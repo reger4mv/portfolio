@@ -161,7 +161,17 @@ export function Playground() {
             </div>
           ) : (
             <div className="lab__fallback">
-              <p className="mono">Loading scene…</p>
+              <p className="mono">Initialising scene…</p>
+              <p className="body-copy" style={{ maxWidth: "38ch" }}>
+                Scene_001 renders in real time in your browser. If it does not
+                appear, your device may not support WebGL — everything else on
+                this page still works.
+              </p>
+              <noscript>
+                <p className="body-copy" style={{ maxWidth: "38ch" }}>
+                  JavaScript is required for the live scene.
+                </p>
+              </noscript>
             </div>
           )}
 

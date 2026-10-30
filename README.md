@@ -79,6 +79,21 @@ host. If the host serves from a sub-path, build with `NEXT_BASE_PATH=/that-path`
 For a Node host instead (Docker, Railway, Fly): `npm ci && npm run build && npm start` —
 the server listens on `0.0.0.0:3000`.
 
+### Social preview + metadata
+
+`layout.tsx` emits a canonical URL, Open Graph and Twitter card tags, a 1200×630 preview
+image (`public/og.png`) and the PNG favicon/apple icon set. Absolute URLs need to know the
+origin:
+
+| Variable | Default | Use |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | `https://reger4mv.github.io` | Set this to your custom domain (or your Vercel domain) so shared links point at the right host |
+| `NEXT_BASE_PATH` | *(empty)* | `/portfolio` for GitHub Pages project sites; already set in the workflow |
+
+Icon URLs are prefixed with the base path by hand, because Next's `metadata.icons` field
+does not apply it automatically. Both export modes were checked: with `NEXT_BASE_PATH=
+/portfolio` the head emits `/portfolio/favicon-32.png`; without it, `/favicon-32.png`.
+
 ### Before you go live
 
 - Fill in `site.email` and the socials in `src/data/social.ts` (see above).
@@ -101,6 +116,7 @@ All personal content lives in `src/data/` — presentation never holds copy.
 | `src/data/social.ts` | Contact channels — add a row only when the profile exists |
 | `src/data/philosophy.ts` | The four working principles |
 | `src/data/lab.ts` | Scene_001 object names and preset lists |
+| `src/data/site.ts` (`siteUrl`, `asset`) | Published origin used by canonical + social preview URLs |
 
 ### Contact details
 
