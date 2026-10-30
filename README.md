@@ -22,6 +22,57 @@ self-hosted through `@fontsource`, so the site makes zero third-party requests a
 
 ---
 
+## Publishing
+
+The site is fully static — no database, no API routes, no environment variables — so it
+builds and deploys anywhere that can run `npm run build`.
+
+### Vercel (recommended, ~2 minutes)
+
+1. Merge this branch into `main` (or push the code to your default branch).
+2. Go to [vercel.com/new](https://vercel.com/new) → import `reger4mv/portfolio`.
+3. Vercel detects Next.js. Leave every setting alone — no env vars, no build overrides.
+4. Deploy. Every push to `main` then redeploys automatically.
+
+Framework preset `Next.js`, build command `npm run build`, output handled by Vercel.
+The build needs no network access at runtime and makes no third-party requests.
+
+### GitHub Pages (free, no Vercel account)
+
+`.github/workflows/deploy-pages.yml` is included. It builds a static export and publishes
+it:
+
+1. Push the code to `main`.
+2. Repo → **Settings → Pages → Build and deployment → Source: GitHub Actions**.
+3. Push again (or run the workflow from the Actions tab).
+4. The site appears at `https://reger4mv.github.io/portfolio/`.
+
+The workflow passes `NEXT_BASE_PATH=/portfolio` because project sites are served from a
+sub-path. If you later point a custom domain at Pages, delete that line.
+
+### Anywhere else
+
+```bash
+npm ci
+npm run build:static   # writes ./out — plain HTML/CSS/JS
+```
+
+Upload `out/` to Cloudflare Pages, Netlify (drag-and-drop), S3 + CloudFront, or any static
+host. If the host serves from a sub-path, build with `NEXT_BASE_PATH=/that-path`.
+
+For a Node host instead (Docker, Railway, Fly): `npm ci && npm run build && npm start` —
+the server listens on `0.0.0.0:3000`.
+
+### Before you go live
+
+- Fill in `site.email` and the socials in `src/data/social.ts` (see above).
+- Check the hero at your own viewport width; if the sculpture crowds the type, nudge
+  `position` in `src/scenes/MainScene.tsx` and `--fs-hero` in `globals.css`.
+- Run Lighthouse against the deployed URL (a real browser is the one test this build
+  environment could not perform).
+
+---
+
 ## Where to edit content
 
 All personal content lives in `src/data/` — presentation never holds copy.
