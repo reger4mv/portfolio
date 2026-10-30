@@ -717,6 +717,12 @@ html.has-cursor [role="button"] {
   display: inline-flex;
   align-items: flex-start;
   white-space: nowrap;
+  /* Clip box padded past the glyphs so masked reveals never shave a letter */
+  overflow: hidden;
+  padding-top: 0.08em;
+  padding-bottom: 0.26em;
+  margin-top: -0.08em;
+  margin-bottom: -0.26em;
 }
 
 .hero__line:nth-child(2) {
@@ -921,9 +927,17 @@ html.has-cursor [role="button"] {
   margin-bottom: clamp(2.25rem, 4.5vw, 3.75rem);
 }
 
-.about__heading .line {
+.line {
   display: block;
   overflow: hidden;
+  padding-top: 0.1em;
+  padding-bottom: 0.22em;
+  margin-top: -0.1em;
+  margin-bottom: -0.22em;
+}
+
+.about__heading .line {
+  display: block;
 }
 
 .about__heading .line > span {
@@ -1570,15 +1584,6 @@ html.has-cursor [role="button"] {
   gap: 0.75rem;
   padding: 2rem;
   text-align: center;
-}
-
-.lab__selected {
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--accent);
-  min-height: 1em;
 }
 
 /* ---------- 11. SKILLS ---------- */

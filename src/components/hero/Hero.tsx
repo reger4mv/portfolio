@@ -50,6 +50,11 @@ export function Hero() {
         });
       }
 
+      const sup = titleRef.current?.querySelector(".hero__sup");
+      if (sup) {
+        tl.from(sup, { autoAlpha: 0, y: 12, duration: 0.9, ease: "power2.out" }, 0.75);
+      }
+
       const fades = fadeRefs.current.filter(Boolean) as HTMLElement[];
       if (fades.length) {
         tl.from(

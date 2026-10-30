@@ -171,7 +171,9 @@ export function Playground() {
               </div>
               <div className="lab__hud-block" style={{ textAlign: "right" }}>
                 <p className="mono">
-                  {ready ? `${quality === "lite" ? "LITE" : "FULL"} · ${fps || "--"} FPS` : "OFFLINE"}
+                  {ready
+                    ? `${quality === "lite" ? "LITE" : "FULL"} · ${fps || "--"} FPS`
+                    : "Standby"}
                 </p>
                 <p className="mono">Three.js / WebGL</p>
               </div>
