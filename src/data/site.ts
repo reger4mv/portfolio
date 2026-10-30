@@ -6,6 +6,17 @@
  * ─────────────────────────────────────────────────────────────
  */
 
+/**
+ * Where the site is published. Used for canonical + social preview URLs.
+ * Set NEXT_PUBLIC_SITE_URL to override (e.g. a custom domain); the GitHub
+ * Pages project-site fallback is built from the base path so previews still
+ * resolve when the site is served from /portfolio.
+ */
+const basePath = process.env.NEXT_BASE_PATH ?? "";
+export const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? `https://reger4mv.github.io/portfolio`
+).replace(/\/$/, "");
+
 export const site = {
   firstName: "AGASTYA",
   lastName: "VERMA",
@@ -56,6 +67,15 @@ export const site = {
   metaDescription:
     "Agastya Verma — self-taught creative developer from Nepal building interactive web experiences at the intersection of code, design and 3D.",
 } as const;
+
+/** Absolute URL for a public asset (siteUrl already carries the base path). */
+export const asset = (path: string) => `${siteUrl}${path}`;
+
+/**
+ * Prefix a public asset with the base path. Next's metadata `icons` field does
+ * not apply basePath automatically, so icon URLs must be built with this.
+ */
+export const withBase = (path: string) => `${basePath}${path}`;
 
 export const navItems = [
   { id: "home", label: "Home" },
