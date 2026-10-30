@@ -36,6 +36,22 @@ builds and deploys anywhere that can run `npm run build`.
 
 Framework preset `Next.js`, build command `npm run build`, output handled by Vercel.
 The build needs no network access at runtime and makes no third-party requests.
+`vercel.json` pins the framework and build command, so a project created before the app
+existed (when the repo held only a README) still builds correctly.
+
+**If a Vercel deployment 404s or fails**, it is almost always project settings, not the
+code. Check Settings → Build & Development Settings:
+
+| Setting | Correct value |
+| --- | --- |
+| Framework Preset | `Next.js` |
+| Root Directory | *(empty)* |
+| Build Command | *(default / `npm run build`)* |
+| Output Directory | *(empty — never `out`, that is only for `build:static`)* |
+| Install Command | *(default)* |
+
+The fastest reset is to delete the Vercel project and re-import the repo; detection then
+runs against a repo that actually contains the app.
 
 ### GitHub Pages (free, no Vercel account)
 
