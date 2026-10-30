@@ -121,7 +121,12 @@ export function Playground() {
       </p>
 
       <div className="lab" data-reveal>
-        <div className="lab__stage" ref={stageRef}>
+        <div
+          className="lab__stage"
+          ref={stageRef}
+          data-cursor="drag"
+          data-cursor-label="Drag"
+        >
           {ready ? (
             <SceneBoundary
               fallback={

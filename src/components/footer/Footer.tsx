@@ -1,6 +1,21 @@
+"use client";
+
 import { site } from "@/data/site";
 import { publishedSocials } from "@/data/social";
 import { BackToTop } from "@/components/footer/BackToTop";
+import { useMagnetic } from "@/hooks/useMagnetic";
+import { SplitText } from "@/components/ui/SplitText";
+
+function SocialLink({ label, href }: { label: string; href: string }) {
+  const ref = useMagnetic<HTMLAnchorElement>(0.3);
+
+  return (
+    <a ref={ref} href={href} target="_blank" rel="noreferrer noopener">
+      {label}
+      <span aria-hidden="true">↗</span>
+    </a>
+  );
+}
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -9,8 +24,13 @@ export function Footer() {
     <footer className="footer shell">
       <div className="footer__top">
         <p className="footer__mark">
-          {site.firstName}
-          <span>{site.lastName.toLowerCase()}</span>
+          <span className="footer__mark-line">
+            <span className="sr-only">{site.firstName}</span>
+            <SplitText text={site.firstName} />
+          </span>
+          <span className="footer__sub">
+            <SplitText text={site.lastName.toLowerCase()} />
+          </span>
         </p>
         <p className="footer__note">
           {site.footerNote[0]}
@@ -26,15 +46,11 @@ export function Footer() {
 
         <div className="footer__socials">
           {publishedSocials.map((social) => (
-            <a
+            <SocialLink
               key={social.id}
+              label={social.label}
               href={social.href}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              {social.label}
-              <span aria-hidden="true">↗</span>
-            </a>
+            />
           ))}
           <BackToTop />
         </div>

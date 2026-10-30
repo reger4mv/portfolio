@@ -10,11 +10,24 @@ import { setLenis } from "@/lib/scroll";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * One motion controller for the whole page:
- *  · Lenis smooth scroll, wired into the GSAP ticker
- *  · reveal primitives driven by scroll
- *  · a pinned-nav flag on <html>
- * Everything is skipped or reduced when the user prefers reduced motion.
+ * THE MOTION VOCABULARY
+ *
+ * One controller, but not one animation. Each primitive has a distinct job and
+ * a distinct shape, so no two sections arrive the same way:
+ *
+ *   data-lines      display headings rise out of a mask, line by line
+ *   data-roll       numbers/prose roll up inside their own mask
+ *   data-wipe       labels are drawn left → right via clip-path
+ *   data-mask       long copy is unclipped from the top, not faded
+ *   data-grow       vertical rules extend instead of fading in
+ *   data-draw       horizontal hairlines draw themselves
+ *   data-shift      opposing horizontal drift (scrub) for wide type
+ *   data-reveal     the plain fade-up, used only where nothing else fits
+ *   data-reveal-group / -item  staggered lists
+ *
+ * Scroll is handled by Lenis, wired into the GSAP ticker so both share one
+ * clock. Everything is skipped for prefers-reduced-motion — in that case all
+ * content is simply present and readable.
  */
 export function SiteMotion() {
   useEffect(() => {
@@ -44,12 +57,14 @@ export function SiteMotion() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    if (reduce) return () => {
-      window.removeEventListener("scroll", onScroll);
-    };
+    if (reduce) {
+      return () => {
+        window.removeEventListener("scroll", onScroll);
+      };
+    }
 
     const ctx = gsap.context(() => {
-      /* Line-mask headings: <div data-lines> <span class="line"><span/></span> */
+      /* ── display headings rise out of a mask ───────────── */
       gsap.utils.toArray<HTMLElement>("[data-lines]").forEach((block) => {
         const lines = block.querySelectorAll<HTMLElement>(".line > span, .line > em");
         if (!lines.length) return;
@@ -62,48 +77,116 @@ export function SiteMotion() {
         });
       });
 
-      /* Simple fade-rise reveals */
-      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
-        const delay = Number(el.dataset.revealDelay ?? 0);
+      /* ── numbers and short prose roll up ───────────────── */
+      gsap.utils.toArray<HTMLElement>("[data-roll]").forEach((el) => {
         gsap.from(el, {
-          y: 26,
-          autoAlpha: 0,
-          duration: 1,
-          delay,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: el,
-            start: el.dataset.revealStart ?? "top 90%",
-            once: true,
-          },
-        });
-      });
-
-      /* Staggered groups */
-      gsap.utils.toArray<HTMLElement>("[data-reveal-group]").forEach((group) => {
-        const items = group.querySelectorAll<HTMLElement>("[data-reveal-item]");
-        gsap.from(items, {
-          y: 22,
-          autoAlpha: 0,
+          yPercent: 105,
           duration: 0.9,
-          ease: "power3.out",
-          stagger: 0.07,
-          scrollTrigger: { trigger: group, start: "top 88%", once: true },
+          ease: "expo.out",
+          scrollTrigger: { trigger: el, start: "top 94%", once: true },
         });
       });
 
-      /* Hairlines that draw themselves */
-      gsap.utils.toArray<HTMLElement>("[data-draw]").forEach((line) => {
-        gsap.from(line, {
+      /* ── labels draw left → right ──────────────────────── */
+      gsap.utils.toArray<HTMLElement>("[data-wipe]").forEach((el, index) => {
+        // Right-aligned labels reveal from their own edge, not the page edge.
+        const from =
+          el.dataset.wipe === "right"
+            ? "inset(0% 0% 0% 100%)"
+            : "inset(0% 100% 0% 0%)";
+        gsap.fromTo(
+          el,
+          { clipPath: from },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: 1.1,
+            delay: (index % 3) * 0.06,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 94%", once: true },
+          },
+        );
+      });
+
+      /* ── long copy unclips from the top ────────────────── */
+      gsap.utils.toArray<HTMLElement>("[data-mask]").forEach((el) => {
+        gsap.fromTo(
+          el,
+          { clipPath: "inset(0% 0% 100% 0%)", y: 18 },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            y: 0,
+            duration: 1.3,
+            ease: "expo.out",
+            scrollTrigger: { trigger: el, start: "top 90%", once: true },
+          },
+        );
+      });
+
+      /* ── vertical rules extend ─────────────────────────── */
+      gsap.utils.toArray<HTMLElement>("[data-grow]").forEach((el) => {
+        gsap.from(el, {
+          scaleY: 0,
+          transformOrigin: "top center",
+          duration: 1.4,
+          ease: "expo.inOut",
+          scrollTrigger: { trigger: el, start: "top 92%", once: true },
+        });
+      });
+
+      /* ── hairlines draw ────────────────────────────────── */
+      gsap.utils.toArray<HTMLElement>("[data-draw]").forEach((el) => {
+        gsap.from(el, {
           scaleX: 0,
           transformOrigin: "left center",
           duration: 1.4,
           ease: "expo.inOut",
-          scrollTrigger: { trigger: line, start: "top 94%", once: true },
+          scrollTrigger: { trigger: el, start: "top 96%", once: true },
         });
       });
 
-      /* The hero leaves the stage as you scroll into the page */
+      /* ── the plain fade-up, used sparingly ─────────────── */
+      gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+        gsap.from(el, {
+          y: 24,
+          autoAlpha: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 90%", once: true },
+        });
+      });
+
+      gsap.utils.toArray<HTMLElement>("[data-reveal-group]").forEach((group) => {
+        const items = group.querySelectorAll<HTMLElement>("[data-reveal-item]");
+        gsap.from(items, {
+          y: 20,
+          autoAlpha: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.06,
+          scrollTrigger: { trigger: group, start: "top 90%", once: true },
+        });
+      });
+
+      /* ── wide type drifts apart as the section arrives ─── */
+      gsap.utils.toArray<HTMLElement>("[data-shift]").forEach((el) => {
+        const dir = el.dataset.shift === "right" ? 1 : -1;
+        gsap.fromTo(
+          el,
+          { xPercent: dir * -1.6 },
+          {
+            xPercent: dir * 1.6,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el.closest("section") ?? el,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 0.8,
+            },
+          },
+        );
+      });
+
+      /* ── hero: type and canvas leave at different speeds ─ */
       const heroTitle = document.querySelector<HTMLElement>(".hero__title");
       if (heroTitle) {
         gsap.to(heroTitle, {
@@ -132,27 +215,12 @@ export function SiteMotion() {
           },
         });
       }
-
-      /* Slow drift on project plates */
-      gsap.utils.toArray<HTMLElement>("[data-drift]").forEach((el) => {
-        gsap.fromTo(
-          el,
-          { yPercent: -3 },
-          {
-            yPercent: 3,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            },
-          },
-        );
-      });
     });
 
-    ScrollTrigger.refresh();
+    /* Late-loading fonts change layout heights; re-measure once.
+       Deliberately not calling ScrollTrigger.refresh() on every resize —
+       Lenis + ScrollTrigger handle that themselves. */
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
     return () => {
       ctx.revert();

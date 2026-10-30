@@ -1,31 +1,59 @@
+"use client";
+
 import { site } from "@/data/site";
 import { socials } from "@/data/social";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { useMagnetic } from "@/hooks/useMagnetic";
 
-type Channel = {
+interface Channel {
   id: string;
   label: string;
   value: string;
   href?: string;
   external?: boolean;
-};
+}
+
+function ChannelRow({ channel }: { channel: Channel }) {
+  const ref = useMagnetic<HTMLAnchorElement>(0.1);
+
+  if (!channel.href) {
+    return (
+      <div className="channel channel--pending" data-reveal-item>
+        <span className="channel__label">{channel.label}</span>
+        <span className="channel__value">Not published yet</span>
+        <span className="channel__arrow" aria-hidden="true">
+          ·
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <a
+      ref={ref}
+      className="channel"
+      href={channel.href}
+      {...(channel.external
+        ? { target: "_blank", rel: "noreferrer noopener" }
+        : {})}
+      data-reveal-item
+      data-cursor="link"
+    >
+      <span className="channel__label">{channel.label}</span>
+      <span className="channel__value">{channel.value}</span>
+      <span className="channel__arrow" aria-hidden="true">
+        ↗
+      </span>
+    </a>
+  );
+}
 
 export function Contact() {
-  const channels: Channel[] = [];
-
-  channels.push(
+  const channels: Channel[] = [
     site.email
-      ? {
-          id: "email",
-          label: "Email",
-          value: site.email,
-          href: `mailto:${site.email}`,
-        }
+      ? { id: "email", label: "Email", value: site.email, href: `mailto:${site.email}` }
       : { id: "email", label: "Email", value: "Not published" },
-  );
-
-  socials.forEach((social) => {
-    channels.push(
+    ...socials.map((social) =>
       social.href
         ? {
             id: social.id,
@@ -35,18 +63,23 @@ export function Contact() {
             external: true,
           }
         : { id: social.id, label: social.label, value: "Not published" },
-    );
-  });
+    ),
+  ];
 
   return (
-    <section id="contact" className="section shell contact" aria-labelledby="contact-title">
+    <section
+      id="contact"
+      className="section shell contact"
+      aria-labelledby="contact-title"
+    >
       <SectionHeading index="06" label="Contact" note="Open to good ideas" />
 
+      {/* The two lines drift apart as you scroll into the section. */}
       <h2 className="contact__heading" id="contact-title" data-lines>
-        <span className="line">
+        <span className="line" data-shift="left">
           <span>Have something</span>
         </span>
-        <span className="line">
+        <span className="line" data-shift="right">
           <span>
             interesting in <em>mind?</em>
           </span>
@@ -69,37 +102,9 @@ export function Contact() {
 
         <div>
           <div className="channels" data-reveal-group>
-            {channels.map((channel) =>
-              channel.href ? (
-                <a
-                  key={channel.id}
-                  className="channel"
-                  href={channel.href}
-                  {...(channel.external
-                    ? { target: "_blank", rel: "noreferrer noopener" }
-                    : {})}
-                  data-reveal-item
-                >
-                  <span className="channel__label">{channel.label}</span>
-                  <span className="channel__value">{channel.value}</span>
-                  <span className="channel__arrow" aria-hidden="true">
-                    ↗
-                  </span>
-                </a>
-              ) : (
-                <div
-                  key={channel.id}
-                  className="channel channel--pending"
-                  data-reveal-item
-                >
-                  <span className="channel__label">{channel.label}</span>
-                  <span className="channel__value">Not published yet</span>
-                  <span className="channel__arrow" aria-hidden="true">
-                    ·
-                  </span>
-                </div>
-              ),
-            )}
+            {channels.map((channel) => (
+              <ChannelRow channel={channel} key={channel.id} />
+            ))}
           </div>
 
           <p className="contact__note">
