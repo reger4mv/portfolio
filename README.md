@@ -1,1 +1,182 @@
-# portfolio
+# Agastya Verma — Portfolio
+
+An experimental 3D portfolio for a self-taught developer from Nepal. Built as a single
+page: a real-time mounted sculpture in the hero, three honest project plates, and a live
+interactive 3D playground you can actually operate.
+
+**Stack:** Next.js 15 (App Router) · React 19 · TypeScript · Three.js · React Three Fiber ·
+Drei · GSAP + ScrollTrigger · Lenis · structured custom CSS (no utility framework).
+
+---
+
+## Run it
+
+```bash
+npm install
+npm run dev     # http://localhost:3000
+npm run build && npm start
+```
+
+No environment variables, no external services, no HDR/texture downloads. Fonts are
+self-hosted through `@fontsource`, so the site makes zero third-party requests at runtime.
+
+---
+
+## Where to edit content
+
+All personal content lives in `src/data/` — presentation never holds copy.
+
+| File | Contents |
+| --- | --- |
+| `src/data/site.ts` | Name, role, location, hero description, about copy, contact copy, nav items |
+| `src/data/projects.ts` | The three projects: description, status, what has actually been built, stack, link |
+| `src/data/skills.ts` | Skill groups and honest depth labels (`working` / `learning` / `exploring`) |
+| `src/data/social.ts` | Contact channels — add a row only when the profile exists |
+| `src/data/philosophy.ts` | The four working principles |
+| `src/data/lab.ts` | Scene_001 object names and preset lists |
+
+### Contact details
+
+`site.email` is intentionally empty, so the email row renders as "Not published".
+`socials` contains GitHub only; LinkedIn and Instagram are listed as rows with an empty
+`href`, which the UI shows as "Not published yet" instead of a dead link.
+
+> The GitHub handle `reger4mv` was taken from this repository's namespace. If that is not
+> the account you want to surface, change or clear it in `src/data/social.ts` and
+> `projects.ts` (REGERA's link).
+
+### Adding real project screenshots
+
+No product screenshots were supplied, so each project renders an **identity study** — an
+abstract SVG drawn from that project's own geometry — and says so in the caption. To use a
+real screenshot instead:
+
+1. Drop the image in `public/projects/` (e.g. `public/projects/kaminari.png`).
+2. Add to the project in `src/data/projects.ts`:
+
+```ts
+preview: { src: "/projects/kaminari.png", alt: "Kaminari discovery feed" },
+```
+
+The plate swaps the study for the image automatically. Prefer WebP/AVIF under ~300 KB;
+plates are 4:5, 21:9 and 1:1 depending on the project layout.
+
+---
+
+## What is and isn't claimed
+
+This site was built to a strict content rule: nothing is invented.
+
+- Projects are labelled **Concept**, **In progress** or **Ongoing**, with a "Built so far"
+  line describing what actually exists.
+- No users, revenue, awards, clients, testimonials, employment, statistics or completion
+  claims appear anywhere.
+- Skills carry a depth label instead of a percentage — there are no progress bars and no
+  implied proficiency scores.
+- No contact form is implemented, because a form without a real backend would either drop
+  messages or fake a success state. Channels are plain links instead.
+- No portrait is shown, because none was supplied.
+- No dates are attached to the projects, because none were confirmed.
+
+If any of that changes, edit the data files and the UI follows.
+
+---
+
+## Architecture
+
+```
+src/
+  app/
+    layout.tsx        metadata, fonts, global styles, skip link
+    page.tsx          section composition
+    globals.css       design tokens, type scale, section styles, responsive rules
+    icon.svg          favicon (the monogram)
+  components/
+    navigation/       nav, monogram, mobile overlay menu, live Kathmandu clock
+    hero/             hero layout, masked type entrance, scroll cue
+    projects/         work list + project plates (SVG identity studies)
+    playground/       Scene_001 shell, HUD, controls, FPS readout
+    sections/         about, skills index, approach, shared section heading
+    contact/          channels from data/social.ts
+    footer/           footer + back to top
+    cursor/           fine-pointer cursor (dot + lagging ring)
+    system/           motion controller, scene error boundary
+  scenes/
+    MainScene.tsx          hero canvas: camera, scroll response, framing
+    HeroSculpture.tsx      the parametric instrument
+    PlaygroundScene.tsx    Scene_001 canvas
+    InteractiveObjects.tsx four objects, surfaces, lighting presets, selection
+    Lighting.tsx           hand-built studio environment (no HDR files)
+  hooks/               webgl probe, in-view, device quality, reduced motion
+  lib/                 Lenis access + smooth anchor scrolling
+  data/                all editable content
+```
+
+### The hero sculpture
+
+"CALIBRATOR" is a mounted instrument, not a floating shape: a plinth with engraved tick
+marks, a slim steel column with chrome collars, a three-ring gimbal in the column's cradle,
+a faceted dark core, one counterweighted arm, and a single glass lens slab cutting through
+it. All geometry is parametric (torus / box / cylinder / icosahedron), so there is nothing
+to download and nothing to dispose of beyond what R3F handles.
+
+Motion: slow ring rotation on independent axes, pointer-damped tilt, a gentle breathing
+camera on scroll, and a still fallback when the visitor prefers reduced motion.
+
+### Scene_001
+
+Four objects on a stage — a chrome orbit cage, a glass prism, a wire lattice, a particle
+field. You can orbit (drag), select (click), and change surface (chrome / glass / wire),
+lighting (studio / dusk / mono), camera (orbit / front / top), rotation and a single
+"pulse" animation. The HUD reports the current state and a live frame rate. Selection is
+also announced in a polite live region for screen readers.
+
+---
+
+## Performance and accessibility
+
+- Three.js + R3F load in async chunks; the route's first-load JS is ~162 kB and the
+  initial HTML is fully rendered and readable before any 3D arrives.
+- Scenes are mounted client-side and paused (`frameloop="never"`) when they scroll out of
+  view; the hero is `frameloop="demand"` under reduced motion.
+- Device quality: `useSceneQuality` drops to a lite grade (fewer geometry segments, no
+  transmission glass, lower environment resolution, reduced DPR) on narrow viewports and
+  low-core devices.
+- No post-processing, no shadows, no textures, no external assets.
+- WebGL unavailable → the hero falls back to a static line drawing and the playground shows
+  an honest "scene unavailable" panel; a scene error boundary catches context failures.
+- `prefers-reduced-motion` disables Lenis smoothing, scroll reveals, the custom cursor, the
+  hero bloom-in and auto-rotation in Scene_001.
+- Semantic landmarks, one `h1`, ordered headings, a skip link, visible focus rings, keyboard
+  arrow navigation in the skills index, `inert` on the closed mobile menu, and ARIA-complete
+  toggle buttons.
+
+### Known limits
+
+The development environment used to build this had no browser engine available, so the
+interface was verified through production builds, type checks, server-rendered markup and
+offline rendering of the 3D geometry — not by pixel-inspection in a live browser. Font
+metrics, hero framing and mobile breakpoints were checked with rendered mock-ups at 1440 px
+and hand-computed clamp() values. Run the site in a real browser and adjust the hero
+`--fs-hero` / sculpture `position` in `MainScene.tsx` if the composition needs a nudge at a
+specific width.
+
+---
+
+## Design system
+
+| Token | Value |
+| --- | --- |
+| Ink / charcoal / graphite | `#090909` `#111111` `#191919` |
+| Bone / silver / grey | `#EAE8E2` `#B9B9B9` `#858585` |
+| Electric blue (dominant accent) | `#536BFF` |
+| Violet | `#8875FF` — Totem's plate only |
+| Warm orange | `#FF784F` — Kaminari's plate only |
+
+Type: **Space Grotesk** (display + UI), **Instrument Serif** (italic accents),
+**IBM Plex Mono** (metadata, labels, technical annotation). Three faces, no more.
+
+Motion language: slow `expo.out` line reveals for headings, one-shot fades for copy,
+hairlines that draw themselves, `1.35 s` eased anchor scrolling, and damped camera
+movement. Nothing bounces, nothing flashes, nothing loops unattended except the sculpture
+and the scroll cue.
