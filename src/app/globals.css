@@ -805,6 +805,65 @@ html.has-cursor [data-cursor] {
   }
 }
 
+/* ---------- 06b. BACKDROP LENS ---------- */
+
+/* The page keeps one image behind itself and shows a window of it under the
+   pointer. Everything about it is decorative: it never takes a click, never
+   enters the tab order, and does not exist on touch or for keyboard users. */
+
+.lens {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lens {
+    /* Hidden by default, so the image is never fetched on coarse pointers. */
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.55s var(--ease-out);
+
+    --lens-r: clamp(9rem, 15vw, 15rem);
+    --lens-x: 50vw;
+    --lens-y: 50vh;
+
+    background-color: var(--ink);
+    background-image: var(--lens-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    filter: saturate(0.92) contrast(1.03);
+
+    -webkit-mask-image: radial-gradient(
+      circle var(--lens-r) at var(--lens-x) var(--lens-y),
+      #000 0%,
+      #000 50%,
+      rgba(0, 0, 0, 0.55) 74%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      circle var(--lens-r) at var(--lens-x) var(--lens-y),
+      #000 0%,
+      #000 50%,
+      rgba(0, 0, 0, 0.55) 74%,
+      transparent 100%
+    );
+  }
+
+  .lens[data-active] {
+    opacity: 0.96;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  .lens {
+    transition: none;
+  }
+}
+
 /* ---------- 07. HERO ---------- */
 
 .hero {

@@ -117,6 +117,7 @@ All personal content lives in `src/data/` — presentation never holds copy.
 | `src/data/philosophy.ts` | The four working principles |
 | `src/data/lab.ts` | Scene_001 object names and preset lists |
 | `src/data/site.ts` (`siteUrl`, `asset`) | Published origin used by canonical + social preview URLs |
+| `public/backdrop.jpg` | The pointer-revealed backdrop. Swap this file for your own image — anything you are happy to have on screen. Its path lives in `backdrop` in `src/data/site.ts`. |
 
 ### Contact details
 
@@ -177,6 +178,7 @@ disabled entirely on coarse pointers unless noted.
 | `Plate` (`matte`) | project imagery | Clip-path aperture entry (rise / wipe / scale — one per project), media parallax behind the clipped frame, 2–4° pointer tilt, caption fade. |
 | `CursorImageReveal` | work index (closing panel) | Hover or keyboard-focus a project name and its study floats after the pointer with a lag, stepping clear of the label and staying inside the viewport. Layered images crossfade on switch, so nothing blanks or reloads. Portalled out of the horizontal track, never mounted for coarse pointers (rows carry inline thumbnails instead), placed without float under reduced motion. |
 | `SplitText` | project titles, footer name | Per-character hover displacement. `aria-hidden`; the accessible name comes from an `sr-only` sibling. |
+| `BackdropLens` | global (fine pointers only) | One image held behind the page, visible only inside a soft circle that trails the pointer. Eases behind the real cursor, switches itself off after 2.2 s of stillness so it never parks over copy, and disappears the moment the pointer leaves the document. Not mounted on coarse pointers — the CSS media query keeps the image from downloading there at all. Decorative only: `aria-hidden`, no pointer events, never focusable. |
 | `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
 | Nav indicator | nav | A single hairline slides to the active section instead of five underlines flickering. |
 | Skills marker | capabilities | One marker slides between rows; the detail panel wipes on change. |
