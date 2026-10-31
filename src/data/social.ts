@@ -21,10 +21,12 @@ export const socials: SocialLink[] = [
     handle: "reger4mv",
     href: "https://github.com/reger4mv",
   },
-  // Add the rest as they exist — e.g.
-  // { id: "linkedin", label: "LinkedIn", handle: "…", href: "https://www.linkedin.com/in/…" },
-  { id: "linkedin", label: "LinkedIn", handle: "", href: "" },
-  { id: "instagram", label: "Instagram", handle: "", href: "" },
+  {
+    id: "instagram",
+    label: "Instagram",
+    handle: "@regeramv",
+    href: "https://www.instagram.com/regeramv/",
+  },
 ];
 
 export const publishedSocials = socials.filter((s) => s.href.length > 0);

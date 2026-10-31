@@ -37,7 +37,7 @@ export const site = {
    * Contact channels. Leave a value empty to hide it from the site —
    * nothing is invented or filled in automatically.
    */
-  email: "",
+  email: "reger4mv@gmail.com",
   availability: "Open to collaboration, experiments and questions I can answer.",
 
   about: {
