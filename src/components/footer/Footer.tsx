@@ -21,7 +21,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="footer shell">
+    <footer className="footer shell reg--ink">
       <div className="footer__top">
         <p className="footer__mark">
           <span className="footer__mark-line">

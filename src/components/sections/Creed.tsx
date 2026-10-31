@@ -1,7 +1,6 @@
 "use client";
 
 import { principles } from "@/data/philosophy";
-import { SectionHeading } from "@/components/sections/SectionHeading";
 
 /**
  * Approach — four working principles as a quiet vertical list.
@@ -15,7 +14,9 @@ export function Creed() {
   return (
     <section id="approach" className="section creed-section" aria-labelledby="creed-title">
       <div className="shell">
-        <SectionHeading index="05" label="Approach" note="Four working principles" />
+        <p className="creed__mark mono">
+          <span>05</span> Approach — four habits
+        </p>
 
         <div className="creed__intro">
           <h2 id="creed-title" className="creed__statement" data-lines>

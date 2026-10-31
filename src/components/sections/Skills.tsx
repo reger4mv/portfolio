@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 
 import { depthLabels, skills } from "@/data/skills";
-import { SectionHeading } from "@/components/sections/SectionHeading";
+import { SectionMark } from "@/components/sections/SectionMark";
 
 /**
  * Capabilities — a typographic index.
@@ -97,14 +97,15 @@ export function Skills() {
 
   return (
     <section id="skills" className="section shell" aria-labelledby="skills-title">
-      <SectionHeading
+      <SectionMark
         index="04"
         label="Capabilities"
-        note="Working · Learning · Exploring"
+        note="Working · learning · exploring"
+        variant="ledger"
       />
 
       <div className="index__intro">
-        <h2 className="display work__heading" id="skills-title" data-lines>
+        <h2 className="display" id="skills-title" data-lines>
           <span className="line">
             <span>What I work</span>
           </span>

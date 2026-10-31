@@ -8,7 +8,6 @@ import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { ProjectStudy, studyRatios } from "@/components/projects/studies";
 import { CursorImageReveal, type RevealPreview } from "@/components/interaction/CursorImageReveal";
-import { SectionHeading } from "@/components/sections/SectionHeading";
 import { SplitText } from "@/components/ui/SplitText";
 import { scrollToY } from "@/lib/scroll";
 
@@ -77,7 +76,7 @@ export function Work() {
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+    mm.add("(min-width: 1024px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
       let tween: gsap.core.Timeline | null = null;
       let frame = 0;
       let jumpPoints: Record<string, number> = {};
@@ -148,7 +147,7 @@ export function Work() {
           if (span <= 0) return;
 
           const media = panel.querySelector<HTMLElement>(".matte__media");
-          const type = panel.querySelector<HTMLElement>(".panel__drift");
+          const type = panel.querySelector<HTMLElement>("[data-drift]");
           const frame = panel.querySelector<HTMLElement>(".matte__frame");
 
           if (media) {
@@ -213,7 +212,7 @@ export function Work() {
         };
         gsap.set(track, { clearProps: "transform" });
         gsap.set(
-          track.querySelectorAll(".matte__media, .panel__drift, .matte__frame"),
+          track.querySelectorAll(".matte__media, [data-drift], .matte__frame"),
           { clearProps: "transform" },
         );
         if (barRef.current) barRef.current.style.removeProperty("transform");
@@ -224,12 +223,11 @@ export function Work() {
   }, []);
 
   return (
-    <section id="work" className="section shell sequence" aria-labelledby="work-title">
-      <SectionHeading
-        index="02"
-        label="Selected work"
-        note="Scroll — the work moves sideways"
-      />
+    <section
+      id="work"
+      className="section shell sequence reg--ink"
+      aria-labelledby="work-title"
+    >
 
       <div className="sequence__stage" ref={stageRef}>
         <div className="sequence__pin">
@@ -238,7 +236,7 @@ export function Work() {
               {/* 01 — title card */}
               <article className="panel panel--intro">
                 <div className="panel__inner">
-                  <p className="panel__eyebrow mono">01 — 05</p>
+                  <p className="panel__eyebrow mono">02 — Selected work</p>
                   <h2 className="panel__display" id="work-title">
                     <span className="line">
                       <span>Things I&apos;m</span>
@@ -369,7 +367,7 @@ function ProjectPanel({ project, position }: { project: Project; position: numbe
       </header>
 
       <div className="panel__grid">
-        <div className="panel__type panel__drift">
+        <div className="panel__type" data-drift>
           <h3 className="panel__title" id={`panel-${project.slug}`}>
             <span className="sr-only">{project.name}</span>
             <SplitText text={project.name} />

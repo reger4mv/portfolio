@@ -37,7 +37,7 @@ function Surface({
   if (mode === "glass") {
     return (
       <meshPhysicalMaterial
-        color="#eae8e2"
+        color="#e8e1d3"
         transmission={lite ? 0 : 0.94}
         thickness={lite ? 0 : 0.9}
         roughness={0.1}
@@ -54,7 +54,7 @@ function Surface({
 
   return (
     <meshPhysicalMaterial
-      color="#c9c9c5"
+      color="#cfc7b6"
       metalness={1}
       roughness={lite ? 0.18 : 0.07}
       envMapIntensity={lite ? 1.2 : 1.7}
@@ -78,15 +78,15 @@ function OrbitCage({ quality, mode }: { quality: Quality; mode: SurfaceMode }) {
     <group ref={ref}>
       <mesh>
         <torusGeometry args={[0.62, 0.11, seg, quality === "lite" ? 48 : 120]} />
-        <Surface mode={mode} quality={quality} color="#c9c9c5" />
+        <Surface mode={mode} quality={quality} color="#cfc7b6" />
       </mesh>
       <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
         <torusGeometry args={[0.62, 0.055, seg, quality === "lite" ? 40 : 96]} />
-        <Surface mode={mode} quality={quality} color="#b9b9b9" />
+        <Surface mode={mode} quality={quality} color="#b4ab9a" />
       </mesh>
       <mesh rotation={[0.55, Math.PI / 2, 0.3]}>
         <torusGeometry args={[0.62, 0.028, 8, quality === "lite" ? 40 : 96]} />
-        <Surface mode={mode} quality={quality} color="#8f8f8f" />
+        <Surface mode={mode} quality={quality} color="#8a8375" />
       </mesh>
     </group>
   );
@@ -102,12 +102,12 @@ function GlassPrism({ quality, mode }: { quality: Quality; mode: SurfaceMode }) 
     <group>
       <mesh ref={ref} rotation={[0.12, 0.4, 0.08]}>
         <cylinderGeometry args={[0.56, 0.56, 1.24, 6, 1, false]} />
-        <Surface mode={mode} quality={quality} color="#dcdad4" />
+        <Surface mode={mode} quality={quality} color="#ded5c3" />
       </mesh>
       <mesh rotation={[0.12, 0.4, 0.08]}>
         <cylinderGeometry args={[0.56, 0.56, 1.24, 6, 1, true]} />
         <meshBasicMaterial
-          color="#eae8e2"
+          color="#e8e1d3"
           wireframe
           transparent
           opacity={0.14}
@@ -129,9 +129,9 @@ function WireLattice({ quality, mode }: { quality: Quality; mode: SurfaceMode })
       <mesh ref={ref}>
         <icosahedronGeometry args={[0.78, 1]} />
         {mode === "wire" ? (
-          <meshBasicMaterial color="#9aa4ff" wireframe />
+          <meshBasicMaterial color="#e4663c" wireframe />
         ) : (
-          <Surface mode={mode} quality={quality} color="#c9c9c5" />
+          <Surface mode={mode} quality={quality} color="#cfc7b6" />
         )}
       </mesh>
       <mesh scale={0.42}>
@@ -377,14 +377,14 @@ export function InteractiveObjects({
         <>
           <ambientLight intensity={0.18} />
           <directionalLight position={[3, 5, 4]} intensity={2.2} color="#f6f4ee" />
-          <directionalLight position={[-4, 1, 2]} intensity={0.5} color="#536bff" />
+          <directionalLight position={[-4, 1, 2]} intensity={0.5} color="#e4663c" />
         </>
       ) : null}
       {light === "dusk" ? (
         <>
           <ambientLight intensity={0.1} color="#2a2b4d" />
           <directionalLight position={[-3, 2.2, 3.4]} intensity={2.6} color="#ff784f" />
-          <directionalLight position={[3.4, -1, -2]} intensity={1.5} color="#8875ff" />
+          <directionalLight position={[3.4, -1, -2]} intensity={1.5} color="#c2a13d" />
         </>
       ) : null}
       {light === "mono" ? (

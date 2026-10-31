@@ -1,10 +1,8 @@
 import type { Metadata, Viewport } from "next";
 
-import "@fontsource/space-grotesk/latin-400.css";
-import "@fontsource/space-grotesk/latin-500.css";
-import "@fontsource/space-grotesk/latin-600.css";
-import "@fontsource/ibm-plex-mono/latin-400.css";
-import "@fontsource/ibm-plex-mono/latin-500.css";
+import "@fontsource-variable/bricolage-grotesque/standard.css";
+import "@fontsource-variable/archivo/standard.css";
+import "@fontsource-variable/azeret-mono/index.css";
 import "./globals.css";
 
 import { asset, site, siteUrl, withBase } from "@/data/site";
@@ -58,7 +56,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#090909",
+  themeColor: "#e8e1d3",
   colorScheme: "dark",
 };
 

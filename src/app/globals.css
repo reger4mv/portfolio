@@ -7,48 +7,80 @@
 /* ---------- 01. TOKENS ---------- */
 
 :root {
-  /* Core palette */
-  --ink: #090909;
-  --charcoal: #111111;
-  --graphite: #191919;
-  --bone: #eae8e2;
-  --grey: #858585;
-  --silver: #b9b9b9;
+  /* ── PIGMENTS ─────────────────────────────────────────────────
+     Two materials and one accent. Warm black (ink) and warm
+     off-white (paper) are the whole foundation; the accent is
+     oxide — rust, brick, a struck match. No blue-violet anywhere,
+     and no neon-on-black. Project pigments are earths, not LEDs. */
+  --ink: #17150f;
+  --ink-2: #221e16;
+  --ink-3: #2b261c;
+  --paper: #e8e1d3;
+  --paper-2: #ded5c3;
+  --paper-3: #d2c8b4;
 
-  /* Accents — blue is dominant, the others appear only on their own work */
-  --blue: #536bff;
-  --violet: #8875ff;
-  --orange: #ff784f;
+  --oxide: #9e3a20;
+  --ember: #e4663c;
+  --ochre: #c2a13d;
+  --sage: #8fa883;
 
-  /* Semantic */
-  --bg: var(--ink);
-  --fg: var(--bone);
-  --fg-dim: var(--silver);
-  --fg-muted: var(--grey);
-  --line: rgba(234, 232, 226, 0.14);
-  --line-soft: rgba(234, 232, 226, 0.07);
-  --accent: var(--blue);
+  /* ── SEMANTIC — the page is PAPER by default ────────────────── */
+  --bg: var(--paper);
+  --fg: var(--ink);
+  --fg-dim: #3d382d;
+  --fg-muted: #5f5747;
+  --line: rgba(23, 21, 15, 0.2);
+  --line-soft: rgba(23, 21, 15, 0.1);
+  --accent: var(--oxide);
+  --field: var(--paper-2);
 
-  /* Type */
-  --font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+  /* Objects that are dark by nature — plates, the lab, the reveal
+     card — keep these regardless of the register they sit in. */
+  --charcoal: var(--ink-2);
+  --graphite: var(--ink-3);
+  --bone: var(--paper);
 
-  --fs-hero: clamp(3.6rem, 12.1vw, 12.5rem);
-  --fs-display: clamp(2.35rem, 6.6vw, 6.25rem);
-  --fs-title: clamp(1.7rem, 3.4vw, 3rem);
-  --fs-body: clamp(0.98rem, 0.92vw + 0.5rem, 1.12rem);
-  --fs-small: clamp(0.8rem, 0.7vw + 0.45rem, 0.9rem);
-  --fs-mono: 0.6875rem;
+  /* ── TYPE ─────────────────────────────────────────────────────
+     Three voices with three jobs, none of them the default
+     grotesque: Bricolage for display, Archivo for reading,
+     Azeret Mono for technical annotation. */
+  --font-display: "Bricolage Grotesque Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-text: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Azeret Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  /* Layout */
-  --gutter: clamp(1.25rem, 4.4vw, 4.75rem);
-  --section-y: clamp(6rem, 13vh, 11rem);
-  --nav-h: clamp(4.25rem, 6vw, 5.5rem);
+  --fs-masthead: clamp(3.4rem, 12.4vw, 12.5rem);
+  --fs-display: clamp(1.95rem, 4.8vw, 4.35rem);
+  --fs-title: clamp(1.4rem, 2.4vw, 2.1rem);
+  --fs-body: clamp(0.95rem, 0.52vw + 0.75rem, 1.06rem);
+  --fs-small: clamp(0.79rem, 0.3vw + 0.7rem, 0.87rem);
+  --fs-mono: 0.625rem;
+  --fs-hero: var(--fs-masthead);
 
-  /* Motion */
+  /* ── LAYOUT ───────────────────────────────────────────────── */
+  --gutter: clamp(1.15rem, 3.9vw, 3.9rem);
+  --section-y: clamp(4.75rem, 10.5vh, 9rem);
+  --nav-h: clamp(3.3rem, 4.3vw, 4rem);
+
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
   --dur: 0.7s;
+}
+
+/* THE INK REGISTER.
+   Used for the hero, the work gallery, the lab and the colophon: the places
+   where the page becomes a lit room instead of a sheet of paper. It flips the
+   semantic tokens only, so every component inside inherits the material. */
+.reg--ink {
+  --bg: var(--ink);
+  --fg: var(--paper);
+  --fg-dim: #d7cfbe;
+  --fg-muted: #9d9583;
+  --line: rgba(232, 225, 211, 0.18);
+  --line-soft: rgba(232, 225, 211, 0.09);
+  --accent: var(--ember);
+  --field: var(--ink-2);
+  background: var(--bg);
+  color: var(--fg);
 }
 
 /* ---------- 02. RESET / BASE ---------- */
@@ -61,7 +93,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scrollbar-color: var(--graphite) var(--ink);
+  scrollbar-color: var(--paper-3) var(--paper);
 }
 
 html.lenis,
@@ -81,10 +113,11 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-display);
+  font-family: var(--font-text);
   font-size: var(--fs-body);
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.72;
+  letter-spacing: 0.001em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
@@ -136,15 +169,15 @@ svg {
   max-width: 100%;
 }
 
+/* Selection is an inverted block, not a highlight colour. */
 ::selection {
-  background: var(--accent);
-  color: var(--ink);
+  background: var(--fg);
+  color: var(--bg);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 1px solid var(--accent);
   outline-offset: 4px;
-  border-radius: 2px;
 }
 
 /* Grain — one texture over the whole page, very low intensity. */
@@ -153,7 +186,7 @@ svg {
   inset: 0;
   z-index: 8;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.038;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
   mix-blend-mode: overlay;
 }
@@ -175,55 +208,68 @@ svg {
 .mono {
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
-  font-weight: 400;
-  letter-spacing: 0.13em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  line-height: 1.5;
+  line-height: 1.6;
   color: var(--fg-muted);
 }
 
-/* Accent voice: no cursive anywhere — accents are marked in the mono index
-   face, which reads as annotation rather than decoration. */
-.serif,
-.accent-note {
-  font-family: var(--font-mono);
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 0.02em;
-  text-transform: none;
+/* Statements are set in the display face, sentence case, tight and quiet.
+   Uppercase is reserved for the masthead and for mono annotation. */
+/* Everything that is *said*, not read, is set in the display face. Body copy,
+   lists and notes stay in Archivo; labels stay in Azeret Mono. */
+h1,
+h2,
+h3,
+h4,
+.hero__title,
+.display,
+.creed__statement,
+.contact__heading,
+.panel__display,
+.panel__title,
+.footer__mark,
+.index__label,
+.menu__item span:first-child {
+  font-family: var(--font-display);
+  font-stretch: 93%;
 }
 
 .display {
   font-family: var(--font-display);
-  font-weight: 500;
-  line-height: 0.88;
-  letter-spacing: -0.035em;
-  text-transform: uppercase;
+  font-weight: 550;
+  font-stretch: 93%;
+  line-height: 0.96;
+  letter-spacing: -0.028em;
+  text-transform: none;
   font-size: var(--fs-display);
   text-wrap: balance;
 }
 
 .lede {
-  font-size: clamp(1.12rem, 1.5vw, 1.55rem);
-  line-height: 1.45;
-  letter-spacing: -0.014em;
+  font-family: var(--font-text);
+  font-size: clamp(1.06rem, 1.25vw, 1.32rem);
+  line-height: 1.55;
+  letter-spacing: -0.004em;
   color: var(--fg);
   text-wrap: pretty;
 }
 
 .body-copy {
   color: var(--fg-dim);
-  line-height: 1.7;
+  line-height: 1.78;
+  max-width: 62ch;
   text-wrap: pretty;
 }
 
 .footnote {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.05em;
-  line-height: 1.95;
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  letter-spacing: 0;
+  line-height: 1.65;
   color: var(--fg-muted);
-  max-width: 64ch;
+  max-width: 58ch;
   text-transform: none;
 }
 
@@ -244,68 +290,117 @@ svg {
   border-top: 1px solid var(--line-soft);
 }
 
-.section-head {
+/* ── SECTION MARKS ───────────────────────────────────────────────
+   Three gestures, three sections — never the same stamp twice. */
+
+.smark {
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-  gap: 1.5rem;
-  padding-bottom: clamp(2rem, 4vw, 3.75rem);
+  gap: 0.4rem;
+  margin-bottom: clamp(1.75rem, 3.6vw, 3.25rem);
 }
 
-.section-head {
-  position: relative;
+.smark__num {
+  color: var(--accent);
+  font-weight: 500;
 }
 
-.section-head__index {
+.smark__label {
+  font-family: var(--font-display);
+  font-weight: 550;
+  font-stretch: 92%;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--fg);
+}
+
+.smark__note {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--fg-muted);
+  max-width: 28ch;
+}
+
+/* margin — number and name stack at the left, the note sits on the floor
+   of the block at the far right. */
+.smark--margin {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 0.2rem 2rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.smark--margin .smark__num {
+  grid-column: 1;
+}
+
+.smark--margin .smark__label {
+  grid-column: 1;
+  font-size: clamp(1.35rem, 2.2vw, 2rem);
+}
+
+.smark--margin .smark__note {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: end;
+  text-align: right;
+  padding-bottom: 0.15rem;
+}
+
+/* ledger — the mark hangs off the right edge, above a left-set statement. */
+.smark--ledger {
+  justify-items: end;
+  text-align: right;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.55rem;
+}
+
+.smark--ledger .smark__label {
+  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+}
+
+.smark--ledger .smark__num {
+  order: -1;
+}
+
+/* seam — a masthead strip across the full width of an ink band. */
+.smark--seam {
   display: flex;
   align-items: baseline;
-  gap: 1.1rem;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  padding-block: 0.6rem;
+  border-block: 1px solid var(--line);
 }
 
-/* Numbers roll up inside their own mask. */
-.roll {
-  display: inline-block;
-  overflow: hidden;
-  line-height: 1;
-  padding-block: 0.1em;
-}
-
-.roll > * {
-  display: block;
-}
-
-.section-head__rule {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: var(--line-soft);
-}
-
-.section-head__index strong {
+.smark--seam .smark__label {
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: var(--fs-mono);
   letter-spacing: 0.1em;
-  color: var(--accent);
+  text-transform: uppercase;
+  color: var(--fg);
 }
 
-.section-head__label {
+.smark--seam .smark__note {
+  max-width: none;
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--fg-dim);
 }
 
-.section-head__note {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-  text-align: right;
+@media (max-width: 640px) {
+  .smark--margin {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .smark--margin .smark__note {
+    grid-column: 1;
+    grid-row: auto;
+    text-align: left;
+  }
 }
 
 .skip-link {
@@ -314,9 +409,9 @@ svg {
   left: 50%;
   translate: -50% -200%;
   z-index: 200;
-  padding: 0.75rem 1.25rem;
-  background: var(--bone);
-  color: var(--ink);
+  padding: 0.65rem 1.1rem;
+  background: var(--ink);
+  color: var(--paper);
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
   letter-spacing: 0.14em;
@@ -340,15 +435,25 @@ svg {
   justify-content: space-between;
   gap: 2rem;
   padding-inline: var(--gutter);
-  transition: background-color 0.5s var(--ease-out),
-    border-color 0.5s var(--ease-out), backdrop-filter 0.5s;
+  /* The nav is its own ink strip: transparent over the dark hero, solid once
+     the page turns to paper. No blur, no glass. */
+  --bg: var(--ink);
+  --fg: var(--paper);
+  --fg-dim: #d7cfbe;
+  --fg-muted: #a49b88;
+  --line: rgba(232, 225, 211, 0.18);
+  --line-soft: rgba(232, 225, 211, 0.09);
+  --accent: var(--ember);
+  background: transparent;
+  color: var(--fg);
+  transition: background-color 0.45s var(--ease-out),
+    border-color 0.45s var(--ease-out);
   border-bottom: 1px solid transparent;
 }
 
 .nav.is-pinned {
-  background: color-mix(in srgb, var(--ink) 82%, transparent);
-  border-bottom-color: var(--line-soft);
-  backdrop-filter: blur(14px) saturate(140%);
+  background: var(--ink);
+  border-bottom-color: rgba(232, 225, 211, 0.14);
 }
 
 .nav__brand {
@@ -428,11 +533,7 @@ svg {
 .nav__progress-bar {
   display: block;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    var(--accent),
-    color-mix(in srgb, var(--accent) 25%, transparent)
-  );
+  background: var(--accent);
   transform: scaleX(0);
   transform-origin: left center;
   will-change: transform;
@@ -455,11 +556,7 @@ svg {
 .nav__link:hover,
 .nav__link:focus-visible,
 .nav__link[aria-current="true"] {
-  color: var(--bone);
-}
-
-.nav__link[aria-current="true"] {
-  color: var(--bone);
+  color: var(--fg);
 }
 
 .nav__aside {
@@ -518,6 +615,13 @@ svg {
   position: fixed;
   inset: 0;
   z-index: 90;
+  --bg: var(--ink);
+  --fg: var(--paper);
+  --fg-dim: #d7cfbe;
+  --fg-muted: #a49b88;
+  --line-soft: rgba(232, 225, 211, 0.09);
+  --accent: var(--ember);
+  color: var(--fg);
   background: var(--ink);
   padding: calc(var(--nav-h) + 2rem) var(--gutter) 2rem;
   display: flex;
@@ -574,7 +678,7 @@ svg {
 }
 
 .menu__item:hover span:first-child {
-  color: var(--bone);
+  color: var(--fg);
 }
 
 .menu__item:hover span:last-child {
@@ -617,7 +721,7 @@ svg {
   position: absolute;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(234, 232, 226, 0.5);
+  border: 1px solid rgba(232, 225, 211, 0.5);
   border-radius: 50%;
   translate: -50% -50%;
   display: grid;
@@ -649,7 +753,7 @@ svg {
 .cursor[data-mode="link"] .cursor__ring {
   width: 56px;
   height: 56px;
-  border-color: rgba(234, 232, 226, 0.8);
+  border-color: rgba(232, 225, 211, 0.8);
 }
 
 .cursor[data-mode="link"] .cursor__dot {
@@ -734,36 +838,16 @@ html.has-cursor [data-cursor] {
   background:
     radial-gradient(
       72% 62% at 68% 38%,
-      rgba(9, 9, 9, 0) 0%,
-      rgba(9, 9, 9, 0.35) 58%,
-      rgba(9, 9, 9, 0.86) 100%
+      rgba(23, 21, 15, 0) 0%,
+      rgba(23, 21, 15, 0.35) 58%,
+      rgba(23, 21, 15, 0.86) 100%
     ),
     linear-gradient(
       to top,
-      rgba(9, 9, 9, 0.92) 0%,
-      rgba(9, 9, 9, 0.35) 26%,
-      rgba(9, 9, 9, 0) 52%
+      rgba(23, 21, 15, 0.92) 0%,
+      rgba(23, 21, 15, 0.35) 26%,
+      rgba(23, 21, 15, 0) 52%
     );
-}
-
-.hero__grid {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  padding-inline: var(--gutter);
-  column-gap: clamp(0.75rem, 1.4vw, 1.75rem);
-  opacity: 0.5;
-}
-
-.hero__grid span {
-  border-left: 1px solid var(--line-soft);
-}
-
-.hero__grid span:last-child {
-  border-right: 1px solid var(--line-soft);
 }
 
 .hero__inner {
@@ -775,11 +859,14 @@ html.has-cursor [data-cursor] {
   width: 100%;
 }
 
+/* A masthead rule, not a floating badge: everything sits on one hairline. */
 .hero__top {
   display: flex;
   justify-content: space-between;
   gap: 1.5rem;
   align-items: flex-start;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
 }
 
 .hero__top .sr-only {
@@ -803,9 +890,10 @@ html.has-cursor [data-cursor] {
   position: relative;
   margin: 0;
   font-size: var(--fs-hero);
-  font-weight: 500;
-  line-height: 0.8;
-  letter-spacing: -0.045em;
+  font-weight: 600;
+  font-stretch: 86%;
+  line-height: 0.79;
+  letter-spacing: -0.05em;
   text-transform: uppercase;
   display: grid;
   justify-items: start;
@@ -834,21 +922,32 @@ html.has-cursor [data-cursor] {
   transform-origin: 50% 100%;
 }
 
+/* The role sits beside the name like a printed credit: two small lines,
+   bottom-aligned to the baseline, not a rotated sticker. */
 .hero__sup {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.9rem;
-  margin-left: clamp(0.9rem, 2.2vw, 2.5rem);
-  padding-bottom: 0.02em;
+  display: grid;
+  gap: 0.32rem;
   align-self: flex-end;
+  margin-left: clamp(0.8rem, 2vw, 2.2rem);
+  padding-bottom: 0.16em;
 }
 
-.hero__sup .serif {
+.hero__role {
   font-family: var(--font-mono);
-  font-size: clamp(0.6875rem, 0.9vw, 0.82rem);
-  letter-spacing: 0.2em;
+  font-size: clamp(0.625rem, 0.78vw, 0.72rem);
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.hero__note {
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  letter-spacing: 0;
+  color: var(--fg-muted);
   white-space: nowrap;
   line-height: 1;
 }
@@ -863,17 +962,6 @@ html.has-cursor [data-cursor] {
   clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
-}
-
-/* Was previously an unscoped `.mono` rule, which rotated every mono label on
-   the page. The vertical treatment belongs to the hero's accent note only. */
-.hero__sup .accent-note {
-  writing-mode: vertical-rl;
-  letter-spacing: 0.24em;
-  font-size: 0.5625rem;
-  color: var(--fg-muted);
-  padding-bottom: 0.15em;
-  text-transform: uppercase;
 }
 
 .hero__bottom {
@@ -891,20 +979,21 @@ html.has-cursor [data-cursor] {
 }
 
 .hero__meta li {
-  display: flex;
-  gap: 0.6rem;
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  gap: 0.7rem;
   align-items: baseline;
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
-  letter-spacing: 0.13em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--fg-dim);
 }
 
 .hero__meta li b {
-  font-weight: 400;
+  font-weight: 500;
   color: var(--accent);
-  font-size: 0.5625rem;
+  font-size: var(--fs-mono);
 }
 
 .hero__desc {
@@ -933,7 +1022,7 @@ html.has-cursor [data-cursor] {
   border: 0;
 }
 
-.mono {
+.hero__top .mono {
   text-align: right;
   line-height: 1.75;
 }
@@ -964,7 +1053,7 @@ html.has-cursor [data-cursor] {
   position: relative;
   width: 1px;
   height: 64px;
-  background: rgba(234, 232, 226, 0.12);
+  background: rgba(232, 225, 211, 0.12);
   overflow: hidden;
 }
 
@@ -972,7 +1061,7 @@ html.has-cursor [data-cursor] {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, var(--accent), rgba(83, 107, 255, 0));
+  background: var(--accent);
   transform-origin: top;
   animation: scroll-cue 2.8s var(--ease-inout) infinite;
 }
@@ -1003,10 +1092,10 @@ html.has-cursor [data-cursor] {
   background:
     radial-gradient(
       46% 46% at 68% 34%,
-      rgba(83, 107, 255, 0.16),
+      rgba(158, 58, 32, 0.18),
       transparent 68%
     ),
-    radial-gradient(38% 38% at 30% 62%, rgba(234, 232, 226, 0.05), transparent 70%);
+    radial-gradient(38% 38% at 30% 62%, rgba(232, 225, 211, 0.05), transparent 70%);
 }
 
 .hero__fallback-rings {
@@ -1021,16 +1110,22 @@ html.has-cursor [data-cursor] {
 
 .hero__fallback-rings circle {
   fill: none;
-  stroke: rgba(234, 232, 226, 0.28);
+  stroke: rgba(232, 225, 211, 0.28);
   stroke-width: 1;
 }
 
 /* ---------- 08. ABOUT ---------- */
 .about__grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(0, 1fr);
-  gap: clamp(2rem, 6vw, 7rem);
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+  gap: clamp(2rem, 7vw, 8.5rem);
   align-items: start;
+}
+
+/* The copy starts below the heading's cap height: a deliberate stagger, not a
+   symmetrical two-column split. */
+.about__scroll {
+  padding-top: clamp(0.5rem, 3.2vw, 3rem);
 }
 
 /* Holds still while the copy scrolls past — no JS pinning, so it survives
@@ -1086,7 +1181,7 @@ html.has-cursor [data-cursor] {
   display: block;
   width: 1px;
   height: clamp(3rem, 9vh, 6.5rem);
-  background: linear-gradient(to bottom, var(--accent), rgba(83, 107, 255, 0));
+  background: var(--accent);
 }
 
 .about__scroll {
@@ -1136,28 +1231,6 @@ html.has-cursor [data-cursor] {
 }
 
 /* ---------- 09. WORK ---------- */
-.work__intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
-  align-items: end;
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
-}
-
-.work__heading {
-  margin-bottom: 0;
-}
-
-.work__note {
-  max-width: 38ch;
-  color: var(--fg-muted);
-  line-height: 1.7;
-  font-size: var(--fs-small);
-  padding-bottom: 0.4rem;
-  text-wrap: pretty;
-}
-
-.work__heading em,
 .display em {
   font-family: var(--font-display);
   font-style: normal;
@@ -1264,11 +1337,12 @@ html.has-cursor [data-cursor] {
 }
 
 .panel__display {
-  font-size: clamp(3rem, 8.6vw, 7.5rem);
-  font-weight: 500;
-  line-height: 0.86;
-  letter-spacing: -0.045em;
-  text-transform: uppercase;
+  font-size: clamp(2.6rem, 7.2vw, 6.2rem);
+  font-weight: 550;
+  font-stretch: 92%;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: none;
 }
 
 .panel__lede {
@@ -1372,9 +1446,10 @@ html.has-cursor [data-cursor] {
 }
 
 .panel__title {
-  font-size: clamp(2.1rem, 5.2vw, 4.6rem);
-  font-weight: 500;
-  line-height: 0.86;
+  font-size: clamp(1.9rem, 4.5vw, 3.9rem);
+  font-weight: 600;
+  font-stretch: 87%;
+  line-height: 0.84;
   letter-spacing: -0.045em;
   text-transform: uppercase;
 }
@@ -1588,7 +1663,7 @@ html.has-cursor [data-cursor] {
   min-height: 100svh;
 }
 
-@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1024px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .sequence__track {
     flex-direction: row;
     height: 100%;
@@ -1600,15 +1675,11 @@ html.has-cursor [data-cursor] {
     width: 100vw;
   }
 
+  /* Each spread is a sheet sliding over the last: a heavier left rule and a
+     slightly deeper ground do the separating. No shadow, no glow. */
   .panel--project {
     width: clamp(30rem, 88vw, 96rem);
-    /* Each spread is a sheet sliding over the last one: a soft shadow cast
-       to the left gives the horizontal stack its depth cue. */
-    box-shadow: -2.5rem 0 4.5rem -1.5rem rgba(0, 0, 0, 0.85);
-  }
-
-  .panel--intro {
-    box-shadow: none;
+    border-left: 1px solid var(--line);
   }
 
   .sequence__pin {
@@ -1887,7 +1958,7 @@ html.has-cursor [data-cursor] {
   z-index: 2;
   background: linear-gradient(
     to bottom,
-    rgba(234, 232, 226, 0.06),
+    rgba(232, 225, 211, 0.06),
     transparent 12%
   );
 }
@@ -1904,7 +1975,7 @@ html.has-cursor [data-cursor] {
   width: 100%;
   padding: 0.7rem 0.85rem;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(9, 9, 9, 0.8), transparent);
+  background: linear-gradient(to top, rgba(23, 21, 15, 0.8), transparent);
 }
 
 .matte__caption .mono {
@@ -1988,10 +2059,6 @@ html.has-cursor [data-cursor] {
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: end;
   margin-bottom: clamp(2rem, 4vw, 3.5rem);
-}
-
-.lab__intro .work__heading {
-  margin-bottom: 0;
 }
 
 .lab__intro .body-copy {
@@ -2123,13 +2190,12 @@ html.has-cursor [data-cursor] {
 .lab__option {
   position: relative;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.14em;
+  font-size: 0.5625rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--fg-muted);
-  padding: 0.3rem 0.55rem;
-  border: 1px solid var(--line-soft);
-  transition: color 0.3s, border-color 0.3s, background-color 0.3s;
+  padding: 0.28rem 0.5rem;
+  transition: color 0.3s, background-color 0.3s;
 }
 
 .lab__option:hover {
@@ -2237,11 +2303,11 @@ html.has-cursor [data-cursor] {
 }
 
 .index__label {
-  font-size: clamp(1.35rem, 2.9vw, 2.35rem);
+  font-size: clamp(1.25rem, 2.6vw, 2.05rem);
   font-weight: 500;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
-  line-height: 1;
+  letter-spacing: -0.025em;
+  text-transform: none;
+  line-height: 1.05;
 }
 
 .index__count {
@@ -2261,12 +2327,10 @@ html.has-cursor [data-cursor] {
   top: calc(var(--nav-h) + 2rem);
   display: grid;
   gap: 1.35rem;
-  padding: clamp(1.25rem, 2.4vw, 2rem);
-  background: var(--charcoal);
-  border: 1px solid var(--line-soft);
+  padding-top: 1rem;
+  border-top: 1px solid var(--accent);
   min-height: 340px;
   align-content: start;
-  overflow: hidden;
 }
 
 .index__panel-top {
@@ -2278,11 +2342,14 @@ html.has-cursor [data-cursor] {
 }
 
 .index__panel-summary {
-  font-size: clamp(0.95rem, 1.05vw, 1.06rem);
-  line-height: 1.65;
-  color: var(--fg-dim);
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 1.7vw, 1.5rem);
+  font-weight: 450;
+  line-height: 1.32;
+  letter-spacing: -0.015em;
+  color: var(--fg);
   text-wrap: pretty;
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.2rem;
 }
 
 .index__entries {
@@ -2296,7 +2363,7 @@ html.has-cursor [data-cursor] {
   gap: 0.75rem;
   align-items: baseline;
   padding-block: 0.5rem;
-  border-bottom: 1px solid rgba(234, 232, 226, 0.05);
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .index__entry:last-child {
@@ -2364,12 +2431,12 @@ html.has-cursor [data-cursor] {
 }
 
 .creed__statement {
-  font-size: clamp(1.9rem, 4.6vw, 4.3rem);
-  font-weight: 500;
-  line-height: 0.94;
-  letter-spacing: -0.038em;
-  text-transform: uppercase;
-  max-width: 22ch;
+  font-size: clamp(1.9rem, 4.4vw, 4rem);
+  font-weight: 550;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  text-transform: none;
+  max-width: 20ch;
 }
 
 .creed__statement em {
@@ -2422,11 +2489,11 @@ html.has-cursor [data-cursor] {
 }
 
 .creed__panel-title {
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
-  font-weight: 500;
+  font-size: clamp(1.55rem, 3vw, 2.6rem);
+  font-weight: 550;
   letter-spacing: -0.03em;
   line-height: 1;
-  text-transform: uppercase;
+  text-transform: none;
   text-wrap: balance;
 }
 
@@ -2463,12 +2530,30 @@ html.has-cursor [data-cursor] {
   overflow: clip;
 }
 
-.contact__heading {
-  font-size: clamp(2.45rem, 8.4vw, 7.6rem);
-  font-weight: 500;
-  line-height: 0.84;
-  letter-spacing: -0.045em;
+.contact__mark,
+.creed__mark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.contact__mark span,
+.creed__mark span {
+  color: var(--accent);
+}
+
+.contact__heading {
+  font-size: clamp(2.3rem, 6.8vw, 5.8rem);
+  font-weight: 550;
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+  text-transform: none;
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
@@ -2487,8 +2572,8 @@ html.has-cursor [data-cursor] {
 
 .contact__cols {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vw, 4rem);
+  grid-template-columns: minmax(0, 0.86fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 8vw, 9rem);
   align-items: start;
   border-top: 1px solid var(--line);
   padding-top: clamp(1.5rem, 3vw, 2.5rem);
@@ -2513,11 +2598,11 @@ html.has-cursor [data-cursor] {
 
 .contact__aside p {
   font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.01em;
   color: var(--fg-muted);
-  line-height: 1.75;
+  line-height: 1.8;
+  max-width: 26ch;
 }
 
 .channels {
@@ -2526,19 +2611,37 @@ html.has-cursor [data-cursor] {
 }
 
 .channel {
+  position: relative;
   display: grid;
   grid-template-columns: 6.5rem 1fr auto;
   align-items: baseline;
   gap: 1rem;
   padding-block: 0.95rem;
   border-bottom: 1px solid var(--line-soft);
-  transition: color 0.35s var(--ease-out), padding-left 0.5s var(--ease-out);
+  transition: color 0.35s var(--ease-out);
+}
+
+.channel::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.55s var(--ease-out);
+}
+
+a.channel:hover::after,
+a.channel:focus-visible::after {
+  transform: scaleX(1);
 }
 
 a.channel:hover,
 a.channel:focus-visible {
-  padding-left: 0.6rem;
-  color: var(--bone);
+  color: var(--accent);
 }
 
 .channel__label {
@@ -2581,13 +2684,14 @@ a.channel:hover .channel__arrow {
 }
 
 .contact__note {
-  margin-top: 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  margin-top: 1.4rem;
+  max-width: 46ch;
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--fg-muted);
-  line-height: 1.9;
+  line-height: 1.65;
 }
 
 /* ---------- 14. FOOTER ---------- */
@@ -2651,13 +2755,14 @@ a.channel:hover .channel__arrow {
 }
 
 .footer__note {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-family: var(--font-text);
+  font-size: var(--fs-small);
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--fg-muted);
-  line-height: 2;
+  line-height: 1.6;
   text-align: right;
+  max-width: 24ch;
 }
 
 .footer__bottom {
@@ -2750,15 +2855,6 @@ a.channel:hover .channel__arrow {
   .about__rule {
     display: none;
   }
-
-  .work__intro {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.25rem;
-  }
-
-  .work__note {
-    max-width: 52ch;
-  }
 }
 
 /* Tablet — navigation collapses, columns become single-track */
@@ -2777,10 +2873,6 @@ a.channel:hover .channel__arrow {
 
   .nav__progress {
     bottom: 0;
-  }
-
-  .hero__grid {
-    display: none;
   }
 
   .hero__bottom {
@@ -2838,20 +2930,30 @@ a.channel:hover .channel__arrow {
     gap: 1.25rem;
   }
 
-  .lab__intro .work__heading {
-    margin-bottom: 0;
-  }
-
   .contact__cols {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .contact__heading {
-    font-size: clamp(2.2rem, 9vw, 4rem);
-  }
+  .contact__mark,
+.creed__mark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: clamp(1.25rem, 2.4vw, 2rem);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
 
-  .section-head {
-    padding-bottom: clamp(1.5rem, 4vw, 2.5rem);
+.contact__mark span,
+.creed__mark span {
+  color: var(--accent);
+}
+
+.contact__heading {
+    font-size: clamp(2.2rem, 9vw, 4rem);
   }
 }
 
@@ -2860,7 +2962,7 @@ a.channel:hover .channel__arrow {
   :root {
     --fs-hero: clamp(2.9rem, 15.5vw, 5rem);
     --gutter: 1.15rem;
-    --nav-h: 3.9rem;
+    --nav-h: 3.3rem;
   }
 
   .hero {
@@ -2934,25 +3036,16 @@ a.channel:hover .channel__arrow {
     background:
       radial-gradient(
         70% 60% at 50% 30%,
-        rgba(9, 9, 9, 0) 0%,
-        rgba(9, 9, 9, 0.55) 62%,
-        rgba(9, 9, 9, 0.95) 100%
+        rgba(23, 21, 15, 0) 0%,
+        rgba(23, 21, 15, 0.55) 62%,
+        rgba(23, 21, 15, 0.95) 100%
       ),
       linear-gradient(
         to top,
-        rgba(9, 9, 9, 1) 0%,
-        rgba(9, 9, 9, 0.55) 30%,
-        rgba(9, 9, 9, 0) 62%
+        rgba(23, 21, 15, 1) 0%,
+        rgba(23, 21, 15, 0.55) 30%,
+        rgba(23, 21, 15, 0) 62%
       );
-  }
-
-  .section-head {
-    grid-template-columns: 1fr;
-    gap: 0.7rem;
-  }
-
-  .section-head__note {
-    text-align: left;
   }
 
   .about__note {

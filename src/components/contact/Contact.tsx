@@ -2,7 +2,6 @@
 
 import { site } from "@/data/site";
 import { socials } from "@/data/social";
-import { SectionHeading } from "@/components/sections/SectionHeading";
 import { useMagnetic } from "@/hooks/useMagnetic";
 
 interface Channel {
@@ -72,9 +71,11 @@ export function Contact() {
       className="section shell contact"
       aria-labelledby="contact-title"
     >
-      <SectionHeading index="06" label="Contact" note="Open to good ideas" />
-
       {/* The two lines drift apart as you scroll into the section. */}
+      <p className="contact__mark mono">
+        <span>06</span> Correspondence
+      </p>
+
       <h2 className="contact__heading" id="contact-title" data-lines>
         <span className="line" data-shift="left">
           <span>Have something</span>
@@ -88,7 +89,7 @@ export function Contact() {
 
       <div className="contact__cols">
         <div>
-          <p className="contact__copy" data-reveal>
+          <p className="contact__copy" data-mask>
             {site.contact.copy}
           </p>
           <div className="contact__aside">
