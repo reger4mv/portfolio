@@ -1542,6 +1542,20 @@ html.has-cursor [data-cursor] {
     gap: 0.1rem;
   }
 
+  .reveal-item {
+    grid-template-columns: 1.75rem minmax(0, 1fr) auto;
+    gap: 0.7rem;
+  }
+
+  .reveal-item__status,
+  .reveal-item__arrow {
+    display: none;
+  }
+
+  .reveal-item__thumb {
+    width: 2.6rem;
+  }
+
   .panel__display {
     font-size: clamp(2.6rem, 13vw, 4.6rem);
   }
@@ -1613,6 +1627,221 @@ html.has-cursor [data-cursor] {
   .sequence__track > .panel {
     min-height: 0;
     height: 100%;
+  }
+}
+
+/* =================================================================
+   CURSOR REVEAL — the work as type until the pointer asks for it
+   ================================================================= */
+
+.panel__inner--index {
+  max-width: 52rem;
+  gap: clamp(1rem, 2.4vh, 1.75rem);
+}
+
+.panel__index-head {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.panel__hint {
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.panel__hint--touch {
+  display: none;
+}
+
+/* The scope only exists to catch delegated events; it must not affect layout. */
+.reveal-scope {
+  display: contents;
+}
+
+/* ---------- the index rows ---------- */
+
+.reveal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.reveal-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 1.75rem);
+  padding-block: clamp(0.8rem, 1.9vh, 1.25rem);
+  border-top: 1px solid var(--line-soft);
+  color: var(--fg);
+  text-decoration: none;
+  transition: opacity 0.45s var(--ease-out);
+}
+
+/* A hairline that draws under the row you are on. */
+.reveal-item::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.65s var(--ease-out);
+}
+
+.reveal-item__num {
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  color: var(--fg-muted);
+  transition: color 0.4s;
+}
+
+.reveal-item__name {
+  justify-self: start;
+  font-size: clamp(1.5rem, 3.1vw, 2.55rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  transition: transform 0.55s var(--ease-out), color 0.4s;
+}
+
+.reveal-item__status {
+  font-size: 0.5625rem;
+  letter-spacing: 0.16em;
+  color: var(--fg-muted);
+  transition: color 0.4s;
+}
+
+.reveal-item__arrow {
+  color: var(--fg-muted);
+  transition: transform 0.5s var(--ease-out), color 0.4s;
+}
+
+.reveal-item__thumb {
+  display: none;
+  width: 3.1rem;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--charcoal);
+  outline: 1px solid var(--line-soft);
+  outline-offset: -1px;
+}
+
+.reveal-item:hover .reveal-item__name,
+.reveal-item[data-reveal-active="true"] .reveal-item__name {
+  transform: translateX(0.55rem);
+}
+
+.reveal-item:hover .reveal-item__num,
+.reveal-item:hover .reveal-item__status,
+.reveal-item:hover .reveal-item__arrow,
+.reveal-item[data-reveal-active="true"] .reveal-item__num,
+.reveal-item[data-reveal-active="true"] .reveal-item__arrow {
+  color: var(--accent);
+}
+
+.reveal-item:hover .reveal-item__arrow,
+.reveal-item[data-reveal-active="true"] .reveal-item__arrow {
+  transform: translateX(0.4rem);
+}
+
+.reveal-item:hover::after,
+.reveal-item[data-reveal-active="true"]::after {
+  transform: scaleX(1);
+}
+
+.reveal-item:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 5px;
+}
+
+/* Only the row under the pointer keeps full weight — the rest recede, but stay
+   readable. Guarded because it relies on :has(). */
+@media (hover: hover) and (pointer: fine) {
+  .reveal-list:has(.reveal-item:hover) .reveal-item:not(:hover),
+  .reveal-list:has(.reveal-item:focus-visible) .reveal-item:not(:focus-visible) {
+    opacity: 0.5;
+  }
+}
+
+/* ---------- the floating card ---------- */
+
+.reveal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 120;
+  pointer-events: none;
+  will-change: transform;
+  transform: translate3d(-100vw, -100vh, 0);
+}
+
+.reveal__card {
+  position: relative;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  background: var(--charcoal);
+  outline: 1px solid var(--line-soft);
+  outline-offset: -1px;
+  box-shadow: 0 2.4rem 4rem -1.6rem rgba(0, 0, 0, 0.62);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, clip-path;
+}
+
+.reveal__media {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.reveal__media img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+/* ---------- the studies, wherever they are placed ---------- */
+
+.study {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.study > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Touch: no floating card, so each row carries its own small study instead. */
+@media (hover: none), (pointer: coarse) {
+  .reveal-item__thumb {
+    display: block;
+  }
+
+  /* Status lives in the project panel on touch; the thumbnail takes its slot. */
+  .reveal-item__status {
+    display: none;
+  }
+
+  .panel__hint--pointer {
+    display: none;
+  }
+
+  .panel__hint--touch {
+    display: inline;
   }
 }
 

@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
+import { ProjectStudy, studyRatios } from "@/components/projects/studies";
+import { CursorImageReveal, type RevealPreview } from "@/components/interaction/CursorImageReveal";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { SplitText } from "@/components/ui/SplitText";
+import { scrollToY } from "@/lib/scroll";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -33,6 +36,30 @@ export function Work() {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);
+  const jumpRef = useRef<(slug: string) => void>(() => {});
+
+  /* One preview per project — the same studies the plates show, plus any real
+     screenshot once `preview` is filled in on a project. */
+  const previews = useMemo<RevealPreview[]>(
+    () =>
+      projects.map((project) => ({
+        id: project.slug,
+        label: project.name,
+        ratio: studyRatios[project.mark],
+        media: project.preview ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={project.preview.src} alt="" loading="lazy" decoding="async" />
+        ) : (
+          <ProjectStudy mark={project.mark} accent={project.accent} label={false} />
+        ),
+      })),
+    [],
+  );
+
+  const preload = useMemo(
+    () => projects.flatMap((project) => (project.preview ? [project.preview.src] : [])),
+    [],
+  );
 
   useEffect(() => {
     const stage = stageRef.current;
@@ -41,11 +68,19 @@ export function Work() {
     if (!stage || !viewport || !track) return;
     const pin = viewport.closest<HTMLElement>(".sequence__pin");
 
+    // Fallback: when the track is stacked, jumping is just a vertical scroll.
+    jumpRef.current = (slug: string) => {
+      const panel = track.querySelector<HTMLElement>(`[data-panel="${slug}"]`);
+      if (!panel) return;
+      scrollToY(panel.getBoundingClientRect().top + window.scrollY);
+    };
+
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
       let tween: gsap.core.Timeline | null = null;
       let frame = 0;
+      let jumpPoints: Record<string, number> = {};
 
       const panels = () =>
         Array.from(track.querySelectorAll<HTMLElement>(".panel"));
@@ -68,6 +103,20 @@ export function Work() {
         if (travel <= 0) return;
 
         const vw = viewport.clientWidth;
+
+        // Where each project sits along the journey, in document pixels: the
+        // stage top plus the panel's own offset. No magic numbers — this is
+        // the same geometry the scroll trigger uses.
+        const stageTop = stage.getBoundingClientRect().top + window.scrollY;
+        jumpPoints = {};
+        panels().forEach((panel) => {
+          const slug = panel.dataset.panel;
+          if (slug) jumpPoints[slug] = stageTop + panel.offsetLeft;
+        });
+        jumpRef.current = (slug: string) => {
+          const y = jumpPoints[slug];
+          if (y != null) scrollToY(y + 2);
+        };
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: stage,
@@ -157,6 +206,11 @@ export function Work() {
         tween?.scrollTrigger?.kill();
         tween?.kill();
         stage.style.removeProperty("height");
+        jumpRef.current = (slug: string) => {
+          const panel = track.querySelector<HTMLElement>(`[data-panel="${slug}"]`);
+          if (!panel) return;
+          scrollToY(panel.getBoundingClientRect().top + window.scrollY);
+        };
         gsap.set(track, { clearProps: "transform" });
         gsap.set(
           track.querySelectorAll(".matte__media, .panel__drift, .matte__frame"),
@@ -211,14 +265,62 @@ export function Work() {
                 <ProjectPanel key={project.slug} project={project} position={index} />
               ))}
 
-              {/* 05 — handoff */}
+              {/* 05 — index / handoff: the work as type, until the cursor
+                  asks for the image. */}
               <article className="panel panel--outro">
-                <div className="panel__inner">
-                  <p className="panel__eyebrow mono">End of sequence</p>
-                  <p className="panel__closing">
-                    That&apos;s the work so far — three things in three different
-                    states, labelled honestly.
-                  </p>
+                <div className="panel__inner panel__inner--index">
+                  <header className="panel__index-head">
+                    <p className="panel__eyebrow mono">Index — end of sequence</p>
+                    <p className="panel__closing">
+                      Three things in three different states, labelled honestly.
+                    </p>
+                    <p className="panel__hint mono">
+                      <span className="panel__hint--pointer">
+                        Hover a name to pull it back to the cursor · click to jump
+                      </span>
+                      <span className="panel__hint--touch">
+                        Tap a name to jump to it
+                      </span>
+                    </p>
+                  </header>
+
+                  <CursorImageReveal items={previews} preload={preload}>
+                    <ol className="reveal-list">
+                      {projects.map((project, index) => (
+                        <li key={project.slug}>
+                          <a
+                            className="reveal-item"
+                            href={`#panel-${project.slug}`}
+                            data-reveal-id={project.slug}
+                            data-cursor="link"
+                            onClick={(event) => {
+                              event.preventDefault();
+                              jumpRef.current(project.slug);
+                            }}
+                          >
+                            <span className="reveal-item__num mono">
+                              {String(index + 2).padStart(2, "0")}
+                            </span>
+                            <span className="reveal-item__name">{project.name}</span>
+                            <span className="reveal-item__status mono">
+                              {project.statusLabel}
+                            </span>
+                            <span className="reveal-item__thumb" aria-hidden="true">
+                              <ProjectStudy
+                                mark={project.mark}
+                                accent={project.accent}
+                                label={false}
+                              />
+                            </span>
+                            <span className="reveal-item__arrow" aria-hidden="true">
+                              →
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ol>
+                  </CursorImageReveal>
+
                   <a className="panel__next" href="#experiments">
                     Next — the live 3D scene
                     <span aria-hidden="true">↓</span>
@@ -251,6 +353,7 @@ function ProjectPanel({ project, position }: { project: Project; position: numbe
   return (
     <article
       className={`panel panel--project panel--${project.slug}`}
+      data-panel={project.slug}
       aria-labelledby={`panel-${project.slug}`}
       style={
         { ["--project-accent" as string]: project.accent } as React.CSSProperties
