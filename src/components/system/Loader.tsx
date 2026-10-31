@@ -89,7 +89,7 @@ export function Loader() {
       </div>
       <p className="loader__caption micro" aria-hidden="true">
         <span>Booting the archive</span>
-        <span>Est. 2001 — Nepal</span>
+        <span>Kathmandu · Nepal</span>
       </p>
       <span className="sr-only">Loading</span>
     </div>

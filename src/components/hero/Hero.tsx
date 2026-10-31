@@ -153,7 +153,7 @@ export function Hero() {
 
         <p className="hero__aside micro">
           <span>[ interface · interaction · 3D ]</span>
-          <span className="hero__aside-alt">open to work</span>
+          <span className="hero__aside-alt">Vol. 001</span>
         </p>
 
         <div className="hero__foot">

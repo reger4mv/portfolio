@@ -73,12 +73,12 @@ export default function RootLayout({
         <noscript>
           <style>{"html.is-loading{overflow:auto}.loader{display:none}"}</style>
         </noscript>
+        <Loader />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
         {children}
         <div className="grain" aria-hidden="true" />
-        <Loader />
       </body>
     </html>
   );
