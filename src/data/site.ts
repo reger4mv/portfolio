@@ -70,20 +70,6 @@ export const site = {
     "Agastya Verma — self-taught developer in Kathmandu. Interfaces, interaction and the 3D layer between them.",
 } as const;
 
-/**
- * The pointer-revealed backdrop — one image the page keeps behind itself, shown
- * only inside a soft circle that follows a fine pointer.
- *
- * Replace `backdrop.jpg` with your own image (a still from a project, a scan, a
- * photograph of your own). It is decorative, so it needs no alt text, but it
- * should still be something you are happy to have on screen.
- */
-export const backdrop = {
-  src: "/backdrop.jpg",
-  width: 800,
-  height: 506,
-} as const;
-
 /** Absolute URL for a public asset (siteUrl already carries the base path). */
 export const asset = (path: string) => `${siteUrl}${path}`;
 

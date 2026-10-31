@@ -6,7 +6,6 @@ import "@fontsource-variable/azeret-mono/index.css";
 import "./globals.css";
 
 import { asset, site, siteUrl, withBase } from "@/data/site";
-import { BackdropLens } from "@/components/system/BackdropLens";
 
 export const metadata: Metadata = {
   title: `${site.fullName} — Creative Developer`,
@@ -73,7 +72,6 @@ export default function RootLayout({
           Skip to content
         </a>
         {children}
-        <BackdropLens />
         <div className="grain" aria-hidden="true" />
       </body>
     </html>
