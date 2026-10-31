@@ -36,7 +36,7 @@ export function Monogram({ className }: { className?: string }) {
         strokeWidth="1.15"
         strokeLinecap="round"
       />
-      <circle cx="16" cy="5.5" r="2.1" fill="#536BFF" />
+      <circle cx="16" cy="5.5" r="2.1" fill="var(--accent)" />
     </svg>
   );
 }

@@ -180,7 +180,7 @@ disabled entirely on coarse pointers unless noted.
 | `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
 | Nav indicator | nav | A single hairline slides to the active section instead of five underlines flickering. |
 | Skills marker | capabilities | One marker slides between rows; the detail panel wipes on change. |
-| `Work` sequence | selected work | Vertical scroll drives a horizontal track of five full-height panels (statement → three project spreads → handoff). Travel is measured from `scrollWidth`, the viewport is `position: sticky` rather than pinned, and no wheel/touch listeners are attached. Below 1024 px, on coarse pointers or with reduced motion the same markup stacks vertically. |
+| `Work` sequence | selected work | Vertical scroll drives a horizontal track of five full-height panels (statement → three project spreads → handoff). Travel is measured from `scrollWidth`, the viewport is `position: sticky` rather than pinned, and no wheel/touch listeners are attached. Below 1024 px, under 600 px of viewport height, on coarse pointers or with reduced motion the same markup stacks vertically — the CSS media query and the GSAP `matchMedia` condition are kept identical so the two can never disagree. |
 | Creed list | approach | A quiet vertical list of the four principles — the page keeps exactly one horizontal journey. |
 
 ### Motion vocabulary
@@ -282,16 +282,25 @@ specific width.
 
 | Token | Value |
 | --- | --- |
-| Ink / charcoal / graphite | `#090909` `#111111` `#191919` |
-| Bone / silver / grey | `#EAE8E2` `#B9B9B9` `#858585` |
-| Electric blue (dominant accent) | `#536BFF` |
-| Violet | `#8875FF` — Totem's plate only |
-| Warm orange | `#FF784F` — Kaminari's plate only |
+| Paper (default surface) | `#E8E1D3` · `#DED5C3` · `#D2C8B4` |
+| Ink (opt-in `reg--ink`) | `#17150F` · `#221E16` · `#2B261C` |
+| Oxide — text accent, rules, focus | `#9E3A20` |
+| Project pigments | Kaminari `#D9603A` · Totem `#C2A13D` · Regera `#8FA883` |
 
-Type: **Space Grotesk** (display + UI), **Instrument Serif** (italic accents),
-**IBM Plex Mono** (metadata, labels, technical annotation). Three faces, no more.
+Type: **Bricolage Grotesque Variable** (display, `wght 200–800`, `wdth 75–100`),
+**Archivo Variable** (all reading text), **Azeret Mono Variable** (indices, labels,
+section marks). Three faces, all self-hosted, no third-party requests.
 
-Motion language: slow `expo.out` line reveals for headings, one-shot fades for copy,
-hairlines that draw themselves, `1.35 s` eased anchor scrolling, and damped camera
-movement. Nothing bounces, nothing flashes, nothing loops unattended except the sculpture
-and the scroll cue.
+There is one display voice. Hierarchy comes from case, weight, width and space rather than
+from a second typeface: uppercase is reserved for the hero masthead, panel eyebrows and
+monospace marks; everything else is set in sentence case. Display widths run 86–93% so the
+headlines read as a deliberate choice, not a default.
+
+Contrast was computed, not eyeballed — every text pair in the table clears WCAG AA
+(`#5F5747` muted ink on paper is 5.49:1, oxide on paper 5.24:1, ember on ink 5.44:1).
+Default is paper; dark is a section-level opt-in, never the site default.
+
+Motion language: masked line reveals for display type, one clip reveal per long paragraph,
+vertical rules that extend, damped camera movement and the cursor image reveal on the work
+index. Fades are the exception, not the rule, and `prefers-reduced-motion` removes all of
+it — including the cursor follower and the sculpture's idle drift.

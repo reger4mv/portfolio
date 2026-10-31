@@ -76,7 +76,7 @@ export function Work() {
 
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+    mm.add("(min-width: 1024px) and (min-height: 600px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
       let tween: gsap.core.Timeline | null = null;
       let frame = 0;
       let jumpPoints: Record<string, number> = {};
@@ -147,7 +147,7 @@ export function Work() {
           if (span <= 0) return;
 
           const media = panel.querySelector<HTMLElement>(".matte__media");
-          const type = panel.querySelector<HTMLElement>(".panel__drift");
+          const type = panel.querySelector<HTMLElement>("[data-drift]");
           const frame = panel.querySelector<HTMLElement>(".matte__frame");
 
           if (media) {
@@ -212,7 +212,7 @@ export function Work() {
         };
         gsap.set(track, { clearProps: "transform" });
         gsap.set(
-          track.querySelectorAll(".matte__media, .panel__drift, .matte__frame"),
+          track.querySelectorAll(".matte__media, [data-drift], .matte__frame"),
           { clearProps: "transform" },
         );
         if (barRef.current) barRef.current.style.removeProperty("transform");
@@ -367,7 +367,7 @@ function ProjectPanel({ project, position }: { project: Project; position: numbe
       </header>
 
       <div className="panel__grid">
-        <div className="panel__type panel__drift">
+        <div className="panel__type" data-drift>
           <h3 className="panel__title" id={`panel-${project.slug}`}>
             <span className="sr-only">{project.name}</span>
             <SplitText text={project.name} />
