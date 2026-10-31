@@ -3,6 +3,8 @@
 import { site } from "@/data/site";
 import { socials } from "@/data/social";
 import { useMagnetic } from "@/hooks/useMagnetic";
+import { Angel } from "@/components/system/Angel";
+import { Sigil } from "@/components/graphics/Sigil";
 
 interface Channel {
   id: string;
@@ -71,6 +73,11 @@ export function Contact() {
       className="section shell contact"
       aria-labelledby="contact-title"
     >
+      <Angel variant="contact" />
+      <div className="contact__sigil" aria-hidden="true">
+        <Sigil name="halo" strokeWidth={0.6} />
+      </div>
+
       {/* The two lines drift apart as you scroll into the section. */}
       <p className="contact__mark mono">
         <span>06</span> Correspondence

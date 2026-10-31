@@ -5,6 +5,8 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 import { SceneBoundary } from "@/components/system/SceneBoundary";
+import { Angel } from "@/components/system/Angel";
+import { Sigil } from "@/components/graphics/Sigil";
 import { site } from "@/data/site";
 import { useHasWebGL } from "@/hooks/useHasWebGL";
 import { useInView } from "@/hooks/useInView";
@@ -37,29 +39,27 @@ export function Hero() {
 
     const ctx = gsap.context(() => {
       const chars = titleRef.current?.querySelectorAll(".char");
-      const tl = gsap.timeline({ delay: 0.35 });
+      const tl = gsap.timeline({ delay: 0.15 });
 
       if (chars?.length) {
         tl.from(chars, {
           yPercent: 118,
           opacity: 0,
-          duration: 1.15,
+          duration: 1.05,
           ease: "expo.out",
-          stagger: { each: 0.032, from: "start" },
+          stagger: { each: 0.028, from: "start" },
         });
       }
-
-      // The character reveal is the moment; everything else is simply there.
     });
 
     return () => ctx.revert();
   }, []);
 
   /**
-   * A restrained pointer reaction on the headline: each line slides by a
-   * couple of pixels in opposite directions. Skipped for coarse pointers and
-   * reduced motion, and it never touches the entrance/scroll transforms
-   * because it only writes `x` on the line boxes.
+   * Pointer reaction on the masthead: the two lines pull in opposite
+   * directions by a few pixels. Fine pointers only, never under reduced
+   * motion, and it writes `x` only — the entrance and scroll transforms are
+   * untouched.
    */
   useEffect(() => {
     const title = titleRef.current;
@@ -77,10 +77,7 @@ export function Hero() {
 
     const onMove = (event: PointerEvent) => {
       const nx = event.clientX / window.innerWidth - 0.5;
-      setters.forEach((set, index) => {
-        const dir = index % 2 === 0 ? 1 : -1;
-        set(nx * 9 * dir);
-      });
+      setters.forEach((set, index) => set(nx * 14 * (index % 2 === 0 ? 1 : -1)));
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -96,7 +93,7 @@ export function Hero() {
     <section
       id="home"
       ref={sectionRef}
-      className="hero shell reg--ink"
+      className="hero reg--ink"
       aria-label="Introduction"
     >
       {webgl === false ? (
@@ -123,37 +120,45 @@ export function Hero() {
       ) : null}
 
       <div className="hero__veil" aria-hidden="true" />
+      <Angel variant="hero" />
+
+      <div className="hero__sigil" aria-hidden="true">
+        <Sigil name="spear" strokeWidth={0.7} />
+      </div>
+
+      <span className="hero__rail micro" aria-hidden="true">
+        Portfolio — MMXXVI · Kathmandu · Nepal
+      </span>
+
       <div className="hero__inner">
-        <div className="hero__top">
-          <p className="mono">
-            Portfolio — 2026
-            <br />
-            Set in Bricolage Grotesque
-          </p>
-          <p className="mono">
-            Kathmandu, Nepal
-            <br />
-            27.7172° N / 85.3240° E
-          </p>
+        <div className="hero__mast">
+          <span className="micro">Sys/001 — Creative developer</span>
+          <span className="micro hero__mast-mid">
+            Self-taught · Nepal
+          </span>
+          <span className="micro">27.7172° N / 85.3240° E</span>
         </div>
 
         <h1 className="hero__title" ref={titleRef}>
           <span className="sr-only">
             {`${site.fullName} — creative developer, ${site.role.toLowerCase()} based in ${site.location}.`}
           </span>
-          <span className="hero__line" aria-hidden="true">
+          <span className="hero__line chrome" aria-hidden="true">
             <Line text={site.firstName} />
-            <span className="hero__sup">
-              <span className="hero__role">creative developer</span>
-              <span className="hero__note">self-taught · Nepal</span>
-            </span>
           </span>
-          <span className="hero__line" aria-hidden="true">
+          <span className="hero__line hero__line--b chrome" aria-hidden="true">
             <Line text={site.lastName} />
           </span>
         </h1>
 
-        <div className="hero__bottom">
+        <p className="hero__aside micro">
+          <span>[ interface · interaction · 3D ]</span>
+          <span className="hero__aside-alt">open to work</span>
+        </p>
+
+        <div className="hero__foot">
+          <p className="hero__desc">{site.heroDescription}</p>
+
           <ul className="hero__meta">
             {site.heroMeta.map((item, index) => (
               <li key={item}>
@@ -163,20 +168,14 @@ export function Hero() {
             ))}
           </ul>
 
-          <p className="hero__desc">
-            {site.heroDescription}
-          </p>
-
-          <div className="hero__coords">
-            <button
-              type="button"
-              className="hero__scroll"
-              onClick={() => scrollToId("about")}
-            >
-              <span className="hero__scroll-label">Scroll to explore</span>
-              <span className="hero__scroll-line" aria-hidden="true" />
-            </button>
-          </div>
+          <button
+            type="button"
+            className="hero__scroll"
+            onClick={() => scrollToId("about")}
+          >
+            <span className="hero__scroll-label micro">Enter</span>
+            <span className="hero__scroll-line" aria-hidden="true" />
+          </button>
         </div>
       </div>
     </section>

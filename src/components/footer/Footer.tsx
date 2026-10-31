@@ -5,6 +5,8 @@ import { publishedSocials } from "@/data/social";
 import { BackToTop } from "@/components/footer/BackToTop";
 import { useMagnetic } from "@/hooks/useMagnetic";
 import { SplitText } from "@/components/ui/SplitText";
+import { Angel } from "@/components/system/Angel";
+import { Sigil } from "@/components/graphics/Sigil";
 
 function SocialLink({ label, href }: { label: string; href: string }) {
   const ref = useMagnetic<HTMLAnchorElement>(0.3);
@@ -22,6 +24,10 @@ export function Footer() {
 
   return (
     <footer className="footer shell reg--ink">
+      <Angel variant="footer" />
+      <div className="footer__sigil" aria-hidden="true">
+        <Sigil name="knot" strokeWidth={0.6} />
+      </div>
       <div className="footer__top">
         <p className="footer__mark">
           <span className="footer__mark-line">

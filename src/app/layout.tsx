@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
 
-import "@fontsource-variable/bricolage-grotesque/standard.css";
 import "@fontsource-variable/archivo/standard.css";
 import "@fontsource-variable/azeret-mono/index.css";
 import "./globals.css";
 
 import { asset, site, siteUrl, withBase } from "@/data/site";
+import { Loader } from "@/components/system/Loader";
 
 export const metadata: Metadata = {
   title: `${site.fullName} — Creative Developer`,
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#e8e1d3",
+  themeColor: "#000000",
   colorScheme: "dark",
 };
 
@@ -68,11 +68,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        {/* If the client never boots, the loading screen must not hold the
+            page hostage — it is hidden and scrolling is released. */}
+        <noscript>
+          <style>{"html.is-loading{overflow:auto}.loader{display:none}"}</style>
+        </noscript>
         <a className="skip-link" href="#main">
           Skip to content
         </a>
         {children}
         <div className="grain" aria-hidden="true" />
+        <Loader />
       </body>
     </html>
   );

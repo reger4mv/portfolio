@@ -45,7 +45,7 @@ export default function PlaygroundScene({
         stencil: false,
       }}
     >
-      <color attach="background" args={["#17150f"]} />
+      <color attach="background" args={["#0a0a0a"]} />
       <Suspense fallback={null}>
         <StudioEnvironment grade={quality} />
         <InteractiveObjects
@@ -56,7 +56,7 @@ export default function PlaygroundScene({
           selected={selected}
           spin={spin}
           pulse={pulse}
-          accent="#e4663c"
+          accent="#b6ff3b"
           onSelect={onSelect}
         />
       </Suspense>

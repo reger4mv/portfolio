@@ -1,5 +1,6 @@
 import { site } from "@/data/site";
 import { SectionMark } from "@/components/sections/SectionMark";
+import { Angel } from "@/components/system/Angel";
 
 /**
  * About — a pinned editorial spread.
@@ -14,6 +15,8 @@ export function About() {
 
   return (
     <section id="about" className="section shell" aria-labelledby="about-title">
+      <Angel variant="about" />
+
       <SectionMark
         index="01"
         label="About"

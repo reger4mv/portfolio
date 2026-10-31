@@ -29,12 +29,12 @@ function SignalArc({ accent, fadeId }: { accent: string; fadeId: string }) {
           <stop offset="100%" stopColor={accent} stopOpacity="0" />
         </linearGradient>
       </defs>
-      <g fill="none" stroke="#8a8375" strokeWidth="1" opacity="0.5">
+      <g fill="none" stroke="#8a8a8a" strokeWidth="1" opacity="0.5">
         {Array.from({ length: 8 }).map((_, i) => (
           <circle key={i} cx="300" cy="392" r={40 + i * 38} />
         ))}
       </g>
-      <g stroke="#cfc7b6" strokeWidth="1" opacity="0.32">
+      <g stroke="#cfcfcf" strokeWidth="1" opacity="0.32">
         {Array.from({ length: 24 }).map((_, i) => {
           const angle = (i / 24) * Math.PI * 2;
           const inner = 330;
@@ -52,7 +52,7 @@ function SignalArc({ accent, fadeId }: { accent: string; fadeId: string }) {
       </g>
       <g fill="none" strokeWidth="1.6">
         <path d="M120 392a180 180 0 0 0 360 0" stroke={accent} opacity="0.9" />
-        <path d="M186 392a114 114 0 0 0 228 0" stroke="#e8e1d3" opacity="0.45" />
+        <path d="M186 392a114 114 0 0 0 228 0" stroke="#e8e8e8" opacity="0.45" />
         <path d="M238 392a62 62 0 0 0 124 0" stroke={accent} opacity="0.4" />
       </g>
       <path d="M300 74v318" stroke={`url(#${fadeId})`} strokeWidth="1.4" />
@@ -61,7 +61,7 @@ function SignalArc({ accent, fadeId }: { accent: string; fadeId: string }) {
         <circle cx="300" cy="182" r="2.5" opacity="0.7" />
         <circle cx="300" cy="258" r="2.5" opacity="0.42" />
       </g>
-      <g stroke="#cfc7b6" strokeWidth="0.75" opacity="0.3">
+      <g stroke="#cfcfcf" strokeWidth="0.75" opacity="0.3">
         <path d="M300 392h-268M300 392h268" strokeDasharray="2 7" />
       </g>
     </svg>
@@ -87,7 +87,7 @@ function NodeStack({ accent }: { accent: string }) {
               y={y}
               width={w * 2}
               height="46"
-              fill="#221e16"
+              fill="#151515"
               stroke="#4a4336"
               strokeWidth="1"
               opacity={0.95 - p * 0.12}
@@ -97,7 +97,7 @@ function NodeStack({ accent }: { accent: string }) {
               y={y}
               width={w * 2}
               height="3"
-              fill={p === 0 ? accent : "#e8e1d3"}
+              fill={p === 0 ? accent : "#e8e8e8"}
               opacity={p === 0 ? 0.95 : 0.28}
             />
           </g>
@@ -105,7 +105,7 @@ function NodeStack({ accent }: { accent: string }) {
       })}
       <path
         d="M600 96v324"
-        stroke="#cfc7b6"
+        stroke="#cfcfcf"
         strokeWidth="1"
         strokeDasharray="3 6"
         opacity="0.5"
@@ -116,17 +116,17 @@ function NodeStack({ accent }: { accent: string }) {
           cx="600"
           cy={173 + n * 62}
           r={n === 0 ? 5 : 3}
-          fill={n === 0 ? accent : "#8a8375"}
+          fill={n === 0 ? accent : "#8a8a8a"}
         />
       ))}
-      <g fill="none" stroke="#8a8375" strokeWidth="0.75" opacity="0.4">
+      <g fill="none" stroke="#8a8a8a" strokeWidth="0.75" opacity="0.4">
         <path d="M120 96h960M120 420h960" />
         <path d="M120 96v324M1080 96v324" />
       </g>
       <text
         x="132"
         y="118"
-        fill="#8a8375"
+        fill="#8a8a8a"
         fontSize="10"
         letterSpacing="4"
         fontFamily="var(--font-mono)"
@@ -136,7 +136,7 @@ function NodeStack({ accent }: { accent: string }) {
       <text
         x="132"
         y="404"
-        fill="#8a8375"
+        fill="#8a8a8a"
         fontSize="10"
         letterSpacing="4"
         fontFamily="var(--font-mono)"
@@ -190,17 +190,17 @@ function Aperture({ accent }: { accent: string }) {
             key={i}
             d={`M300 300 L${x} ${y} A214 214 0 0 1 ${next[0]} ${next[1]} Z`}
             fill={i % 2 === 0 ? "#0a0a0a" : "#1e1e21"}
-            stroke="#e8e1d3"
+            stroke="#e8e8e8"
             strokeOpacity={0.22}
             strokeWidth="1"
             opacity={0.95}
           />
         );
       })}
-      <circle cx="300" cy="300" r="34" fill="#17150f" stroke="#6b6355" strokeWidth="1" />
+      <circle cx="300" cy="300" r="34" fill="#0a0a0a" stroke="#6b6355" strokeWidth="1" />
       <path
         d="M300 52v40M300 508v40M52 300h40M508 300h40"
-        stroke="#8a8375"
+        stroke="#8a8a8a"
         strokeWidth="1"
         opacity="0.45"
       />

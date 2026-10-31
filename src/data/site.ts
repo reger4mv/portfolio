@@ -63,7 +63,7 @@ export const site = {
   },
 
   /** Printed as a colophon — the typefaces this page is actually set in. */
-  footerNote: ["Bricolage Grotesque, Archivo", "and Azeret Mono."],
+  footerNote: ["Archivo — three widths,", "and Azeret Mono."],
 
   /** Shown as the page description / social preview. */
   metaDescription:
