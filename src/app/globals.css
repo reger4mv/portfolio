@@ -1065,11 +1065,16 @@ h4,
 
 .cursor__dot {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: var(--cursor-accent);
   translate: -50% -50%;
+  /* Pixels, not half-pixels: a 6px dot on an odd origin blurs into a 7px
+     smear and reads as off-centre even when the maths is exact. */
+  will-change: transform;
   transition:
     opacity 0.25s var(--ease-out),
     scale 0.25s var(--ease-out),
@@ -1078,6 +1083,8 @@ h4,
 
 .cursor__ring {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 34px;
   height: 34px;
   border: 1px solid var(--cursor-line);
@@ -1104,6 +1111,14 @@ h4,
   white-space: nowrap;
   transition: opacity 0.22s var(--ease-out);
   translate: 0 1px;
+}
+
+/* The wrapper is the coordinate origin: both parts are absolutely positioned
+   inside it and centred on it, so ring and dot can only disagree if one of
+   them is being animated on a different axis. */
+.cursor {
+  top: 0;
+  left: 0;
 }
 
 /* link — the ring opens up */
