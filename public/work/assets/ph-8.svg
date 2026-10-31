@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700" role="img" aria-label="Placeholder artwork">
+  <defs>
+    <pattern id="s8" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="14" height="14" fill="#0d0d0d"/>
+      <rect width="1" height="14" fill="#2a2a2a"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="700" fill="url(#s8)"/>
+  <circle cx="450" cy="350" r="190" fill="none" stroke="#3a3a3a" stroke-width="1"/>
+  <circle cx="450" cy="350" r="140" fill="none" stroke="#4a4a4a" stroke-width="1"/>
+  <path d="M450 160v380M260 350h380" stroke="#3a3a3a" stroke-width="1"/>
+  <text x="450" y="470" text-anchor="middle" fill="#8a8a8a" font-family="ui-monospace,Menlo,monospace" font-size="20" letter-spacing="8">BEAN</text>
+  <text x="450" y="502" text-anchor="middle" fill="#5c5c5c" font-family="ui-monospace,Menlo,monospace" font-size="13" letter-spacing="4">PLACEHOLDER — NO SAMPLE IMAGE</text>
+</svg>

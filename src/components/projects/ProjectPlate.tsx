@@ -15,7 +15,7 @@ import type { Project } from "@/data/projects";
 const TREATMENT: Record<string, { variant: PlateVariant; parallax: number; tilt: number }> = {
   kaminari: { variant: "rise", parallax: 11, tilt: 3.5 },
   totem: { variant: "wipe", parallax: 7, tilt: 2 },
-  regera: { variant: "scale", parallax: 13, tilt: 4 },
+  regeracraft: { variant: "scale", parallax: 13, tilt: 4 },
 };
 
 export function ProjectPlate({

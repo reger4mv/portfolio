@@ -1893,16 +1893,16 @@ html.has-cursor [data-cursor] {
   max-height: clamp(20rem, 62vh, 44rem);
 }
 
-.panel--regera {
+.panel--regeracraft {
   background: var(--graphite);
 }
 
-.panel--regera .panel__grid {
+.panel--regeracraft .panel__grid {
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.6fr);
   align-items: end;
 }
 
-.panel--regera .panel__visual {
+.panel--regeracraft .panel__visual {
   max-height: clamp(16rem, 46vh, 30rem);
 }
 
@@ -1911,7 +1911,7 @@ html.has-cursor [data-cursor] {
 @media (max-width: 1023px), (prefers-reduced-motion: reduce) {
   .panel__grid,
   .panel--totem .panel__grid,
-  .panel--regera .panel__grid {
+  .panel--regeracraft .panel__grid {
     grid-template-columns: minmax(0, 1fr);
     gap: clamp(1.25rem, 3.5vw, 2rem);
     align-content: center;
@@ -2354,13 +2354,13 @@ html.has-cursor [data-cursor] {
   aspect-ratio: 16 / 11;
 }
 
-.project-plate--regera .matte__frame {
+.project-plate--regeracraft .matte__frame {
   aspect-ratio: 1 / 1;
 }
 
 /* A grid overlay that only appears on the project's own accent tile —
    kept off the other plates so no two panels share the same dressing. */
-.project-plate--regera .matte__frame::after {
+.project-plate--regeracraft .matte__frame::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -3315,7 +3315,7 @@ a.channel:hover .channel__arrow {
     padding-block: 0.7rem;
   }
 
-  .project-plate--regera .matte__frame::after {
+  .project-plate--regeracraft .matte__frame::after {
     background-size: 50% 50%;
   }
 

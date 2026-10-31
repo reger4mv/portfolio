@@ -120,13 +120,12 @@ All personal content lives in `src/data/` — presentation never holds copy.
 
 ### Contact details
 
-`site.email` is intentionally empty, so the email row renders as "Not published".
-`socials` contains GitHub only; LinkedIn and Instagram are listed as rows with an empty
-`href`, which the UI shows as "Not published yet" instead of a dead link.
+Three rows are published, all real: **Email** (`site.email` in `src/data/site.ts`),
+**GitHub** and **Instagram** (`@regeramv`) from `src/data/social.ts`. There is no LinkedIn
+row — it was removed rather than left as a "Not published" placeholder.
 
-> The GitHub handle `reger4mv` was taken from this repository's namespace. If that is not
-> the account you want to surface, change or clear it in `src/data/social.ts` and
-> `projects.ts` (REGERA's link).
+To hide a channel, empty its `href` and the row falls back to "Not published yet" instead
+of rendering a dead link.
 
 ### Adding real project screenshots
 
@@ -309,33 +308,41 @@ WCAG AA.
 Texture: one grain layer at 3.8% over the whole page, a CRT raster only where a screen
 is implied (loader, project plates), and a metallic ramp clipped to glyphs in two places.
 
-### The two project builds
+### The three project builds
 
-`KAMINARI` and `TOTEM` each have a standalone page, copied byte-for-byte into
-`public/work/` and served as static files:
+Each project has a standalone page, copied into `public/work/` and served as a static
+file rather than a React route:
 
-| File | Reached from |
-| --- | --- |
-| `public/work/kaminari.html` | the KAMINARI panel → "View the build" |
-| `public/work/totem.html` | the TOTEM panel → "View the build" |
-
-They live in `public/` so they ship as real documents, not React routes — nothing about
-them is touched except a single addition: a fixed **← Portfolio** chip in the bottom-left
-corner (`.id="return-chip"`), so a visitor who lands there can get back. The link is
-`../`, which survives the GitHub Pages base path.
+| File | Project | Reached from |
+| --- | --- | --- |
+| `public/work/kaminari.html` | KAMINARI | the panel → "View the build" |
+| `public/work/totem.html` | TOTEM | the panel → "View the build" |
+| `public/work/minecraft.html` | REGERACRAFT | the panel → "Play the build" |
 
 Edit `build.href` on a project in `src/data/projects.ts` to point elsewhere; a project
 without `build` keeps the honest "No public build yet" state.
 
-**Known trade-offs, both deliberate:**
+**REGERACRAFT** is the one you can actually play: a voxel world written in plain HTML and
+JavaScript (no engine library, no texture files — every block face is generated at
+runtime). The page wraps that engine in the `#SWAG` shell: the loading screen uses both
+supplied images, the menu is the shell's, and the engine boots underneath on its own
+canvas. The engine's own chrome is unchanged; the frame around it is the site's.
 
-- **The two pages carry invented product data** — star ratings (4.8 / 4.9 / 4.7), reviews
-  with stock portrait avatars, invented restaurant names and prices on KAMINARI, and
-  provider claims on TOTEM. They are shipped unmodified because they were supplied as
-  finished work; everything on the portfolio itself remains placeholder-only.
-- **They make third-party requests** — Google Fonts on both, plus ~10 Unsplash images on
-  KAMINARI. The portfolio makes none. On a network that blocks either, those pages fall
-  back to system fonts and empty image tiles; the portfolio is unaffected.
+**Every build page is self-contained and offline-capable.** No Google Fonts, no CDN, no
+stock photography, no analytics — all four pages now make zero third-party requests:
+
+- `kaminari.html` was restyled into the house palette (acid / blood / chrome on black,
+  no violet, no glass) and its **invented data was replaced with placeholders**: the
+  ★4.8 / 4.9 / 4.7 ratings, the three invented restaurant names, the delivery prices and
+  the stock-portrait testimonial avatars are gone, replaced by sample entries and eight
+  generated SVG placeholder images. A note above the cards says so.
+- `totem.html` keeps its layout; its colours were repointed to the house palette and its
+  Google Fonts import removed.
+- `minecraft.html` had an analytics widget, an external favicon and a legacy editor alert
+  stripped from the engine before it was mounted.
+
+All three carry a fixed **← Portfolio** chip (bottom-left) so a visitor can get back; the
+link is `../`, which survives the GitHub Pages base path.
 
 ### The two supplied images
 

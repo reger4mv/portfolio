@@ -6,15 +6,14 @@
 <meta name="theme-color" content="#08090c">
 <title>TOTEM — Intelligence, in formation.</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800;900&display=swap');
-:root{--bg:#08090c;--panel:#101218;--panel2:#151821;--text:#f1f2f4;--muted:#858b98;--line:#2b303b;--silver:#d9dce4;--acid:#c6ff52;--violet:#9a8cff;--red:#ff536c;--mono:'DM Mono',monospace;--sans:'Manrope',sans-serif}
+:root{--bg:#08090c;--panel:#101218;--panel2:#151821;--text:#f1f2f4;--muted:#858b98;--line:#2b303b;--silver:#d9dce4;--acid:#B6FF3B;--violet:#C1373B;--red:#C1373B;--mono:ui-monospace,'SFMono-Regular',Menlo,monospace;--sans:'Helvetica Neue',Arial,sans-serif}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:radial-gradient(ellipse at 76% 5%,#252938 0,transparent 32%),radial-gradient(ellipse at 12% 50%,#171a25 0,transparent 38%),var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
 body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.08;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff 4px);mix-blend-mode:overlay}
 a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}
 .wrap{width:min(1160px,calc(100% - 44px));margin:auto}
 .topline{height:30px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font:10px var(--mono);letter-spacing:.17em;color:#aeb3c0;text-transform:uppercase;background:#0b0c10}
 .topline b{color:var(--acid);font-weight:500;margin:0 7px}
-header{position:sticky;top:0;z-index:30;background:#08090cdd;backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:30;background:#08090cdd;border-bottom:1px solid var(--line)}
 nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:900;letter-spacing:-1.4px}
 .brandmark{width:30px;height:30px;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#737987 45%,#242833 70%,#dce0e8);color:#090a0d;font-size:17px;font-weight:900;transform:rotate(45deg);box-shadow:0 0 22px #dce0e822}
@@ -48,7 +47,7 @@ h1 .outline{color:transparent;-webkit-text-stroke:1px #aab0bd}
 .ring.r3{inset:-60px;transform:rotateY(70deg) rotateZ(20deg);border-color:#68758b55}
 .orb-label{position:absolute;font:10px var(--mono);letter-spacing:.15em;color:#aab1c0;text-transform:uppercase}
 .orb-label.one{top:36px;right:5px}.orb-label.two{bottom:45px;left:-5px;color:var(--acid)}
-.orb-chip{position:absolute;padding:11px 13px;background:#131721dd;border:1px solid #586174;box-shadow:7px 8px 0 #050609;color:#e8eaf0;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;backdrop-filter:blur(8px)}
+.orb-chip{position:absolute;padding:11px 13px;background:#131721dd;border:1px solid #586174;box-shadow:7px 8px 0 #050609;color:#e8eaf0;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;}
 .orb-chip strong{color:var(--acid);font-weight:500}
 .chip-a{top:75px;left:-10px;transform:rotate(-7deg)}.chip-b{bottom:75px;right:-7px;transform:rotate(6deg)}
 @keyframes float{0%,100%{transform:translateY(0) rotateX(-4deg) rotateY(-8deg)}50%{transform:translateY(-14px) rotateX(5deg) rotateY(9deg)}}
