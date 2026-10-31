@@ -45,10 +45,13 @@ export function Cursor() {
 
     document.documentElement.classList.add("has-cursor");
 
-    const dotX = gsap.quickTo(dot, "x", { duration: 0.1, ease: "power2.out" });
-    const dotY = gsap.quickTo(dot, "y", { duration: 0.1, ease: "power2.out" });
-    const ringX = gsap.quickTo(ring, "x", { duration: 0.5, ease: "power3.out" });
-    const ringY = gsap.quickTo(ring, "y", { duration: 0.5, ease: "power3.out" });
+    /* The dot is the pointer; the ring follows it closely enough to read as
+       one object. A 0.5 s trail put a permanent ~40px gap between the two,
+       which is what made the cursor look off-centre while moving. */
+    const dotX = gsap.quickTo(dot, "x", { duration: 0.06, ease: "power2.out" });
+    const dotY = gsap.quickTo(dot, "y", { duration: 0.06, ease: "power2.out" });
+    const ringX = gsap.quickTo(ring, "x", { duration: 0.16, ease: "power2.out" });
+    const ringY = gsap.quickTo(ring, "y", { duration: 0.16, ease: "power2.out" });
 
     let visible = false;
     let anchor: { x: number; y: number } | null = null;
@@ -91,10 +94,10 @@ export function Cursor() {
       dotX(pointer.x);
       dotY(pointer.y);
 
-      // Lean toward the centre of a hovered target, by a small fraction.
+      // Lean toward the centre of a hovered target — a hint, not a drift.
       if (anchor) {
-        ringX(pointer.x + (anchor.x - pointer.x) * 0.16);
-        ringY(pointer.y + (anchor.y - pointer.y) * 0.16);
+        ringX(pointer.x + (anchor.x - pointer.x) * 0.05);
+        ringY(pointer.y + (anchor.y - pointer.y) * 0.05);
       } else {
         ringX(pointer.x);
         ringY(pointer.y);

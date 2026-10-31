@@ -7,6 +7,10 @@
  *    "in-progress"    → actively being built
  *    "ongoing"        → long-running personal project
  *
+ *  `build` is optional and points at a standalone page in `public/`
+ *  (a real, self-contained build of the project). When present the
+ *  panel's action becomes "View the build" and navigates there.
+ *
  *  `preview` is optional. No product screenshots were supplied for
  *  any project, so each panel renders an abstract identity study
  *  instead. Drop a real screenshot into /public and point
@@ -39,6 +43,8 @@ export interface Project {
   plateCaption: string;
   /** Optional real destination; null renders an honest "no public link" state. */
   link: { label: string; href: string } | null;
+  /** Optional standalone build page, relative to the site root. */
+  build?: { href: string; label: string };
   preview?: { src: string; alt: string };
 }
 
@@ -60,6 +66,7 @@ export const projects: Project[] = [
     mark: "signal-arc",
     plateCaption: "Direction study · discovery, social, ordering",
     link: null,
+    build: { href: "/work/kaminari.html", label: "View the build" },
   },
   {
     slug: "totem",
@@ -78,6 +85,7 @@ export const projects: Project[] = [
     mark: "node-stack",
     plateCaption: "Interface study · the conversation layer",
     link: null,
+    build: { href: "/work/totem.html", label: "View the build" },
   },
   {
     slug: "regera",

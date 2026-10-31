@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 import { projects, type Project } from "@/data/projects";
+import { withBase } from "@/data/site";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { ProjectStudy, studyRatios } from "@/components/projects/studies";
 import { Angel } from "@/components/system/Angel";
@@ -31,6 +32,7 @@ gsap.registerPlugin(ScrollTrigger);
  *  · Below 1024px, on coarse pointers, or with reduced motion the same markup
  *    becomes a normal vertical stack of full-height panels.
  */
+
 export function Work() {
   const stageRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -394,7 +396,16 @@ function ProjectPanel({ project, position }: { project: Project; position: numbe
             <div>
               <dt className="mono">Link</dt>
               <dd>
-                {project.link ? (
+                {project.build ? (
+                  <a
+                    className="panel__link panel__link--build"
+                    href={withBase(project.build.href)}
+                    data-cursor="link"
+                  >
+                    {project.build.label}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : project.link ? (
                   <a
                     className="panel__link"
                     href={project.link.href}

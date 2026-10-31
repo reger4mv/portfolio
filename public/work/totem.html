@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#08090c">
+<title>TOTEM — Intelligence, in formation.</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800;900&display=swap');
+:root{--bg:#08090c;--panel:#101218;--panel2:#151821;--text:#f1f2f4;--muted:#858b98;--line:#2b303b;--silver:#d9dce4;--acid:#c6ff52;--violet:#9a8cff;--red:#ff536c;--mono:'DM Mono',monospace;--sans:'Manrope',sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:90px}body{margin:0;background:radial-gradient(ellipse at 76% 5%,#252938 0,transparent 32%),radial-gradient(ellipse at 12% 50%,#171a25 0,transparent 38%),var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.08;background:repeating-linear-gradient(0deg,transparent 0 3px,#fff 4px);mix-blend-mode:overlay}
+a{color:inherit;text-decoration:none}button,input{font:inherit}button{cursor:pointer}
+.wrap{width:min(1160px,calc(100% - 44px));margin:auto}
+.topline{height:30px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center;font:10px var(--mono);letter-spacing:.17em;color:#aeb3c0;text-transform:uppercase;background:#0b0c10}
+.topline b{color:var(--acid);font-weight:500;margin:0 7px}
+header{position:sticky;top:0;z-index:30;background:#08090cdd;backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
+nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:900;letter-spacing:-1.4px}
+.brandmark{width:30px;height:30px;display:grid;place-items:center;background:linear-gradient(145deg,#fff,#737987 45%,#242833 70%,#dce0e8);color:#090a0d;font-size:17px;font-weight:900;transform:rotate(45deg);box-shadow:0 0 22px #dce0e822}
+.brandmark span{transform:rotate(-45deg)}
+.navlinks{display:flex;gap:29px;color:#9ba1af;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.navlinks a:hover{color:var(--acid)}
+.navright{display:flex;gap:10px;align-items:center}
+.btn{border:1px solid #d9dce4;background:linear-gradient(130deg,#f7f8fa,#9ba1ae 40%,#e6e8ed 60%,#777f8d);color:#090a0d;padding:12px 17px;font:700 10px var(--mono);letter-spacing:.12em;text-transform:uppercase;box-shadow:4px 4px 0 #5e6572;transition:.2s}
+.btn:hover{transform:translate(-3px,-3px);box-shadow:7px 7px 0 var(--acid)}
+.btn.ghost{background:transparent;color:#e8eaf0;border:1px solid #444b59;box-shadow:none}
+.btn.ghost:hover{background:#1b202b;color:var(--acid);border-color:var(--acid);box-shadow:0 0 20px #c6ff5222}
+.menu{display:none;background:none;border:1px solid var(--line);color:white;padding:10px}
+.hero{padding:105px 0 88px;position:relative;overflow:hidden}
+.hero:after{content:"TOTEM / 001";position:absolute;right:-20px;top:90px;color:#252a35;font:10px var(--mono);letter-spacing:.3em;writing-mode:vertical-rl}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:55px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;padding:8px 11px;border:1px solid #3d4654;background:#11151c;color:#bfc5d2;font:10px var(--mono);letter-spacing:.15em;text-transform:uppercase}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--acid);box-shadow:0 0 12px var(--acid)}
+h1{font-size:clamp(62px,8vw,110px);line-height:.84;letter-spacing:-.095em;margin:25px 0 24px;font-weight:900}
+h1 .chrome{color:transparent;background:linear-gradient(120deg,#fff 0%,#9ba2af 23%,#f5f6f8 38%,#626a78 54%,#eef0f4 69%,#747d8b 84%,#fff);background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 9px 0 #262b35)}
+h1 .outline{color:transparent;-webkit-text-stroke:1px #aab0bd}
+.hero-copy{max-width:480px;color:#a4aab7;font-size:15px;line-height:1.8}
+.hero-actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:30px}
+.micro{margin-top:27px;color:#626a78;font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.orb-stage{height:480px;position:relative;display:grid;place-items:center;perspective:1000px}
+.orb-glow{position:absolute;width:340px;height:340px;border-radius:50%;background:radial-gradient(circle,#747f982c,transparent 67%);filter:blur(10px)}
+.orb{width:270px;height:270px;position:relative;transform-style:preserve-3d;animation:float 7s ease-in-out infinite}
+.orb-core{position:absolute;inset:29px;border-radius:50%;background:radial-gradient(circle at 30% 23%,#fff 0,#aeb5c4 9%,#454c5a 24%,#11151d 52%,#030406 76%);border:1px solid #c9ceda;box-shadow:inset -20px -22px 35px #000, inset 10px 8px 30px #fff5,0 0 45px #c6d1e633,0 35px 60px #000}
+.orb-core:after{content:"T";position:absolute;inset:0;display:grid;place-items:center;font-size:112px;font-weight:900;letter-spacing:-.15em;color:transparent;background:linear-gradient(140deg,#fff,#727b8a 48%,#f7f8fb);background-clip:text;-webkit-background-clip:text;text-shadow:0 10px 20px #000}
+.ring{position:absolute;inset:0;border:1px solid #aab4c8;border-radius:50%;transform:rotateX(72deg) rotateZ(-25deg);box-shadow:0 0 20px #b8c4df1a}
+.ring.r2{inset:-28px;transform:rotateX(72deg) rotateZ(42deg);border-color:#68758b}
+.ring.r3{inset:-60px;transform:rotateY(70deg) rotateZ(20deg);border-color:#68758b55}
+.orb-label{position:absolute;font:10px var(--mono);letter-spacing:.15em;color:#aab1c0;text-transform:uppercase}
+.orb-label.one{top:36px;right:5px}.orb-label.two{bottom:45px;left:-5px;color:var(--acid)}
+.orb-chip{position:absolute;padding:11px 13px;background:#131721dd;border:1px solid #586174;box-shadow:7px 8px 0 #050609;color:#e8eaf0;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase;backdrop-filter:blur(8px)}
+.orb-chip strong{color:var(--acid);font-weight:500}
+.chip-a{top:75px;left:-10px;transform:rotate(-7deg)}.chip-b{bottom:75px;right:-7px;transform:rotate(6deg)}
+@keyframes float{0%,100%{transform:translateY(0) rotateX(-4deg) rotateY(-8deg)}50%{transform:translateY(-14px) rotateX(5deg) rotateY(9deg)}}
+.ticker{border-block:1px solid var(--line);overflow:hidden;background:#0d0f14}
+.ticker-track{display:flex;gap:42px;white-space:nowrap;padding:17px 0;color:#747c8b;font:10px var(--mono);letter-spacing:.19em;text-transform:uppercase;animation:marquee 28s linear infinite;width:max-content}
+.ticker-track span:after{content:"✳";color:var(--acid);margin-left:42px}
+@keyframes marquee{to{transform:translateX(-50%)}}
+section{padding:100px 0}
+.section-top{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}
+.kicker{color:var(--acid);font:10px var(--mono);letter-spacing:.2em;text-transform:uppercase}
+h2{font-size:clamp(36px,5vw,62px);line-height:.95;letter-spacing:-.075em;margin:13px 0 0;font-weight:800}
+.section-intro{max-width:350px;color:#9299a7;font-size:13px;line-height:1.8}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.feature{min-height:245px;padding:25px;background:linear-gradient(145deg,#171b24,#0c0e13);border:1px solid #303745;position:relative;overflow:hidden;transform-style:preserve-3d;transition:.25s}
+.feature:after{content:"";position:absolute;width:170px;height:170px;border:1px solid #414b5d;border-radius:50%;right:-90px;bottom:-90px;box-shadow:0 0 0 18px #20263344,0 0 0 37px #20263322}
+.feature:hover{border-color:#aab4c8;box-shadow:8px 9px 0 #3b4352;transform:translateY(-5px)}
+.feature-num{font:10px var(--mono);color:#677080}
+.feature-icon{width:44px;height:44px;margin:28px 0 18px;display:grid;place-items:center;border:1px solid #717b8c;color:var(--acid);font-size:20px;background:#1c222d}
+.feature h3{font-size:18px;letter-spacing:-.04em;margin:0 0 8px}
+.feature p{font-size:12px;line-height:1.7;color:#9299a7;max-width:270px;margin:0}
+.demo{background:linear-gradient(130deg,#171c27,#0c0e13 65%);border:1px solid #414b5c;box-shadow:12px 13px 0 #242a36;padding:28px;display:grid;grid-template-columns:.85fr 1.15fr;gap:35px;align-items:center}
+.demo-copy p{color:#969eae;font-size:13px;line-height:1.8}
+.demo-shell{border:1px solid #454e5e;background:#090b10;box-shadow:inset 0 0 40px #000;padding:15px;min-width:0}
+.demo-bar{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #252b35;padding:0 0 12px;margin-bottom:15px;color:#7d8696;font:9px var(--mono);letter-spacing:.12em}
+.window-dots{display:flex;gap:5px}.window-dots i{width:6px;height:6px;border-radius:50%;background:#667080}.window-dots i:first-child{background:var(--red)}.window-dots i:last-child{background:var(--acid)}
+.chat{height:230px;overflow:auto;display:flex;flex-direction:column;gap:12px;padding:5px 2px 15px}
+.msg{max-width:86%;padding:11px 13px;font-size:11px;line-height:1.6;border:1px solid #303744}
+.msg.user{align-self:flex-end;background:#222a38;color:#eef0f5;border-color:#4c596d}
+.msg.bot{align-self:flex-start;background:#10151d;color:#b9c0cd}
+.msg.bot b{color:var(--acid);font:9px var(--mono);letter-spacing:.1em;display:block;margin-bottom:5px}
+.prompt-row{display:flex;gap:8px;border-top:1px solid #252b35;padding-top:13px}
+.prompt-row input{flex:1;min-width:0;background:#11151d;border:1px solid #303744;color:#fff;padding:12px;font-size:11px;outline:none}
+.prompt-row input:focus{border-color:var(--acid)}
+.prompt-row button{width:43px;border:0;background:var(--acid);color:#08090c;font-weight:900}
+.model-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:13px}
+.model{border:1px solid #343d4c;background:#11151d;color:#939baa;padding:7px 9px;font:9px var(--mono);letter-spacing:.07em}
+.model.active{border-color:var(--acid);color:var(--acid);background:#c6ff520d}
+.model:hover{color:#fff;border-color:#aeb7c8}
+.providers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:25px}
+.provider{border:1px solid #303745;background:#10131a;padding:17px 15px;min-height:88px;display:flex;flex-direction:column;justify-content:space-between;transition:.2s}
+.provider:hover{transform:translateY(-4px);border-color:#aeb7c8;box-shadow:5px 6px 0 #343b49}
+.provider b{font-size:13px}.provider small{color:#737d8d;font:9px var(--mono);letter-spacing:.1em;text-transform:uppercase}
+.manifesto{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.manifesto-art{min-height:360px;position:relative;border:1px solid #333b4b;background:radial-gradient(circle at 50% 48%,#343d4d,#11151e 45%,#090b10 75%);display:grid;place-items:center;overflow:hidden}
+.manifesto-art:before,.manifesto-art:after{content:"";position:absolute;width:260px;height:260px;border:1px solid #6e7a8d;border-radius:50%;transform:rotateX(70deg)}
+.manifesto-art:after{width:330px;height:330px;transform:rotateY(70deg)}
+.manifesto-glyph{font-size:180px;font-weight:900;letter-spacing:-.18em;color:transparent;background:linear-gradient(130deg,#fff,#626b7a 55%,#e9edf4);background-clip:text;-webkit-background-clip:text;filter:drop-shadow(0 15px 15px #000);z-index:1}
+.manifesto-stamp{position:absolute;bottom:18px;left:20px;color:#7d8797;font:9px var(--mono);letter-spacing:.17em}
+.manifesto-copy p{color:#9ba3b1;font-size:14px;line-height:1.9}
+.manifesto-list{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:13px}
+.manifesto-list li{border-top:1px solid #2d3441;padding-top:13px;color:#c6cbd5;font:10px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.manifesto-list li:before{content:"↗";color:var(--acid);margin-right:12px}
+.cta{padding:78px 0;background:linear-gradient(110deg,#dce0e8,#858d9b 42%,#222936 42%,#0c0e13 100%);color:#08090c}
+.cta-inner{display:flex;justify-content:space-between;align-items:center;gap:30px}
+.cta h2{font-size:clamp(40px,6vw,72px);max-width:600px}
+.cta p{font:10px var(--mono);letter-spacing:.13em;text-transform:uppercase;color:#333b49}
+.cta .btn{background:#090b10;color:#f4f5f7;border-color:#090b10;box-shadow:5px 5px 0 var(--acid)}
+footer{padding:35px 0 25px;border-top:1px solid #252b35;background:#07080b}
+.foot{display:flex;justify-content:space-between;gap:20px;align-items:center;color:#747d8c;font:9px var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.footlinks{display:flex;gap:20px}.footlinks a:hover{color:var(--acid)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:90;background:var(--acid);color:#08090c;padding:12px 16px;font:10px var(--mono);letter-spacing:.1em;text-transform:uppercase;box-shadow:5px 5px 0 #59613c;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+:focus-visible{outline:2px solid var(--acid);outline-offset:3px}
+@media(max-width:800px){.navlinks{display:none}.menu{display:block}.navlinks.open{display:flex;position:absolute;top:76px;left:0;right:0;background:#090b10;padding:22px;flex-direction:column;border-bottom:1px solid var(--line)}.hero-grid,.demo,.manifesto{grid-template-columns:1fr}.hero{padding-top:70px}.orb-stage{height:380px}.section-top{align-items:flex-start;flex-direction:column}.providers{grid-template-columns:repeat(2,1fr)}.cta-inner{align-items:flex-start;flex-direction:column}.foot{align-items:flex-start;flex-direction:column}}
+@media(max-width:480px){.wrap{width:calc(100% - 30px)}.navright .btn{display:none}.hero{padding:60px 0}.orb-stage{height:320px;transform:scale(.85);margin:-15px 0}.feature-grid{grid-template-columns:1fr}.demo{padding:16px}.providers{grid-template-columns:repeat(2,1fr)}section{padding:72px 0}.footlinks{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;scroll-behavior:auto!important;transition:none!important}}
+</style>
+<style id="return-chip">/* Added by the portfolio: a way back out of a standalone build. */
+#return-chip{position:fixed;left:14px;bottom:14px;z-index:2147483000}
+#return-chip a{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;background:#000;color:#e8e8e8;border:1px solid #4a4a4a;font:11px ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;line-height:1;box-shadow:4px 4px 0 #1d1d1d;transition:background .18s,color .18s,border-color .18s,box-shadow .18s}
+#return-chip a:hover,#return-chip a:focus-visible{background:#e8e8e8;color:#000;border-color:#e8e8e8;box-shadow:2px 2px 0 #9a9a9a;outline:none}
+#return-chip a:focus-visible{outline:2px solid #b6ff3b;outline-offset:3px}
+@media print{#return-chip{display:none}}
+</style>
+</head>
+<body>
+<div id="return-chip"><a href="../"><span aria-hidden="true">&#8592;</span> Portfolio</a></div>
+<div class="topline">A NEW KIND OF WORKSPACE <b>✳</b> BUILT FOR THINKING IN MOTION</div>
+<header><nav class="wrap">
+<a class="brand" href="#top"><span class="brandmark"><span>T</span></span>TOTEM</a>
+<div class="navlinks" id="navlinks"><a href="#capabilities">Capabilities</a><a href="#playground">Try TOTEM</a><a href="#models">Models</a><a href="#manifesto">Philosophy</a></div>
+<div class="navright"><a class="btn ghost" href="#playground">Explore interface ↗</a><button class="menu" id="menu" type="button" aria-label="Toggle navigation">☰</button></div>
+</nav></header>
+<main id="top">
+<section class="hero"><div class="wrap hero-grid">
+<div>
+<div class="eyebrow"><span class="dot"></span> PERSONAL AI / MULTI-MODEL WORKSPACE</div>
+<h1>THINK<br><span class="chrome">BEYOND</span><br><span class="outline">ONE.</span></h1>
+<p class="hero-copy">One interface. Multiple minds. TOTEM brings powerful AI models into a focused workspace built for research, creation, problem-solving and everything between.</p>
+<div class="hero-actions"><a class="btn" href="#playground">Enter the workspace ↗</a><a class="btn ghost" href="#capabilities">Discover TOTEM</a></div>
+<div class="micro">LESS TAB SWITCHING. MORE MOMENTUM. &nbsp; / &nbsp; TOTEM SYSTEM 01</div>
+</div>
+<div class="orb-stage" id="orbStage" aria-label="Animated metallic TOTEM emblem">
+<div class="orb-glow"></div><div class="orb">
+<div class="ring"></div><div class="ring r2"></div><div class="ring r3"></div><div class="orb-core"></div>
+</div>
+<div class="orb-label one">INTELLIGENCE / MULTIPLIED</div><div class="orb-label two">[ SYSTEM ONLINE ]</div>
+<div class="orb-chip chip-a">MODEL ARRAY <strong>04+</strong></div><div class="orb-chip chip-b">ONE SPACE <strong>∞</strong></div>
+</div>
+</div></section>
+<div class="ticker"><div class="ticker-track"><span>RESEARCH WITHOUT FRICTION</span><span>CREATE WITH RANGE</span><span>SWITCH YOUR PERSPECTIVE</span><span>YOUR WORKFLOW, REWIRED</span><span>RESEARCH WITHOUT FRICTION</span><span>CREATE WITH RANGE</span><span>SWITCH YOUR PERSPECTIVE</span><span>YOUR WORKFLOW, REWIRED</span></div></div>
+<section id="capabilities"><div class="wrap">
+<div class="section-top"><div><div class="kicker">01 / BUILT TO MOVE WITH YOU</div><h2>MORE THAN<br>A CHAT BOX.</h2></div><p class="section-intro">A flexible AI environment that keeps your tools, ideas and conversations close. Designed to feel direct, fast and deliberate.</p></div>
+<div class="feature-grid">
+<article class="feature"><div class="feature-num">CAPABILITY / 001</div><div class="feature-icon">◈</div><h3>Multiple perspectives</h3><p>Move between different AI models and approaches without rebuilding your workflow every time.</p></article>
+<article class="feature"><div class="feature-num">CAPABILITY / 002</div><div class="feature-icon">⌘</div><h3>One focused space</h3><p>Keep your prompts, ideas and ongoing work organised in a workspace made for momentum.</p></article>
+<article class="feature"><div class="feature-num">CAPABILITY / 003</div><div class="feature-icon">⟡</div><h3>Built for making</h3><p>Go from rough thought to useful output: research, writing, planning, code and creative work.</p></article>
+</div></div></section>
+<section id="playground" style="padding-top:20px"><div class="wrap">
+<div class="section-top"><div><div class="kicker">02 / INTERACTIVE PREVIEW</div><h2>MEET THE<br>INTERFACE.</h2></div><p class="section-intro">A small local demo of the TOTEM experience. Pick a model and send a prompt to see the interface respond.</p></div>
+<div class="demo">
+<div class="demo-copy"><div class="kicker">TOTEM / PLAYGROUND</div><h2 style="font-size:43px">YOUR NEXT<br>THOUGHT<br>STARTS HERE.</h2><p>This is a front-end concept preview. It simulates model selection and a local assistant response; it does not connect to external AI services.</p><div class="micro">LOCAL INTERACTION / NO ACCOUNT REQUIRED</div></div>
+<div class="demo-shell">
+<div class="demo-bar"><span class="window-dots"><i></i><i></i><i></i></span><span>TOTEM CONSOLE — SESSION 001</span><span>● LIVE</span></div>
+<div class="chat" id="chat" aria-live="polite"><div class="msg bot"><b>TOTEM / SYSTEM</b>Welcome to the workspace. Choose a model, then give me something to think about.</div><div class="msg user">Help me turn a big idea into a clear plan.</div><div class="msg bot"><b>TOTEM / PREVIEW</b>Start with the outcome. Define the constraints. Break the work into small, testable steps. Then iterate.</div></div>
+<form class="prompt-row" id="promptForm"><input id="promptInput" aria-label="Message TOTEM" placeholder="Ask TOTEM something…" maxlength="240"><button aria-label="Send message" type="submit">↗</button></form>
+<div class="model-row" aria-label="Choose a model">
+<button class="model active" type="button" data-model="GPT">GPT</button><button class="model" type="button" data-model="GEMINI">GEMINI</button><button class="model" type="button" data-model="PERPLEXITY">PERPLEXITY</button><button class="model" type="button" data-model="COPILOT">COPILOT</button>
+</div>
+</div></div>
+<div id="models" class="providers">
+<div class="provider"><b>OpenAI</b><small>GPT / General intelligence</small></div><div class="provider"><b>Google</b><small>Gemini / Multimodal</small></div><div class="provider"><b>Perplexity</b><small>Research / Discovery</small></div><div class="provider"><b>Microsoft</b><small>Copilot / Productivity</small></div>
+</div>
+</div></section>
+<section id="manifesto"><div class="wrap manifesto">
+<div class="manifesto-art"><div class="manifesto-glyph">T.</div><div class="manifesto-stamp">TOTEM / INDEPENDENT INTELLIGENCE INTERFACE / 2026</div></div>
+<div class="manifesto-copy"><div class="kicker">03 / THE IDEA</div><h2>ONE TOOL.<br>MORE WAYS<br>TO THINK.</h2><p>The best tool is the one that gets out of your way. TOTEM is imagined as a calm command centre for curious people: a place to explore different perspectives, keep context close and turn ideas into action.</p><ul class="manifesto-list"><li>Choose the right perspective for the task</li><li>Keep the workflow in one place</li><li>Make room for better questions</li></ul></div>
+</div></section>
+<section class="cta"><div class="wrap cta-inner"><div><div class="kicker" style="color:#303846">TOTEM / NEXT MOVE</div><h2>MAKE ROOM<br>FOR MORE.</h2><p>YOUR IDEAS DESERVE A BIGGER WORKSPACE.</p></div><a class="btn" href="#playground">TRY THE INTERFACE ↗</a></div></section>
+</main>
+<footer><div class="wrap foot"><a class="brand" href="#top"><span class="brandmark"><span>T</span></span>TOTEM</a><span>© 2026 TOTEM — CONCEPT LANDING PAGE</span><div class="footlinks"><a href="#capabilities">CAPABILITIES</a><a href="#playground">PLAYGROUND</a><a href="#top">BACK TO TOP ↑</a></div></div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const toast=$('#toast');let timer,model='GPT';
+function note(t){toast.textContent=t;toast.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>toast.classList.remove('show'),2100)}
+$('#menu').addEventListener('click',()=>$('#navlinks').classList.toggle('open'));
+$$('#navlinks a').forEach(a=>a.addEventListener('click',()=>$('#navlinks').classList.remove('open')));
+$$('.model').forEach(b=>b.addEventListener('click',()=>{model=b.dataset.model;$$('.model').forEach(x=>x.classList.toggle('active',x===b));note(model+' SELECTED');}));
+const chat=$('#chat');
+$('#promptForm').addEventListener('submit',e=>{
+ e.preventDefault();const input=$('#promptInput'),v=input.value.trim();if(!v){note('TYPE A PROMPT FIRST');return}
+ const user=document.createElement('div');user.className='msg user';user.textContent=v;chat.append(user);
+ const bot=document.createElement('div');bot.className='msg bot';const label=document.createElement('b');label.textContent='TOTEM / '+model+' PREVIEW';const answer=document.createElement('span');
+ const lower=v.toLowerCase();let response='Interesting direction. Define the result you want, list the constraints, then split the work into the smallest useful next steps.';
+ if(lower.includes('website')||lower.includes('design'))response='Start with the user and the single action they came to take. Build the visual hierarchy around that action, then add detail only where it improves clarity.';
+ else if(lower.includes('study')||lower.includes('learn'))response='Try this: identify the core concept, explain it in your own words, test yourself with one example, then revisit the parts that still feel unclear.';
+ else if(lower.includes('code')||lower.includes('program'))response='Make the smallest working version first. Confirm the inputs and expected output, implement one piece at a time, then test edge cases before polishing.';
+ else if(lower.includes('plan')||lower.includes('project'))response='Turn the goal into milestones. Give each milestone a clear deliverable, estimate the effort, and decide what “done” means before you start.';
+ answer.textContent=response+'  (Local concept preview — no live model is connected.)';bot.append(label,answer);chat.append(bot);chat.scrollTop=chat.scrollHeight;input.value='';
+});
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduce&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+ $$('.feature,.provider,.demo').forEach(el=>{el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;el.style.transform=`perspective(900px) rotateX(${(0.5-y)*4}deg) rotateY(${(x-.5)*5}deg) translateY(-2px)`});el.addEventListener('pointerleave',()=>el.style.transform='')});
+ const stage=$('#orbStage');stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;stage.querySelector('.orb').style.transform=`rotateX(${(0.5-y)*18}deg) rotateY(${(x-.5)*22}deg)`});stage.addEventListener('pointerleave',()=>stage.querySelector('.orb').style.transform='');
+}
+})();
+</script>
+</body>
+</html>

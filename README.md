@@ -309,6 +309,34 @@ WCAG AA.
 Texture: one grain layer at 3.8% over the whole page, a CRT raster only where a screen
 is implied (loader, project plates), and a metallic ramp clipped to glyphs in two places.
 
+### The two project builds
+
+`KAMINARI` and `TOTEM` each have a standalone page, copied byte-for-byte into
+`public/work/` and served as static files:
+
+| File | Reached from |
+| --- | --- |
+| `public/work/kaminari.html` | the KAMINARI panel → "View the build" |
+| `public/work/totem.html` | the TOTEM panel → "View the build" |
+
+They live in `public/` so they ship as real documents, not React routes — nothing about
+them is touched except a single addition: a fixed **← Portfolio** chip in the bottom-left
+corner (`.id="return-chip"`), so a visitor who lands there can get back. The link is
+`../`, which survives the GitHub Pages base path.
+
+Edit `build.href` on a project in `src/data/projects.ts` to point elsewhere; a project
+without `build` keeps the honest "No public build yet" state.
+
+**Known trade-offs, both deliberate:**
+
+- **The two pages carry invented product data** — star ratings (4.8 / 4.9 / 4.7), reviews
+  with stock portrait avatars, invented restaurant names and prices on KAMINARI, and
+  provider claims on TOTEM. They are shipped unmodified because they were supplied as
+  finished work; everything on the portfolio itself remains placeholder-only.
+- **They make third-party requests** — Google Fonts on both, plus ~10 Unsplash images on
+  KAMINARI. The portfolio makes none. On a network that blocks either, those pages fall
+  back to system fonts and empty image tiles; the portfolio is unaffected.
+
 ### The two supplied images
 
 | Asset | Role |
