@@ -1,147 +1,324 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { SplitText } from "@/components/ui/SplitText";
 
-const VARIANTS: Record<string, "a" | "b" | "c"> = { "01": "a", "02": "b", "03": "c" };
+gsap.registerPlugin(ScrollTrigger);
 
-function Facts({ project }: { project: Project }) {
-  return (
-    <dl className="project__facts" data-reveal-group>
-      <div className="project__fact" data-reveal-item>
-        <dt>Status</dt>
-        <dd>{project.statusLabel}</dd>
-      </div>
-      <div className="project__fact" data-reveal-item>
-        <dt>Built so far</dt>
-        <dd>{project.progress}</dd>
-      </div>
-      <div className="project__fact" data-reveal-item>
-        <dt>Stack</dt>
-        <dd>
-          <ul className="project__stack">
-            {project.stack.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </dd>
-      </div>
-      <div className="project__fact" data-reveal-item>
-        <dt>Link</dt>
-        <dd>
-          {project.link ? (
-            <a
-              className="project__link"
-              href={project.link.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              data-cursor="link"
-            >
-              {project.link.label}
-              <span aria-hidden="true">↗</span>
-              <span className="sr-only">(opens in a new tab)</span>
-            </a>
-          ) : (
-            <span className="project__link project__link--none">
-              No public build yet
-            </span>
-          )}
-        </dd>
-      </div>
-    </dl>
-  );
-}
-
-function ProjectEntry({ project }: { project: Project }) {
-  const variant = VARIANTS[project.index] ?? "a";
-
-  const text = (
-    <div className="project__text">
-      <h3 className="project__title" id={`project-${project.slug}`}>
-        <span className="sr-only">{project.name}</span>
-        <SplitText text={project.name} />
-      </h3>
-      <p className="project__tagline" data-reveal>
-        {project.tagline}
-      </p>
-      <p className="project__desc" data-reveal>
-        {project.description}
-      </p>
-      <Facts project={project} />
-    </div>
-  );
-
-  return (
-    <article
-      className={`project project--${variant}`}
-      aria-labelledby={`project-${project.slug}`}
-      style={
-        { ["--project-accent" as string]: project.accent } as React.CSSProperties
-      }
-      id={`work-${project.slug}`}
-    >
-      <header className="project__head">
-        <span className="roll">
-          <span className="project__index" data-roll>
-            {project.index}
-          </span>
-        </span>
-        <span className="project__discipline" data-wipe>
-          {project.discipline}
-        </span>
-        <span className="project__status">{project.statusLabel}</span>
-      </header>
-
-      {variant === "b" ? (
-        <div className="project__body project__body--split">
-          <div className="project__sticky">
-            <ProjectPlate project={project} />
-          </div>
-          {text}
-        </div>
-      ) : (
-        <div className={`project__body project__body--${variant}`}>
-          {text}
-          <div className="project__plate-wrap">
-            <ProjectPlate project={project} />
-          </div>
-        </div>
-      )}
-    </article>
-  );
-}
-
+/**
+ * WORK — a horizontal journey.
+ *
+ * Vertical scroll moves a track of near-full-viewport panels sideways. The
+ * section is a tall stage holding a `position: sticky` viewport; the stage's
+ * extra height *is* the horizontal travel, calculated from the track's real
+ * scrollWidth so it stays correct at any viewport size.
+ *
+ * Deliberate choices:
+ *  · No pinning. A sticky viewport can't desync from the page, survives
+ *    `overflow-x: clip`, and if the JS never runs the stage simply collapses
+ *    and every panel stacks vertically — the content is never trapped.
+ *  · Native scrolling is untouched: no wheel listeners, no hijacking. Scroll
+ *    speed and direction are whatever the visitor's device does.
+ *  · Below 1024px, on coarse pointers, or with reduced motion the same markup
+ *    becomes a normal vertical stack of full-height panels.
+ */
 export function Work() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!stage || !viewport || !track) return;
+    const pin = viewport.closest<HTMLElement>(".sequence__pin");
+
+    const mm = gsap.matchMedia();
+
+    mm.add("(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      let tween: gsap.core.Timeline | null = null;
+      let frame = 0;
+
+      const panels = () =>
+        Array.from(track.querySelectorAll<HTMLElement>(".panel"));
+
+      const build = () => {
+        // Real travel: how far the track overflows its own viewport.
+        const travel = Math.max(track.scrollWidth - viewport.clientWidth, 0);
+
+        // Stage carries one held viewport plus the travel. Measured from the
+        // sticky element itself so the numbers can never disagree.
+        const hold = pin?.offsetHeight ?? viewport.clientHeight;
+        stage.style.height = travel > 0 ? `${Math.round(hold + travel)}px` : "";
+
+        if (tween) {
+          tween.scrollTrigger?.kill();
+          tween.kill();
+        }
+        gsap.set(track, { x: 0 });
+
+        if (travel <= 0) return;
+
+        const vw = viewport.clientWidth;
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: stage,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 0.7,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              if (barRef.current) {
+                barRef.current.style.transform = `scaleX(${self.progress.toFixed(4)})`;
+              }
+            },
+          },
+        });
+
+        // 1) the journey itself — the only source of horizontal motion
+        tl.to(track, { x: -travel, ease: "none", duration: 1 }, 0);
+
+        // 2) per-panel inner motion, timed against the same 0→1 progress so it
+        //    stays locked to the track no matter how many panels there are.
+        panels().forEach((panel) => {
+          const start = panel.offsetLeft;
+          const width = panel.offsetWidth;
+
+          // Panel is on screen between these two progress values.
+          const inAt = Math.max(0, (start - vw) / travel);
+          const outAt = Math.min(1, (start + width) / travel);
+          const span = outAt - inAt;
+          if (span <= 0) return;
+
+          const media = panel.querySelector<HTMLElement>(".matte__media");
+          const type = panel.querySelector<HTMLElement>(".panel__drift");
+          const frame = panel.querySelector<HTMLElement>(".matte__frame");
+
+          if (media) {
+            tl.fromTo(
+              media,
+              { xPercent: 9 },
+              { xPercent: -9, ease: "none", duration: span },
+              inAt,
+            );
+          }
+
+          if (type) {
+            // Type drifts *against* the track, so words sit still while the
+            // world slides — the visual moves faster than the page.
+            tl.fromTo(
+              type,
+              { xPercent: -5 },
+              { xPercent: 5, ease: "none", duration: span },
+              inAt,
+            );
+          }
+
+          if (frame) {
+            // Controlled scale: panels settle as they take focus, ease off as
+            // they leave. Never more than 4%.
+            tl.fromTo(
+              frame,
+              { scale: 1.045 },
+              { scale: 1, ease: "power1.out", duration: span * 0.45 },
+              inAt,
+            ).to(frame, { scale: 0.975, ease: "power1.in", duration: span * 0.4 }, inAt + span * 0.6);
+          }
+        });
+
+        tween = tl;
+      };
+
+      build();
+      ScrollTrigger.refresh();
+
+      const onResize = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          build();
+          ScrollTrigger.refresh();
+        });
+      };
+
+      window.addEventListener("resize", onResize);
+      document.fonts?.ready.then(onResize);
+
+      return () => {
+        window.removeEventListener("resize", onResize);
+        cancelAnimationFrame(frame);
+        tween?.scrollTrigger?.kill();
+        tween?.kill();
+        stage.style.removeProperty("height");
+        gsap.set(track, { clearProps: "transform" });
+        gsap.set(
+          track.querySelectorAll(".matte__media, .panel__drift, .matte__frame"),
+          { clearProps: "transform" },
+        );
+        if (barRef.current) barRef.current.style.removeProperty("transform");
+      };
+    });
+
+    return () => mm.revert();
+  }, []);
+
   return (
-    <section id="work" className="section shell" aria-labelledby="work-title">
+    <section id="work" className="section shell sequence" aria-labelledby="work-title">
       <SectionHeading
         index="02"
         label="Selected work"
-        note="Concept · In progress · Ongoing"
+        note="Scroll — the work moves sideways"
       />
 
-      <div className="work__intro">
-        <h2 className="display work__heading" id="work-title" data-lines>
-          <span className="line">
-            <span>Things I&apos;m</span>
-          </span>
-          <span className="line">
-            <span>
-              building<em>.</em>
+      <div className="sequence__stage" ref={stageRef}>
+        <div className="sequence__pin">
+          <div className="sequence__viewport" ref={viewportRef}>
+            <div className="sequence__track" ref={trackRef}>
+              {/* 01 — title card */}
+              <article className="panel panel--intro">
+                <div className="panel__inner">
+                  <p className="panel__eyebrow mono">01 — 05</p>
+                  <h2 className="panel__display" id="work-title">
+                    <span className="line">
+                      <span>Things I&apos;m</span>
+                    </span>
+                    <span className="line">
+                      <span>
+                        building<em>.</em>
+                      </span>
+                    </span>
+                  </h2>
+                  <p className="panel__lede">
+                    Three projects, at three different stages. Each one is
+                    labelled for what it is right now rather than what it might
+                    become.
+                  </p>
+                </div>
+                <span className="panel__edge mono" aria-hidden="true">
+                  Concept · In progress · Ongoing
+                </span>
+              </article>
+
+              {/* 02–04 — one panel per project, each composed differently */}
+              {projects.map((project, index) => (
+                <ProjectPanel key={project.slug} project={project} position={index} />
+              ))}
+
+              {/* 05 — handoff */}
+              <article className="panel panel--outro">
+                <div className="panel__inner">
+                  <p className="panel__eyebrow mono">End of sequence</p>
+                  <p className="panel__closing">
+                    That&apos;s the work so far — three things in three different
+                    states, labelled honestly.
+                  </p>
+                  <a className="panel__next" href="#experiments">
+                    Next — the live 3D scene
+                    <span aria-hidden="true">↓</span>
+                  </a>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <div className="sequence__bar" aria-hidden="true">
+            <span className="mono">0</span>
+            <span className="sequence__bar-track">
+              <span className="sequence__bar-fill" ref={barRef} />
             </span>
-          </span>
-        </h2>
-        <p className="work__note" data-reveal>
-          Three projects, at three different stages. Each one is labelled for
-          what it is right now rather than what it might become.
-        </p>
+            <span className="mono">100</span>
+          </div>
+        </div>
       </div>
 
-      <div className="work__list">
-        {projects.map((project) => (
-          <ProjectEntry key={project.slug} project={project} />
-        ))}
-      </div>
+      <p className="sr-only">
+        {`Sequence of ${projects.length} projects: ${projects
+          .map((project) => project.name)
+          .join(", ")}.`}
+      </p>
     </section>
+  );
+}
+
+function ProjectPanel({ project, position }: { project: Project; position: number }) {
+  return (
+    <article
+      className={`panel panel--project panel--${project.slug}`}
+      aria-labelledby={`panel-${project.slug}`}
+      style={
+        { ["--project-accent" as string]: project.accent } as React.CSSProperties
+      }
+    >
+      <header className="panel__head">
+        <span className="mono panel__index">{project.index}</span>
+        <span className="mono panel__discipline">{project.discipline}</span>
+        <span className="panel__status mono">
+          <span className="panel__dot" aria-hidden="true" />
+          {project.statusLabel}
+        </span>
+      </header>
+
+      <div className="panel__grid">
+        <div className="panel__type panel__drift">
+          <h3 className="panel__title" id={`panel-${project.slug}`}>
+            <span className="sr-only">{project.name}</span>
+            <SplitText text={project.name} />
+          </h3>
+          <p className="panel__tagline">{project.tagline}</p>
+          <p className="panel__desc">{project.description}</p>
+
+          <dl className="panel__facts">
+            <div>
+              <dt className="mono">Status</dt>
+              <dd>{project.statusLabel}</dd>
+            </div>
+            <div>
+              <dt className="mono">Built so far</dt>
+              <dd>{project.progress}</dd>
+            </div>
+            <div>
+              <dt className="mono">Stack</dt>
+              <dd>{project.stack.join(" / ")}</dd>
+            </div>
+            <div>
+              <dt className="mono">Link</dt>
+              <dd>
+                {project.link ? (
+                  <a
+                    className="panel__link"
+                    href={project.link.href}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    data-cursor="link"
+                  >
+                    {project.link.label}
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                ) : (
+                  <span className="panel__link panel__link--none">
+                    No public build yet
+                  </span>
+                )}
+              </dd>
+            </div>
+          </dl>
+
+          <span className="panel__step mono" aria-hidden="true">
+            {String(position + 2).padStart(2, "0")} / 05
+          </span>
+        </div>
+
+        <div className="panel__visual">
+          <ProjectPlate project={project} entry="manual" />
+        </div>
+      </div>
+    </article>
   );
 }

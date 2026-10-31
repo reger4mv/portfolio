@@ -179,7 +179,8 @@ disabled entirely on coarse pointers unless noted.
 | `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
 | Nav indicator | nav | A single hairline slides to the active section instead of five underlines flickering. |
 | Skills marker | capabilities | One marker slides between rows; the detail panel wipes on change. |
-| Creed track | approach | Desktop only: the section pins and the four principles move sideways. Below 1024 px, or with reduced motion, it is a plain vertical list. |
+| `Work` sequence | selected work | Vertical scroll drives a horizontal track of five full-height panels (statement → three project spreads → handoff). Travel is measured from `scrollWidth`, the viewport is `position: sticky` rather than pinned, and no wheel/touch listeners are attached. Below 1024 px, on coarse pointers or with reduced motion the same markup stacks vertically. |
+| Creed list | approach | A quiet vertical list of the four principles — the page keeps exactly one horizontal journey. |
 
 ### Motion vocabulary
 
