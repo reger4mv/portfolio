@@ -33,7 +33,7 @@ const TICKS = 18;
 function GlassLens({ lite = false }: { lite?: boolean }) {
   return (
     <meshPhysicalMaterial
-      color="#eae8e2"
+      color="#e8e1d3"
       transmission={lite ? 0 : 0.95}
       thickness={lite ? 0 : 0.9}
       roughness={0.12}
@@ -149,7 +149,7 @@ export function HeroSculpture({
 
   const chrome = (
     <meshPhysicalMaterial
-      color="#d3d3cf"
+      color="#cfc7b6"
       metalness={1}
       roughness={lite ? 0.17 : 0.06}
       envMapIntensity={lite ? 1.1 : 1.55}
@@ -160,7 +160,7 @@ export function HeroSculpture({
 
   const steel = (
     <meshStandardMaterial
-      color="#1b1c20"
+      color="#221e16"
       metalness={1}
       roughness={0.36}
       envMapIntensity={0.85}
@@ -169,7 +169,7 @@ export function HeroSculpture({
 
   const gunmetal = (
     <meshPhysicalMaterial
-      color="#8f9096"
+      color="#8a8375"
       metalness={1}
       roughness={0.22}
       envMapIntensity={1.2}
@@ -200,7 +200,7 @@ export function HeroSculpture({
               rotation={[0, -angle, 0]}
             >
               <boxGeometry args={[long ? 0.09 : 0.05, 0.004, 0.012]} />
-              <meshBasicMaterial color={long ? "#536bff" : "#6d6f76"} />
+              <meshBasicMaterial color={long ? "#e4663c" : "#6f695c"} />
             </mesh>
           );
         })}
@@ -278,7 +278,7 @@ export function HeroSculpture({
           </mesh>
           <mesh position={[1.22, 0.02, 0]}>
             <sphereGeometry args={[0.085, 8, 8]} />
-            <meshBasicMaterial color="#536bff" wireframe transparent opacity={0.35} />
+            <meshBasicMaterial color="#e4663c" wireframe transparent opacity={0.35} />
           </mesh>
         </group>
 
@@ -286,7 +286,7 @@ export function HeroSculpture({
         <mesh ref={coreRef} rotation={[0.4, 0.7, 0.1]}>
           <icosahedronGeometry args={[0.42, 0]} />
           <meshPhysicalMaterial
-            color="#101114"
+            color="#17150f"
             metalness={1}
             roughness={0.16}
             envMapIntensity={1.3}
@@ -297,7 +297,7 @@ export function HeroSculpture({
         {/* Vertical hairline through the whole gimbal */}
         <mesh>
           <cylinderGeometry args={[0.0035, 0.0035, 2.3, 6]} />
-          <meshBasicMaterial color="#7e808a" />
+          <meshBasicMaterial color="#7c7567" />
         </mesh>
       </group>
 

@@ -8,7 +8,6 @@ import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { ProjectStudy, studyRatios } from "@/components/projects/studies";
 import { CursorImageReveal, type RevealPreview } from "@/components/interaction/CursorImageReveal";
-import { SectionHeading } from "@/components/sections/SectionHeading";
 import { SplitText } from "@/components/ui/SplitText";
 import { scrollToY } from "@/lib/scroll";
 
@@ -224,12 +223,11 @@ export function Work() {
   }, []);
 
   return (
-    <section id="work" className="section shell sequence" aria-labelledby="work-title">
-      <SectionHeading
-        index="02"
-        label="Selected work"
-        note="Scroll — the work moves sideways"
-      />
+    <section
+      id="work"
+      className="section shell sequence reg--ink"
+      aria-labelledby="work-title"
+    >
 
       <div className="sequence__stage" ref={stageRef}>
         <div className="sequence__pin">
@@ -238,7 +236,7 @@ export function Work() {
               {/* 01 — title card */}
               <article className="panel panel--intro">
                 <div className="panel__inner">
-                  <p className="panel__eyebrow mono">01 — 05</p>
+                  <p className="panel__eyebrow mono">02 — Selected work</p>
                   <h2 className="panel__display" id="work-title">
                     <span className="line">
                       <span>Things I&apos;m</span>

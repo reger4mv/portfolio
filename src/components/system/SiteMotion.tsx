@@ -16,11 +16,8 @@ gsap.registerPlugin(ScrollTrigger);
  * a distinct shape, so no two sections arrive the same way:
  *
  *   data-lines      display headings rise out of a mask, line by line
- *   data-roll       numbers/prose roll up inside their own mask
- *   data-wipe       labels are drawn left → right via clip-path
  *   data-mask       long copy is unclipped from the top, not faded
  *   data-grow       vertical rules extend instead of fading in
- *   data-draw       horizontal hairlines draw themselves
  *   data-shift      opposing horizontal drift (scrub) for wide type
  *   data-reveal     the plain fade-up, used only where nothing else fits
  *   data-reveal-group / -item  staggered lists
@@ -77,36 +74,6 @@ export function SiteMotion() {
         });
       });
 
-      /* ── numbers and short prose roll up ───────────────── */
-      gsap.utils.toArray<HTMLElement>("[data-roll]").forEach((el) => {
-        gsap.from(el, {
-          yPercent: 105,
-          duration: 0.9,
-          ease: "expo.out",
-          scrollTrigger: { trigger: el, start: "top 94%", once: true },
-        });
-      });
-
-      /* ── labels draw left → right ──────────────────────── */
-      gsap.utils.toArray<HTMLElement>("[data-wipe]").forEach((el, index) => {
-        // Right-aligned labels reveal from their own edge, not the page edge.
-        const from =
-          el.dataset.wipe === "right"
-            ? "inset(0% 0% 0% 100%)"
-            : "inset(0% 100% 0% 0%)";
-        gsap.fromTo(
-          el,
-          { clipPath: from },
-          {
-            clipPath: "inset(0% 0% 0% 0%)",
-            duration: 1.1,
-            delay: (index % 3) * 0.06,
-            ease: "expo.out",
-            scrollTrigger: { trigger: el, start: "top 94%", once: true },
-          },
-        );
-      });
-
       /* ── long copy unclips from the top ────────────────── */
       gsap.utils.toArray<HTMLElement>("[data-mask]").forEach((el) => {
         gsap.fromTo(
@@ -130,17 +97,6 @@ export function SiteMotion() {
           duration: 1.4,
           ease: "expo.inOut",
           scrollTrigger: { trigger: el, start: "top 92%", once: true },
-        });
-      });
-
-      /* ── hairlines draw ────────────────────────────────── */
-      gsap.utils.toArray<HTMLElement>("[data-draw]").forEach((el) => {
-        gsap.from(el, {
-          scaleX: 0,
-          transformOrigin: "left center",
-          duration: 1.4,
-          ease: "expo.inOut",
-          scrollTrigger: { trigger: el, start: "top 96%", once: true },
         });
       });
 

@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 
-import { SectionHeading } from "@/components/sections/SectionHeading";
+import { SectionMark } from "@/components/sections/SectionMark";
 import { SceneBoundary } from "@/components/system/SceneBoundary";
 import {
   OBJECTS,
@@ -87,17 +87,18 @@ export function Playground() {
   return (
     <section
       id="experiments"
-      className="section shell"
+      className="section shell reg--ink"
       aria-labelledby="lab-title"
     >
-      <SectionHeading
+      <SectionMark
         index="03"
         label="Experiments"
         note="Scene_001 · real-time 3D"
+        variant="seam"
       />
 
       <div className="lab__intro">
-        <h2 className="display work__heading" id="lab-title" data-lines>
+        <h2 className="display" id="lab-title" data-lines>
           <span className="line">
             <span>An instrument,</span>
           </span>
@@ -107,7 +108,7 @@ export function Playground() {
             </span>
           </span>
         </h2>
-        <p className="body-copy" data-reveal>
+        <p className="body-copy" data-mask>
           Four objects in a live scene. Drag to orbit, click an object to bring it
           forward, then change its surface, the light or the camera. Everything
           here is rendered in real time — there is no video pretending to be
@@ -120,7 +121,7 @@ export function Playground() {
         {light}. Camera: {preset}.
       </p>
 
-      <div className="lab" data-reveal>
+      <div className="lab">
         <div
           className="lab__stage"
           ref={stageRef}

@@ -1,5 +1,5 @@
 import { site } from "@/data/site";
-import { SectionHeading } from "@/components/sections/SectionHeading";
+import { SectionMark } from "@/components/sections/SectionMark";
 
 /**
  * About — a pinned editorial spread.
@@ -14,10 +14,11 @@ export function About() {
 
   return (
     <section id="about" className="section shell" aria-labelledby="about-title">
-      <SectionHeading
+      <SectionMark
         index="01"
         label="About"
-        note="Self-taught · Nepal · Learning in public"
+        note="Self-taught · two years · still early"
+        variant="margin"
       />
 
       <div className="about__grid">
@@ -35,7 +36,6 @@ export function About() {
           </h2>
 
           <p className="about__annotation">
-            <span className="mono">Note</span>
             The fastest way to understand what I can do is to open something
             I&apos;ve built and press on it.
           </p>

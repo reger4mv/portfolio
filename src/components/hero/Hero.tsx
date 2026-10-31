@@ -30,7 +30,6 @@ export function Hero() {
   const reducedMotion = usePrefersReducedMotion();
   const { ref: sectionRef, inView } = useInView<HTMLElement>("240px");
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const fadeRefs = useRef<Array<HTMLElement | null>>([]);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -50,19 +49,7 @@ export function Hero() {
         });
       }
 
-      const sup = titleRef.current?.querySelector(".hero__sup");
-      if (sup) {
-        tl.from(sup, { autoAlpha: 0, y: 12, duration: 0.9, ease: "power2.out" }, 0.75);
-      }
-
-      const fades = fadeRefs.current.filter(Boolean) as HTMLElement[];
-      if (fades.length) {
-        tl.from(
-          fades,
-          { y: 18, autoAlpha: 0, duration: 0.9, ease: "power3.out", stagger: 0.09 },
-          "-=0.65",
-        );
-      }
+      // The character reveal is the moment; everything else is simply there.
     });
 
     return () => ctx.revert();
@@ -109,7 +96,7 @@ export function Hero() {
     <section
       id="home"
       ref={sectionRef}
-      className="hero shell"
+      className="hero shell reg--ink"
       aria-label="Introduction"
     >
       {webgl === false ? (
@@ -136,20 +123,14 @@ export function Hero() {
       ) : null}
 
       <div className="hero__veil" aria-hidden="true" />
-      <div className="hero__grid" aria-hidden="true">
-        {Array.from({ length: 12 }).map((_, index) => (
-          <span key={index} />
-        ))}
-      </div>
-
       <div className="hero__inner">
         <div className="hero__top">
-          <p className="mono" ref={(node) => void (fadeRefs.current[0] = node)}>
+          <p className="mono">
             Portfolio — 2026
             <br />
-            Set in Space Grotesk
+            Set in Bricolage Grotesque
           </p>
-          <p className="mono" ref={(node) => void (fadeRefs.current[1] = node)}>
+          <p className="mono">
             Kathmandu, Nepal
             <br />
             27.7172° N / 85.3240° E
@@ -163,8 +144,8 @@ export function Hero() {
           <span className="hero__line" aria-hidden="true">
             <Line text={site.firstName} />
             <span className="hero__sup">
-              <span className="serif">creative developer</span>
-              <span className="accent-note">self-taught</span>
+              <span className="hero__role">creative developer</span>
+              <span className="hero__note">self-taught · Nepal</span>
             </span>
           </span>
           <span className="hero__line" aria-hidden="true">
@@ -174,18 +155,15 @@ export function Hero() {
 
         <div className="hero__bottom">
           <ul className="hero__meta">
-            {site.heroMeta.map((item) => (
+            {site.heroMeta.map((item, index) => (
               <li key={item}>
-                <b aria-hidden="true">◆</b>
+                <b aria-hidden="true">{String(index + 1).padStart(2, "0")}</b>
                 {item}
               </li>
             ))}
           </ul>
 
-          <p
-            className="hero__desc"
-            ref={(node) => void (fadeRefs.current[2] = node)}
-          >
+          <p className="hero__desc">
             {site.heroDescription}
           </p>
 

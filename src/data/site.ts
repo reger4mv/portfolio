@@ -29,19 +29,19 @@ export const site = {
   timezone: "Asia/Kathmandu",
 
   heroDescription:
-    "Creative developer exploring the intersection of code, design and interactive experiences.",
+    "I build interfaces, then take them apart to see why they hold. Self-taught, working from Kathmandu.",
 
-  heroMeta: ["Independent developer", "Nepal", "Building on the internet"],
+  heroMeta: ["Independent developer", "Kathmandu, Nepal", "Interface · Interaction · 3D"],
 
   /**
    * Contact channels. Leave a value empty to hide it from the site —
    * nothing is invented or filled in automatically.
    */
   email: "",
-  availability: "Open to collaboration, experiments and good conversation.",
+  availability: "Open to collaboration, experiments and questions I can answer.",
 
   about: {
-    headingLines: ["CURIOUS BY NATURE.", "BUILT THROUGH CODE."],
+    headingLines: ["I learn by", "building the thing."],
     lede: "I'm a self-taught developer from Nepal, fifteen, and still early in the way of things. Most of what I know came from opening an editor, breaking something, and staying with it until the pieces made sense.",
     paragraphs: [
       "I work where engineering meets design: interfaces, motion, interaction, and the systems underneath that make them behave. I like the part of a project where an idea is still a sketch and the shape of it hasn't been decided yet.",
@@ -57,15 +57,17 @@ export const site = {
   },
 
   contact: {
-    headingLines: ["HAVE SOMETHING", "INTERESTING IN MIND?"],
-    copy: "Let's turn an interesting idea into something worth experiencing.",
+    headingLines: ["Bring me", "a real problem."],
+    copy:
+      "A concept, an interface, or a build that has stopped behaving. I would rather hear the specifics than the pitch.",
   },
 
-  footerNote: ["Designed with intention.", "Built with curiosity."],
+  /** Printed as a colophon — the typefaces this page is actually set in. */
+  footerNote: ["Bricolage Grotesque, Archivo", "and Azeret Mono."],
 
   /** Shown as the page description / social preview. */
   metaDescription:
-    "Agastya Verma — self-taught creative developer from Nepal building interactive web experiences at the intersection of code, design and 3D.",
+    "Agastya Verma — self-taught developer in Kathmandu. Interfaces, interaction and the 3D layer between them.",
 } as const;
 
 /** Absolute URL for a public asset (siteUrl already carries the base path). */

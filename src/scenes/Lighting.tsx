@@ -22,14 +22,14 @@ export function StudioEnvironment({ grade = "full" }: { grade?: "full" | "lite" 
       <directionalLight
         position={[-4.5, -1.5, -2]}
         intensity={0.55}
-        color="#536bff"
+        color="#e4663c"
       />
       <spotLight
         position={[-2.5, 4, 4.5]}
         angle={0.6}
         penumbra={1}
         intensity={lite ? 6 : 12}
-        color="#eae8e2"
+        color="#e8e1d3"
         distance={16}
       />
 
@@ -65,7 +65,7 @@ export function StudioEnvironment({ grade = "full" }: { grade?: "full" | "lite" 
         <Lightformer
           form="circle"
           intensity={1.5}
-          color="#536bff"
+          color="#e4663c"
           scale={[2.2, 2.2, 1]}
           position={[1.8, -2.6, 3.4]}
         />
