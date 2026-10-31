@@ -109,6 +109,11 @@ html.is-loading body {
   overflow: hidden;
 }
 
+/* No pointer furniture over the loading screen. */
+html.is-loading .cursor {
+  display: none;
+}
+
 .loader {
   position: fixed;
   inset: 0;
@@ -195,6 +200,48 @@ html.is-loading body {
     opacity: 0;
     transform: translateY(18%);
   }
+}
+
+/* The Y2K meter: 28 stepped cells, chrome on silver, the cell being written
+   lit in acid. Nothing here animates on a timer except the blink of that one
+   cell — the fill itself is driven by real gates. */
+.loader__meter {
+  display: grid;
+  grid-template-columns: repeat(28, 1fr);
+  gap: 3px;
+  width: min(86vw, 620px);
+  height: 13px;
+}
+
+.loader__cell {
+  background: rgba(232, 232, 232, 0.09);
+  transition: background-color 0.12s linear;
+}
+
+.loader__cell[data-on] {
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #bcbcbc 46%,
+    #ededed 58%,
+    #7b7b7b 100%
+  );
+}
+
+.loader__cell[data-live] {
+  background: var(--acid);
+  animation: cell-blink 0.52s steps(2, end) infinite;
+}
+
+@keyframes cell-blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.loader__count {
+  color: var(--bone);
+  font-variant-numeric: tabular-nums;
 }
 
 .loader__caption {
@@ -992,6 +1039,14 @@ h4,
 
 /* ---------- 06. CURSOR ---------- */
 .cursor {
+  /* Two palettes, swapped by the surface under the pointer. On black the ring
+     is bone and the dot acid; over the bone section it inverts to ink and
+     oxblood; over a project it borrows that project's pigment. */
+  --cursor-line: rgba(232, 232, 232, 0.5);
+  --cursor-strong: var(--bone);
+  --cursor-fill: var(--bone);
+  --cursor-label: #000000;
+  --cursor-accent: var(--acid);
   position: fixed;
   top: 0;
   left: 0;
@@ -1000,35 +1055,43 @@ h4,
   will-change: transform;
 }
 
+.cursor[data-surface="paper"] {
+  --cursor-line: rgba(10, 10, 10, 0.5);
+  --cursor-strong: #0a0a0a;
+  --cursor-fill: #0a0a0a;
+  --cursor-label: var(--bone);
+  --cursor-accent: #6d1a10;
+}
+
 .cursor__dot {
   position: absolute;
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--bone);
+  background: var(--cursor-accent);
   translate: -50% -50%;
-  mix-blend-mode: difference;
-  transition: opacity 0.25s var(--ease-out), scale 0.25s var(--ease-out);
+  transition:
+    opacity 0.25s var(--ease-out),
+    scale 0.25s var(--ease-out),
+    background-color 0.35s var(--ease-out);
 }
 
 .cursor__ring {
   position: absolute;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(232, 232, 232, 0.5);
+  border: 1px solid var(--cursor-line);
   border-radius: 50%;
   translate: -50% -50%;
   display: grid;
   place-items: center;
-  mix-blend-mode: difference;
   scale: 1;
   transition:
     width 0.45s var(--ease-out),
     height 0.45s var(--ease-out),
     background-color 0.35s var(--ease-out),
     border-color 0.35s var(--ease-out),
-    scale 0.25s var(--ease-out),
-    mix-blend-mode 0.2s;
+    scale 0.25s var(--ease-out);
 }
 
 .cursor__label {
@@ -1036,7 +1099,7 @@ h4,
   font-size: 0.5625rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--ink);
+  color: var(--cursor-label);
   opacity: 0;
   white-space: nowrap;
   transition: opacity 0.22s var(--ease-out);
@@ -1047,7 +1110,7 @@ h4,
 .cursor[data-mode="link"] .cursor__ring {
   width: 56px;
   height: 56px;
-  border-color: rgba(232, 232, 232, 0.8);
+  border-color: var(--cursor-strong);
 }
 
 .cursor[data-mode="link"] .cursor__dot {
@@ -1060,9 +1123,8 @@ h4,
 .cursor[data-mode="drag"] .cursor__ring {
   width: 86px;
   height: 86px;
-  background: var(--bone);
-  border-color: var(--bone);
-  mix-blend-mode: normal;
+  background: var(--cursor-fill);
+  border-color: var(--cursor-fill);
   isolation: isolate;
 }
 

@@ -11,7 +11,13 @@ import gsap from "gsap";
  *   view    → filled disc with a VIEW label (plates, imagery)
  *   drag    → filled disc with a DRAG label (the 3D stage)
  *
+ * Colour follows the surface. On the black registers the ring is bone and the
+ * dot acid; over the one bone-coloured section it inverts to ink and oxblood;
+ * over a project it borrows that project's own pigment. The surface is read
+ * once per frame with `elementFromPoint` — no scroll listeners, no polling.
+ *
  * Elements opt in declaratively:  data-cursor="view" data-cursor-label="VIEW"
+ * and, for pigment:               data-cursor-accent="#B6FF3B"
  * The ring also leans gently toward the centre of the element being hovered,
  * which is what makes the pointer feel attached to the page rather than
  * floating above it. Never mounted for coarse pointers or reduced motion.
@@ -48,8 +54,36 @@ export function Cursor() {
     let anchor: { x: number; y: number } | null = null;
     let pointer = { x: 0, y: 0 };
 
+    /* ── surface sense ─────────────────────────────────────────────
+       One elementFromPoint per frame at most: cheaper than a scroll
+       listener per section, and correct where sections overlap. */
+    let sample = 0;
+    let surface = "ink";
+    let accent = "";
+
+    const readSurface = () => {
+      sample = 0;
+      const el = document.elementFromPoint(pointer.x, pointer.y);
+      if (!el) return;
+
+      const nextSurface = el.closest(".reg--paper") ? "paper" : "ink";
+      if (nextSurface !== surface) {
+        surface = nextSurface;
+        wrap.dataset.surface = surface;
+      }
+
+      const pigmented = el.closest<HTMLElement>("[data-cursor-accent]");
+      const nextAccent = pigmented?.dataset.cursorAccent ?? "";
+      if (nextAccent !== accent) {
+        accent = nextAccent;
+        if (accent) wrap.style.setProperty("--cursor-accent", accent);
+        else wrap.style.removeProperty("--cursor-accent");
+      }
+    };
+
     const move = (event: PointerEvent) => {
       pointer = { x: event.clientX, y: event.clientY };
+      if (!sample) sample = window.requestAnimationFrame(readSurface);
       if (!visible) {
         visible = true;
         gsap.to(wrap, { autoAlpha: 1, duration: 0.28 });
@@ -112,7 +146,10 @@ export function Cursor() {
     window.addEventListener("pointerup", onUp, { passive: true });
     document.addEventListener("pointerleave", leave);
 
+    wrap.dataset.surface = "ink";
+
     return () => {
+      if (sample) window.cancelAnimationFrame(sample);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerover", over);
       window.removeEventListener("pointerdown", onDown);
