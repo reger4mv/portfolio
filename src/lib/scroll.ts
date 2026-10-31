@@ -29,6 +29,20 @@ export function scrollToId(id: string) {
   }
 }
 
+/** Scroll to an absolute page position, using Lenis when it is running. */
+export function scrollToY(y: number) {
+  const top = Math.max(0, Math.round(y));
+  if (instance) {
+    instance.scrollTo(top, {
+      duration: 1.25,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3.2),
+    });
+    return;
+  }
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
+}
+
 export function stopScroll() {
   instance?.stop();
   document.documentElement.classList.add("lenis-stopped");

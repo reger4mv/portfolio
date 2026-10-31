@@ -175,6 +175,7 @@ disabled entirely on coarse pointers unless noted.
 | `Cursor` | global | Four states — default / link / view / drag — with contextual labels from `data-cursor` + `data-cursor-label`. The ring leans toward the centre of the hovered element. |
 | `useMagnetic` | nav links, channels, socials, back-to-top | Leans by a fraction of the pointer offset, eases back on leave. Never intercepts clicks. |
 | `Plate` (`matte`) | project imagery | Clip-path aperture entry (rise / wipe / scale — one per project), media parallax behind the clipped frame, 2–4° pointer tilt, caption fade. |
+| `CursorImageReveal` | work index (closing panel) | Hover or keyboard-focus a project name and its study floats after the pointer with a lag, stepping clear of the label and staying inside the viewport. Layered images crossfade on switch, so nothing blanks or reloads. Portalled out of the horizontal track, never mounted for coarse pointers (rows carry inline thumbnails instead), placed without float under reduced motion. |
 | `SplitText` | project titles, footer name | Per-character hover displacement. `aria-hidden`; the accessible name comes from an `sr-only` sibling. |
 | `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
 | Nav indicator | nav | A single hairline slides to the active section instead of five underlines flickering. |
