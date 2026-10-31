@@ -293,6 +293,7 @@ export function Work() {
                             href={`#panel-${project.slug}`}
                             data-reveal-id={project.slug}
                             data-cursor="link"
+                            data-cursor-accent={project.accent}
                             onClick={(event) => {
                               event.preventDefault();
                               jumpRef.current(project.slug);

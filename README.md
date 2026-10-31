@@ -172,12 +172,12 @@ disabled entirely on coarse pointers unless noted.
 
 | Piece | Where | Notes |
 | --- | --- | --- |
-| `Cursor` | global | Four states — default / link / view / drag — with contextual labels from `data-cursor` + `data-cursor-label`. The ring leans toward the centre of the hovered element. |
+| `Cursor` | global | Four states — default / link / view / drag — with contextual labels from `data-cursor` + `data-cursor-label`. Colour follows the surface: bone ring and acid dot on the black registers, ink ring and oxblood dot over the one bone section, the project's own pigment while a work-index row is hovered (`data-cursor-accent`). One `elementFromPoint` per frame, no scroll listeners. The ring leans toward the centre of the hovered element. |
 | `useMagnetic` | nav links, channels, socials, back-to-top | Leans by a fraction of the pointer offset, eases back on leave. Never intercepts clicks. |
 | `Plate` (`matte`) | project imagery | Clip-path aperture entry (rise / wipe / scale — one per project), media parallax behind the clipped frame, 2–4° pointer tilt, caption fade. |
 | `CursorImageReveal` | work index (closing panel) | Hover or keyboard-focus a project name and its study floats after the pointer with a lag, stepping clear of the label and staying inside the viewport. Layered images crossfade on switch, so nothing blanks or reloads. Portalled out of the horizontal track, never mounted for coarse pointers (rows carry inline thumbnails instead), placed without float under reduced motion. |
 | `SplitText` | project titles, footer name | Per-character hover displacement. `aria-hidden`; the accessible name comes from an `sr-only` sibling. |
-| `Loader` | first paint | The `#SWAG` screen: waits on fonts + load, 620 ms floor, 2.6 s ceiling, CRT power-off. Hidden by a `<noscript>` rule if the client never boots. |
+| `Loader` | first paint | The `#SWAG` screen over a 28-cell Y2K meter. The fill is driven by real gates — type loaded, artwork decoded, window loaded — with a 1.8 s floor and a 4.2 s ceiling, then a CRT power-off. Hidden by a `<noscript>` rule if the client never boots. |
 | `Angel` | hero, about, work, contact, footer | The "seen this angel?" watermark, screen-blended, scrubbed 60–90 px of parallax. Five fixed placements, never over copy, never a heading. |
 | `Sigil` | hero, contact, skills, footer | Five hand-drawn marks on one 200×200 grid with non-scaling hairlines. One per composition, in the empty space only. |
 | `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
@@ -313,7 +313,7 @@ is implied (loader, project plates), and a metallic ramp clipped to glyphs in tw
 
 | Asset | Role |
 | --- | --- |
-| `public/assets/swag.png` | The loading screen. Displayed at its own aspect ratio on pure black, never recreated in type, revealed with a short flicker and an RGB split, then a CRT power-off. It waits for `document.fonts.ready` and the window load event, holds a 620 ms floor and a 2.6 s ceiling, and is skipped entirely under `prefers-reduced-motion` (one 220 ms fade). |
+| `public/assets/swag.png` | The loading screen. Displayed at its own aspect ratio on pure black, never recreated in type, revealed with a short flicker and an RGB split, then a CRT power-off. It waits for `document.fonts.ready` and the window load event, sits over a 28-cell chrome meter, holds a 1.8 s floor and a 4.2 s ceiling, and shortens to one 220 ms fade under `prefers-reduced-motion`. |
 | `public/assets/angel.png` | The recurring signature. Screen-blended so its black field drops out, placed in five deliberate spots (hero, about margin, work handoff, contact, footer colophon) with 60–90 px of scrubbed parallax. `aria-hidden`, `pointer-events: none`, never over copy, never a heading. |
 
 Both live in `public/assets/` and nothing else references them, so replacing either file
