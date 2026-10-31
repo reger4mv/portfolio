@@ -7,58 +7,75 @@
 /* ---------- 01. TOKENS ---------- */
 
 :root {
-  /* ── PIGMENTS ─────────────────────────────────────────────────
-     Two materials and one accent. Warm black (ink) and warm
-     off-white (paper) are the whole foundation; the accent is
-     oxide — rust, brick, a struck match. No blue-violet anywhere,
-     and no neon-on-black. Project pigments are earths, not LEDs. */
-  --ink: #17150f;
-  --ink-2: #221e16;
-  --ink-3: #2b261c;
-  --paper: #e8e1d3;
-  --paper-2: #ded5c3;
-  --paper-3: #d2c8b4;
+  /* ── MATERIALS ────────────────────────────────────────────────
+     Black is the page. Silver is the ink. Chrome is jewellery: it
+     appears on one name, one numeral and the loader — never as a
+     background wash. Two accents exist and both are rationed: acid
+     for anything live or interactive, blood for a single stamp.
+     No purple, no neon glow, no gradient backgrounds. */
+  --void: #000000;
+  --ink: #000000;
+  --ink-2: #0d0d0d;
+  --ink-3: #191919;
+  --paper: #e8e8e8;
+  --paper-2: #151515;
+  --paper-3: #8a8a8a;
 
-  --oxide: #9e3a20;
-  --ember: #e4663c;
-  --ochre: #c2a13d;
-  --sage: #8fa883;
+  --chrome: #ededed;
+  --bone: #e8e8e8;
+  --silver: #afafaf;
+  --smoke: #8a8a8a;
+  --ash: #6e6e6e;
+  --steel: #2a2a2a;
 
-  /* ── SEMANTIC — the page is PAPER by default ────────────────── */
-  --bg: var(--paper);
-  --fg: var(--ink);
-  --fg-dim: #3d382d;
-  --fg-muted: #5f5747;
-  --line: rgba(23, 21, 15, 0.2);
-  --line-soft: rgba(23, 21, 15, 0.1);
-  --accent: var(--oxide);
-  --field: var(--paper-2);
+  --acid: #b6ff3b;
+  --blood: #c1373b;
 
-  /* Objects that are dark by nature — plates, the lab, the reveal
-     card — keep these regardless of the register they sit in. */
+  /* Legacy aliases: the rest of this sheet still reads these, so the
+     accents are repointed once here instead of in ninety rules. */
+  --oxide: var(--acid);
+  --ember: var(--acid);
+  --ochre: var(--silver);
+  --sage: var(--smoke);
+
+  /* ── SEMANTIC — the page is BLACK by default ───────────────── */
+  --bg: var(--void);
+  --fg: var(--bone);
+  --fg-dim: var(--silver);
+  --fg-muted: var(--smoke);
+  --line: rgba(232, 232, 232, 0.22);
+  --line-soft: rgba(232, 232, 232, 0.1);
+  --accent: var(--acid);
+  --field: #0a0a0a;
+
   --charcoal: var(--ink-2);
   --graphite: var(--ink-3);
-  --bone: var(--paper);
 
   /* ── TYPE ─────────────────────────────────────────────────────
-     Three voices with three jobs, none of them the default
-     grotesque: Bricolage for display, Archivo for reading,
-     Azeret Mono for technical annotation. */
-  --font-display: "Bricolage Grotesque Variable", "Helvetica Neue", Arial, sans-serif;
+     One family, three widths. Archivo's width axis is the
+     expressive tool: display is compressed to 62%, running text
+     sits at 100%, and the rare editorial statement stretches to
+     125%. Azeret Mono carries every technical annotation. No
+     serif, no italic, no fourth voice. */
+  --font-display: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
   --font-text: "Archivo Variable", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "Azeret Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
-  --fs-masthead: clamp(3.4rem, 12.4vw, 12.5rem);
-  --fs-display: clamp(1.95rem, 4.8vw, 4.35rem);
-  --fs-title: clamp(1.4rem, 2.4vw, 2.1rem);
-  --fs-body: clamp(0.95rem, 0.52vw + 0.75rem, 1.06rem);
-  --fs-small: clamp(0.79rem, 0.3vw + 0.7rem, 0.87rem);
+  --wd-cond: 62%;
+  --wd-norm: 100%;
+  --wd-wide: 125%;
+
+  --fs-masthead: clamp(4.2rem, 19.5vw, 17.5rem);
+  --fs-display: clamp(2.2rem, 6.4vw, 5.6rem);
+  --fs-title: clamp(1.5rem, 2.6vw, 2.3rem);
+  --fs-body: clamp(0.95rem, 0.5vw + 0.78rem, 1.05rem);
+  --fs-small: clamp(0.79rem, 0.3vw + 0.7rem, 0.86rem);
   --fs-mono: 0.625rem;
   --fs-hero: var(--fs-masthead);
 
   /* ── LAYOUT ───────────────────────────────────────────────── */
   --gutter: clamp(1.15rem, 3.9vw, 3.9rem);
-  --section-y: clamp(4.75rem, 10.5vh, 9rem);
+  --section-y: clamp(5rem, 11vh, 9.5rem);
   --nav-h: clamp(3.3rem, 4.3vw, 4rem);
 
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -66,21 +83,247 @@
   --dur: 0.7s;
 }
 
-/* THE INK REGISTER.
-   Used for the hero, the work gallery, the lab and the colophon: the places
-   where the page becomes a lit room instead of a sheet of paper. It flips the
-   semantic tokens only, so every component inside inherits the material. */
+/* THE LIFTED REGISTER.
+   Not a light mode — a tonal step. Used for the work gallery and the
+   lab so those sections read as a different plane of the same black
+   room. It flips the semantic tokens only. */
 .reg--ink {
-  --bg: var(--ink);
-  --fg: var(--paper);
-  --fg-dim: #d7cfbe;
-  --fg-muted: #9d9583;
-  --line: rgba(232, 225, 211, 0.18);
-  --line-soft: rgba(232, 225, 211, 0.09);
-  --accent: var(--ember);
+  --bg: #060606;
+  --fg: var(--bone);
+  --fg-dim: var(--silver);
+  --fg-muted: var(--smoke);
+  --line: rgba(232, 232, 232, 0.22);
+  --line-soft: rgba(232, 232, 232, 0.1);
+  --accent: var(--acid);
   --field: var(--ink-2);
   background: var(--bg);
   color: var(--fg);
+}
+
+/* ---------- 01b. CHROME KIT — loader, sigils, watermark ---------- */
+
+/* The page is locked while the loader is up; releasing it moves nothing
+   because the overlay is fixed and never in flow. */
+html.is-loading,
+html.is-loading body {
+  overflow: hidden;
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: clamp(1.6rem, 5vh, 3.4rem);
+  background: #000;
+  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-inout);
+  transform-origin: center center;
+}
+
+/* CRT power-off: the screen collapses to a line before it goes. */
+.loader[data-state="out"] {
+  opacity: 0;
+  transform: scale(1.04, 0.004);
+}
+
+.loader__plate {
+  position: relative;
+  width: min(86vw, 620px);
+}
+
+.loader__swag {
+  width: 100%;
+  height: auto;
+  animation: swag-in 900ms var(--ease-out) both;
+  filter: contrast(1.04);
+}
+
+/* Two offset shadows read as an RGB split without a second file. */
+.loader__glitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(255, 255, 255, 0.09) 48%,
+    transparent 52%
+  );
+  mix-blend-mode: screen;
+  animation: swag-scan 900ms var(--ease-out) both;
+}
+
+@keyframes swag-in {
+  0% {
+    opacity: 0;
+    transform: translateY(7px) scale(0.985);
+    filter: blur(7px);
+    text-shadow: none;
+  }
+  14% {
+    opacity: 0.4;
+  }
+  19% {
+    opacity: 0.06;
+  }
+  27% {
+    opacity: 0.92;
+    filter: blur(1px) drop-shadow(2px 0 rgba(255, 40, 40, 0.35))
+      drop-shadow(-2px 0 rgba(40, 220, 255, 0.35));
+  }
+  31% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+    filter: contrast(1.04);
+  }
+}
+
+@keyframes swag-scan {
+  0% {
+    opacity: 0;
+    transform: translateY(-18%);
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(18%);
+  }
+}
+
+.loader__caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  width: min(86vw, 620px);
+  color: var(--ash);
+}
+
+/* ── sigils ─────────────────────────────────────────────────── */
+
+.sigil {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: var(--line);
+  overflow: visible;
+}
+
+.sigil * {
+  vector-effect: non-scaling-stroke;
+}
+
+
+
+/* ── the watermark ───────────────────────────────────────────── */
+
+.angel {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  width: calc(clamp(9rem, 21vw, 19rem) * var(--angel-scale, 1));
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.26;
+  will-change: transform;
+}
+
+.angel img {
+  width: 100%;
+  height: auto;
+  transform: rotate(-3deg);
+}
+
+.angel--hero {
+  top: 8vh;
+  right: -6vw;
+  width: calc(clamp(14rem, 34vw, 30rem) * var(--angel-scale, 1));
+  opacity: 0.3;
+}
+
+.angel--hero img {
+  transform: rotate(-6deg);
+}
+
+.angel--about {
+  top: 18%;
+  left: -10vw;
+  opacity: 0.16;
+}
+
+.angel--work {
+  right: 4vw;
+  bottom: 8vh;
+  width: calc(clamp(8rem, 16vw, 14rem) * var(--angel-scale, 1));
+  opacity: 0.2;
+}
+
+.angel--contact {
+  top: 6%;
+  right: -4vw;
+  width: calc(clamp(11rem, 24vw, 22rem) * var(--angel-scale, 1));
+  opacity: 0.22;
+}
+
+.angel--footer {
+  left: 50%;
+  bottom: -18%;
+  width: calc(clamp(18rem, 40vw, 34rem) * var(--angel-scale, 1));
+  transform: translateX(-50%);
+  opacity: 0.14;
+}
+
+/* THE PAPER REGISTER.
+   Exactly one section inverts: a photocopied page pasted into the black
+   book. It is a deliberate interruption of the rhythm, not a light theme. */
+.reg--paper {
+  --bg: var(--bone);
+  --fg: #0a0a0a;
+  --fg-dim: #2b2b2b;
+  --fg-muted: #555555;
+  --line: rgba(10, 10, 10, 0.28);
+  --line-soft: rgba(10, 10, 10, 0.12);
+  --accent: #6d1a10;
+  --field: rgba(10, 10, 10, 0.05);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+/* ── placements for the marks ───────────────────────────────── */
+
+.contact__sigil {
+  position: absolute;
+  right: -6vw;
+  bottom: -4vh;
+  z-index: 0;
+  width: clamp(10rem, 24vw, 22rem);
+  color: rgba(232, 232, 232, 0.08);
+  pointer-events: none;
+}
+
+.skills__sigil {
+  position: absolute;
+  top: clamp(3.2rem, 7vw, 5.4rem);
+  right: var(--gutter);
+  z-index: 1;
+  width: clamp(2.4rem, 3.6vw, 3.4rem);
+  color: var(--line);
+  pointer-events: none;
+}
+
+.footer__sigil {
+  position: absolute;
+  left: var(--gutter);
+  top: clamp(2rem, 6vh, 4rem);
+  width: clamp(2.6rem, 4vw, 3.8rem);
+  color: rgba(232, 232, 232, 0.22);
+  pointer-events: none;
 }
 
 /* ---------- 02. RESET / BASE ---------- */
@@ -93,7 +336,7 @@
 
 html {
   -webkit-text-size-adjust: 100%;
-  scrollbar-color: var(--paper-3) var(--paper);
+  scrollbar-color: var(--steel) var(--void);
 }
 
 html.lenis,
@@ -191,6 +434,9 @@ svg {
   mix-blend-mode: overlay;
 }
 
+/* Scanlines — a fine CRT raster, only where a machine screen is implied:
+   the loader, the lab viewport and the plates. Never a full-page wash. */
+
 /* ---------- 03. TYPOGRAPHY PRIMITIVES ---------- */
 
 .sr-only {
@@ -205,20 +451,28 @@ svg {
   border: 0;
 }
 
+/* Technical annotation. Everything a machine would say. */
 .mono {
   font-family: var(--font-mono);
   font-size: var(--fs-mono);
-  font-weight: 500;
-  letter-spacing: 0.08em;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   line-height: 1.6;
   color: var(--fg-muted);
 }
 
-/* Statements are set in the display face, sentence case, tight and quiet.
-   Uppercase is reserved for the masthead and for mono annotation. */
-/* Everything that is *said*, not read, is set in the display face. Body copy,
-   lists and notes stay in Archivo; labels stay in Azeret Mono. */
+.micro {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* Everything that is *said* rather than read. One face, compressed to the
+   width axis floor, set uppercase and stacked tight — the poster voice. */
 h1,
 h2,
 h3,
@@ -233,44 +487,78 @@ h4,
 .index__label,
 .menu__item span:first-child {
   font-family: var(--font-display);
-  font-stretch: 93%;
+  font-stretch: var(--wd-cond);
+  font-weight: 800;
 }
 
 .display {
-  font-family: var(--font-display);
-  font-weight: 550;
-  font-stretch: 93%;
-  line-height: 0.96;
-  letter-spacing: -0.028em;
-  text-transform: none;
   font-size: var(--fs-display);
+  line-height: 0.84;
+  letter-spacing: -0.014em;
+  text-transform: uppercase;
   text-wrap: balance;
 }
 
+/* The editorial voice: the same family pushed the other way, wide and light.
+   Used for one line per section at most, never for a full paragraph. */
+
 .lede {
   font-family: var(--font-text);
-  font-size: clamp(1.06rem, 1.25vw, 1.32rem);
-  line-height: 1.55;
-  letter-spacing: -0.004em;
+  font-stretch: var(--wd-wide);
+  font-weight: 300;
+  font-size: clamp(1.1rem, 1.5vw, 1.5rem);
+  line-height: 1.42;
+  letter-spacing: -0.012em;
   color: var(--fg);
   text-wrap: pretty;
 }
 
 .body-copy {
   color: var(--fg-dim);
+  font-size: var(--fs-body);
   line-height: 1.78;
-  max-width: 62ch;
+  max-width: 60ch;
   text-wrap: pretty;
 }
 
 .footnote {
-  font-family: var(--font-text);
-  font-size: var(--fs-small);
-  letter-spacing: 0;
-  line-height: 1.65;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
   color: var(--fg-muted);
-  max-width: 58ch;
+  max-width: 52ch;
   text-transform: none;
+}
+
+/* Chrome. A five-stop metallic ramp clipped to the glyphs — jewellery, used
+   on the masthead and on section numerals, never as a background. */
+.chrome {
+  background-image: linear-gradient(
+    176deg,
+    #ffffff 0%,
+    #d9d9d9 22%,
+    #8d8d8d 44%,
+    #f4f4f4 50%,
+    #a4a4a4 68%,
+    #ededed 84%,
+    #7c7c7c 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+/* A stamped label: hairline box, acid edge, mono. Used for status only. */
+
+
+/* The hairline that separates planes. */
+.rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--line-soft);
 }
 
 /* ---------- 04. LAYOUT ---------- */
@@ -300,24 +588,30 @@ h4,
 }
 
 .smark__num {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.24em;
   color: var(--accent);
-  font-weight: 500;
 }
 
 .smark__label {
   font-family: var(--font-display);
-  font-weight: 550;
-  font-stretch: 92%;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  font-stretch: var(--wd-cond);
+  font-size: clamp(1.1rem, 1.5vw, 1.4rem);
+  letter-spacing: 0.01em;
   line-height: 1;
+  text-transform: uppercase;
   color: var(--fg);
 }
 
 .smark__note {
-  font-size: var(--fs-small);
-  line-height: 1.5;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
   color: var(--fg-muted);
-  max-width: 28ch;
+  max-width: 30ch;
 }
 
 /* margin — number and name stack at the left, the note sits on the floor
@@ -336,7 +630,7 @@ h4,
 
 .smark--margin .smark__label {
   grid-column: 1;
-  font-size: clamp(1.35rem, 2.2vw, 2rem);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
 }
 
 .smark--margin .smark__note {
@@ -356,7 +650,7 @@ h4,
 }
 
 .smark--ledger .smark__label {
-  font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+  font-size: clamp(1.7rem, 3.2vw, 2.8rem);
 }
 
 .smark--ledger .smark__num {
@@ -439,11 +733,11 @@ h4,
      the page turns to paper. No blur, no glass. */
   --bg: var(--ink);
   --fg: var(--paper);
-  --fg-dim: #d7cfbe;
-  --fg-muted: #a49b88;
-  --line: rgba(232, 225, 211, 0.18);
-  --line-soft: rgba(232, 225, 211, 0.09);
-  --accent: var(--ember);
+  --fg-dim: var(--silver);
+  --fg-muted: var(--smoke);
+  --line: rgba(232, 232, 232, 0.18);
+  --line-soft: rgba(232, 232, 232, 0.09);
+  --accent: var(--acid);
   background: transparent;
   color: var(--fg);
   transition: background-color 0.45s var(--ease-out),
@@ -453,7 +747,7 @@ h4,
 
 .nav.is-pinned {
   background: var(--ink);
-  border-bottom-color: rgba(232, 225, 211, 0.14);
+  border-bottom-color: rgba(232, 232, 232, 0.14);
 }
 
 .nav__brand {
@@ -617,10 +911,10 @@ h4,
   z-index: 90;
   --bg: var(--ink);
   --fg: var(--paper);
-  --fg-dim: #d7cfbe;
-  --fg-muted: #a49b88;
-  --line-soft: rgba(232, 225, 211, 0.09);
-  --accent: var(--ember);
+  --fg-dim: var(--silver);
+  --fg-muted: var(--smoke);
+  --line-soft: rgba(232, 232, 232, 0.09);
+  --accent: var(--acid);
   color: var(--fg);
   background: var(--ink);
   padding: calc(var(--nav-h) + 2rem) var(--gutter) 2rem;
@@ -721,7 +1015,7 @@ h4,
   position: absolute;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(232, 225, 211, 0.5);
+  border: 1px solid rgba(232, 232, 232, 0.5);
   border-radius: 50%;
   translate: -50% -50%;
   display: grid;
@@ -753,7 +1047,7 @@ h4,
 .cursor[data-mode="link"] .cursor__ring {
   width: 56px;
   height: 56px;
-  border-color: rgba(232, 225, 211, 0.8);
+  border-color: rgba(232, 232, 232, 0.8);
 }
 
 .cursor[data-mode="link"] .cursor__dot {
@@ -807,29 +1101,41 @@ html.has-cursor [data-cursor] {
 
 /* ---------- 07. HERO ---------- */
 
+/* The masthead is the cover: a black room, a chrome name cropped at the
+   right edge, one sigil, one watermark, and a small amount of machine
+   annotation. No centred stack, no badge, no description under buttons. */
+
 .hero {
   position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-top: calc(var(--nav-h) + 1rem);
-  padding-bottom: clamp(1.5rem, 4vh, 2.75rem);
-  overflow: clip;
+  padding: calc(var(--nav-h) + 1.6rem) var(--gutter) clamp(1.1rem, 3vh, 2rem);
+  overflow: hidden;
   isolation: isolate;
 }
 
-.hero__canvas {
+.hero__canvas,
+.hero__fallback {
   position: absolute;
   inset: 0;
   z-index: 0;
+  opacity: 0.6;
 }
 
-.hero__canvas canvas {
-  touch-action: pan-y;
+.hero__fallback {
+  display: grid;
+  place-items: center;
 }
 
-/* Directional vignette so type stays legible over the metal. */
+.hero__fallback-rings {
+  width: min(72vw, 640px);
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 0.6;
+}
+
 .hero__veil {
   position: absolute;
   inset: 0;
@@ -837,223 +1143,159 @@ html.has-cursor [data-cursor] {
   pointer-events: none;
   background:
     radial-gradient(
-      72% 62% at 68% 38%,
-      rgba(23, 21, 15, 0) 0%,
-      rgba(23, 21, 15, 0.35) 58%,
-      rgba(23, 21, 15, 0.86) 100%
+      72% 62% at 64% 40%,
+      rgba(0, 0, 0, 0.12) 0%,
+      rgba(0, 0, 0, 0.6) 58%,
+      rgba(0, 0, 0, 0.94) 100%
     ),
-    linear-gradient(
-      to top,
-      rgba(23, 21, 15, 0.92) 0%,
-      rgba(23, 21, 15, 0.35) 26%,
-      rgba(23, 21, 15, 0) 52%
-    );
+    linear-gradient(to top, #000 2%, rgba(0, 0, 0, 0.72) 32%, rgba(0, 0, 0, 0) 64%);
+}
+
+.hero__sigil {
+  position: absolute;
+  top: calc(var(--nav-h) + 2.2rem);
+  left: var(--gutter);
+  z-index: 2;
+  width: clamp(2.8rem, 5vw, 4.6rem);
+  opacity: 0.75;
+}
+
+.hero__rail {
+  position: absolute;
+  left: 0.85rem;
+  top: 46%;
+  z-index: 2;
+  writing-mode: vertical-rl;
+  transform: translateY(-50%) rotate(180deg);
+  letter-spacing: 0.32em;
+  color: var(--ash);
 }
 
 .hero__inner {
   position: relative;
   z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(2rem, 6vh, 4.5rem);
   width: 100%;
+  display: grid;
+  gap: clamp(0.85rem, 2.4vh, 1.5rem);
 }
 
-/* A masthead rule, not a floating badge: everything sits on one hairline. */
-.hero__top {
-  display: flex;
-  justify-content: space-between;
-  gap: 1.5rem;
-  align-items: flex-start;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--line);
+.hero__mast {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: baseline;
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line-soft);
+  color: var(--ash);
 }
 
-.hero__top .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-.mono {
-  max-width: 16ch;
-  line-height: 1.7;
+.hero__mast span:last-child {
+  text-align: right;
 }
 
 .hero__title {
-  position: relative;
-  margin: 0;
-  font-size: var(--fs-hero);
-  font-weight: 600;
-  font-stretch: 86%;
-  line-height: 0.79;
-  letter-spacing: -0.05em;
+  margin: clamp(0.4rem, 2vh, 1.3rem) 0 0;
+  font-size: var(--fs-masthead);
+  line-height: 0.78;
+  letter-spacing: -0.035em;
   text-transform: uppercase;
-  display: grid;
-  justify-items: start;
-  gap: 0.02em;
 }
 
 .hero__line {
-  display: inline-flex;
-  align-items: flex-start;
-  white-space: nowrap;
-  /* Clip box padded past the glyphs so masked reveals never shave a letter */
+  display: block;
   overflow: hidden;
-  padding-top: 0.08em;
-  padding-bottom: 0.26em;
-  margin-top: -0.08em;
-  margin-bottom: -0.26em;
+  padding-right: 0.06em;
+  background-image: linear-gradient(
+    172deg,
+    #ffffff 0%,
+    #d8d8d8 24%,
+    #8a8a8a 46%,
+    #f5f5f5 52%,
+    #a2a2a2 70%,
+    #ededed 86%,
+    #7a7a7a 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.hero__line:nth-child(2) {
-  padding-left: clamp(1.5rem, 21vw, 20rem);
+.hero__line--b {
+  padding-left: min(17vw, 15rem);
 }
 
-.hero__line .char {
+.hero__title .char {
   display: inline-block;
   will-change: transform;
-  transform-origin: 50% 100%;
 }
 
-/* The role sits beside the name like a printed credit: two small lines,
-   bottom-aligned to the baseline, not a rotated sticker. */
-.hero__sup {
-  display: grid;
-  gap: 0.32rem;
-  align-self: flex-end;
-  margin-left: clamp(0.8rem, 2vw, 2.2rem);
-  padding-bottom: 0.16em;
+.hero__aside {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: clamp(0.5rem, 2vh, 1.1rem);
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--silver);
 }
 
-.hero__role {
-  font-family: var(--font-mono);
-  font-size: clamp(0.625rem, 0.78vw, 0.72rem);
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.hero__aside-alt {
   color: var(--accent);
-  white-space: nowrap;
-  line-height: 1;
 }
 
-.hero__note {
-  font-family: var(--font-text);
-  font-size: var(--fs-small);
-  letter-spacing: 0;
-  color: var(--fg-muted);
-  white-space: nowrap;
-  line-height: 1;
-}
-
-.hero__sup .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-.hero__bottom {
+.hero__foot {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: clamp(1.2rem, 4vw, 4rem);
   align-items: end;
-  gap: clamp(1.25rem, 3vw, 3rem);
-  border-top: 1px solid var(--line);
-  padding-top: 1.25rem;
+}
+
+.hero__desc {
+  max-width: 34ch;
+  color: var(--silver);
+  font-size: var(--fs-body);
+  line-height: 1.65;
 }
 
 .hero__meta {
   display: grid;
-  gap: 0.3rem;
+  gap: 0.5rem;
 }
 
 .hero__meta li {
   display: grid;
   grid-template-columns: 1.5rem minmax(0, 1fr);
-  gap: 0.7rem;
+  gap: 0.6rem;
   align-items: baseline;
   font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.08em;
+  font-size: 0.5625rem;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--fg-dim);
+  color: var(--smoke);
 }
 
 .hero__meta li b {
-  font-weight: 500;
+  font-weight: 400;
   color: var(--accent);
-  font-size: var(--fs-mono);
-}
-
-.hero__desc {
-  max-width: 38ch;
-  color: var(--fg-dim);
-  line-height: 1.6;
-  font-size: clamp(0.95rem, 1vw, 1.06rem);
-  text-wrap: pretty;
-}
-
-.hero__coords {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-end;
-}
-
-.hero__coords .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
-}
-
-.hero__top .mono {
-  text-align: right;
-  line-height: 1.75;
 }
 
 .hero__scroll {
-  display: grid;
-  justify-items: center;
-  gap: 0.75rem;
-  color: var(--fg-muted);
-  transition: color 0.4s var(--ease-out);
-}
-
-.hero__scroll:hover,
-.hero__scroll:focus-visible {
-  color: var(--bone);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding-bottom: 0.2rem;
 }
 
 .hero__scroll-label {
-  writing-mode: vertical-rl;
-  font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  line-height: 1;
+  color: var(--fg);
 }
 
 .hero__scroll-line {
   position: relative;
-  width: 1px;
-  height: 64px;
-  background: rgba(232, 225, 211, 0.12);
+  display: block;
+  width: clamp(2.6rem, 6vw, 5rem);
+  height: 1px;
+  background: var(--line-soft);
   overflow: hidden;
 }
 
@@ -1062,56 +1304,71 @@ html.has-cursor [data-cursor] {
   position: absolute;
   inset: 0;
   background: var(--accent);
-  transform-origin: top;
-  animation: scroll-cue 2.8s var(--ease-inout) infinite;
+  transform-origin: left center;
+  animation: hero-cue 2.8s var(--ease-inout) infinite;
 }
 
-@keyframes scroll-cue {
+@keyframes hero-cue {
   0% {
-    transform: scaleY(0);
-    opacity: 0.2;
+    transform: scaleX(0);
   }
-  40% {
-    transform: scaleY(1);
-    opacity: 1;
-  }
-  70% {
-    transform: scaleY(1);
-    opacity: 1;
+  55% {
+    transform: scaleX(1);
   }
   100% {
-    transform: scaleY(1);
+    transform: scaleX(1);
     opacity: 0;
   }
 }
 
-.hero__fallback {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background:
-    radial-gradient(
-      46% 46% at 68% 34%,
-      rgba(158, 58, 32, 0.18),
-      transparent 68%
-    ),
-    radial-gradient(38% 38% at 30% 62%, rgba(232, 225, 211, 0.05), transparent 70%);
+@media (max-width: 980px) {
+  .hero__mast {
+    grid-template-columns: 1fr auto;
+  }
+
+  .hero__mast-mid,
+  .hero__rail {
+    display: none;
+  }
+
+  .hero__line--b {
+    padding-left: 11vw;
+  }
+
+  .hero__sigil {
+    left: auto;
+    right: var(--gutter);
+  }
+
+  .hero__foot {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 1.4rem;
+  }
+
+  .hero__desc {
+    grid-column: 1 / -1;
+    order: 2;
+    max-width: 42ch;
+  }
+
+  .hero__meta {
+    order: 1;
+  }
+
+  .hero__scroll {
+    order: 1;
+  }
 }
 
-.hero__fallback-rings {
-  position: absolute;
-  top: 50%;
-  left: 68%;
-  translate: -50% -50%;
-  width: min(52vw, 620px);
-  aspect-ratio: 1;
-  opacity: 0.5;
-}
+@media (max-width: 640px) {
+  .hero__aside {
+    flex-direction: column;
+    gap: 0.45rem;
+  }
 
-.hero__fallback-rings circle {
-  fill: none;
-  stroke: rgba(232, 225, 211, 0.28);
-  stroke-width: 1;
+  .hero__desc {
+    max-width: none;
+  }
 }
 
 /* ---------- 08. ABOUT ---------- */
@@ -1337,12 +1594,12 @@ html.has-cursor [data-cursor] {
 }
 
 .panel__display {
-  font-size: clamp(2.6rem, 7.2vw, 6.2rem);
-  font-weight: 550;
-  font-stretch: 92%;
-  line-height: 0.92;
-  letter-spacing: -0.035em;
-  text-transform: none;
+  font-size: clamp(2.4rem, 6.8vw, 5.8rem);
+  font-weight: 800;
+  font-stretch: var(--wd-cond);
+  line-height: 0.82;
+  letter-spacing: -0.018em;
+  text-transform: uppercase;
 }
 
 .panel__lede {
@@ -1397,14 +1654,15 @@ html.has-cursor [data-cursor] {
   grid-template-columns: auto 1fr auto;
   align-items: baseline;
   gap: clamp(1rem, 2vw, 2rem);
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid var(--line-soft);
-  margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(1.1rem, 2.6vh, 2rem);
 }
 
 .panel__index {
-  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
-  letter-spacing: 0.1em;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.24em;
   color: var(--project-accent);
 }
 
@@ -1446,11 +1704,11 @@ html.has-cursor [data-cursor] {
 }
 
 .panel__title {
-  font-size: clamp(1.9rem, 4.5vw, 3.9rem);
-  font-weight: 600;
-  font-stretch: 87%;
-  line-height: 0.84;
-  letter-spacing: -0.045em;
+  font-size: clamp(2.3rem, 6.4vw, 5.6rem);
+  font-weight: 800;
+  font-stretch: var(--wd-cond);
+  line-height: 0.78;
+  letter-spacing: -0.02em;
   text-transform: uppercase;
 }
 
@@ -1958,9 +2216,31 @@ html.has-cursor [data-cursor] {
   z-index: 2;
   background: linear-gradient(
     to bottom,
-    rgba(232, 225, 211, 0.06),
+    rgba(232, 232, 232, 0.06),
     transparent 12%
   );
+}
+
+/* The plates are screens: a fine raster sits over them, and the image is
+   pulled back a touch in saturation so the page stays monochrome-first. */
+.matte__frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+.matte__media {
+  filter: contrast(1.04) saturate(0.88);
 }
 
 .matte__caption {
@@ -1975,7 +2255,7 @@ html.has-cursor [data-cursor] {
   width: 100%;
   padding: 0.7rem 0.85rem;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(23, 21, 15, 0.8), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .matte__caption .mono {
@@ -2303,11 +2583,12 @@ html.has-cursor [data-cursor] {
 }
 
 .index__label {
-  font-size: clamp(1.25rem, 2.6vw, 2.05rem);
-  font-weight: 500;
-  letter-spacing: -0.025em;
-  text-transform: none;
-  line-height: 1.05;
+  font-size: clamp(1.3rem, 2.8vw, 2.2rem);
+  font-weight: 800;
+  font-stretch: var(--wd-cond);
+  letter-spacing: 0;
+  text-transform: uppercase;
+  line-height: 1;
 }
 
 .index__count {
@@ -2431,18 +2712,21 @@ html.has-cursor [data-cursor] {
 }
 
 .creed__statement {
-  font-size: clamp(1.9rem, 4.4vw, 4rem);
-  font-weight: 550;
-  line-height: 0.98;
-  letter-spacing: -0.03em;
-  text-transform: none;
-  max-width: 20ch;
+  font-size: clamp(2.1rem, 4.8vw, 4.4rem);
+  font-weight: 800;
+  font-stretch: var(--wd-cond);
+  line-height: 0.84;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+  max-width: 22ch;
 }
 
 .creed__statement em {
   font-family: var(--font-display);
   font-style: normal;
-  text-transform: none;
+  font-stretch: var(--wd-wide);
+  font-weight: 300;
+  text-transform: lowercase;
   letter-spacing: -0.02em;
   color: var(--accent);
 }
@@ -2549,11 +2833,12 @@ html.has-cursor [data-cursor] {
 }
 
 .contact__heading {
-  font-size: clamp(2.3rem, 6.8vw, 5.8rem);
-  font-weight: 550;
-  line-height: 0.94;
-  letter-spacing: -0.035em;
-  text-transform: none;
+  font-size: clamp(2.6rem, 9vw, 8rem);
+  font-weight: 800;
+  font-stretch: var(--wd-cond);
+  line-height: 0.8;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
@@ -2697,8 +2982,16 @@ a.channel:hover .channel__arrow {
 /* ---------- 14. FOOTER ---------- */
 
 .footer {
+  position: relative;
+  overflow: clip;
   border-top: 1px solid var(--line);
   padding-block: clamp(2rem, 4vw, 3rem) 1.5rem;
+}
+
+.footer__top,
+.footer__bottom {
+  position: relative;
+  z-index: 2;
 }
 
 .footer__top {
@@ -2824,12 +3117,6 @@ a.channel:hover .channel__arrow {
     scroll-behavior: auto !important;
   }
 
-  .hero__scroll-line::after {
-    animation: none;
-    transform: scaleY(1);
-    opacity: 0.6;
-  }
-
   .grain {
     opacity: 0.03;
   }
@@ -2873,31 +3160,6 @@ a.channel:hover .channel__arrow {
 
   .nav__progress {
     bottom: 0;
-  }
-
-  .hero__bottom {
-    grid-template-columns: minmax(0, 1fr) auto;
-    row-gap: 1.5rem;
-  }
-
-  .hero__meta {
-    grid-column: 1;
-  }
-
-  .hero__desc {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    max-width: 44ch;
-  }
-
-  .hero__coords {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
-  }
-
-  .hero__line:nth-child(2) {
-    padding-left: clamp(1rem, 14vw, 8rem);
   }
 
   .index {
@@ -2965,87 +3227,9 @@ a.channel:hover .channel__arrow {
     --nav-h: 3.3rem;
   }
 
-  .hero {
-    justify-content: flex-end;
-    padding-top: calc(var(--nav-h) + 0.5rem);
-    min-height: 100svh;
-  }
-
-  .hero__inner {
-    gap: 1.6rem;
-  }
-
-  .hero__top .mono:last-child {
-    display: none;
-  }
-
-  .hero__title {
-    line-height: 0.84;
-  }
-
-  .hero__line:nth-child(2) {
-    padding-left: 0.6rem;
-  }
-
-  /* The "creative developer" tag is decorative at this width — the same
-     information is in the description below, so it is dropped rather than
-     allowed to wrap into the headline. */
-  .hero__sup {
-    display: none;
-  }
-
-  .hero__bottom {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.1rem;
-    padding-top: 1rem;
-  }
-
-  .hero__coords {
-    display: none;
-  }
-
-  .hero__desc {
-    grid-row: auto;
-    font-size: 0.95rem;
-  }
-
-  .hero__meta {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.3rem 1rem;
-  }
-
-  .hero__meta li {
-    font-size: 0.5625rem;
-    letter-spacing: 0.1em;
-  }
-
-  .hero__meta li b {
-    display: none;
-  }
-
-  .hero__scroll {
-    display: none;
-  }
-
-  /* The sculpture sits above the type instead of behind it. */
+  /* The sculpture moves above the type on phones rather than behind it. */
   .hero__canvas {
     inset: 0 0 46% 0;
-  }
-
-  .hero__veil {
-    background:
-      radial-gradient(
-        70% 60% at 50% 30%,
-        rgba(23, 21, 15, 0) 0%,
-        rgba(23, 21, 15, 0.55) 62%,
-        rgba(23, 21, 15, 0.95) 100%
-      ),
-      linear-gradient(
-        to top,
-        rgba(23, 21, 15, 1) 0%,
-        rgba(23, 21, 15, 0.55) 30%,
-        rgba(23, 21, 15, 0) 62%
-      );
   }
 
   .about__note {

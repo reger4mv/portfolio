@@ -5,6 +5,7 @@ import gsap from "gsap";
 
 import { depthLabels, skills } from "@/data/skills";
 import { SectionMark } from "@/components/sections/SectionMark";
+import { Sigil } from "@/components/graphics/Sigil";
 
 /**
  * Capabilities — a typographic index.
@@ -97,6 +98,10 @@ export function Skills() {
 
   return (
     <section id="skills" className="section shell" aria-labelledby="skills-title">
+      <div className="skills__sigil" aria-hidden="true">
+        <Sigil name="wings" strokeWidth={0.7} />
+      </div>
+
       <SectionMark
         index="04"
         label="Capabilities"

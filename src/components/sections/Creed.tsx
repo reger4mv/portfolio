@@ -12,7 +12,7 @@ import { principles } from "@/data/philosophy";
  */
 export function Creed() {
   return (
-    <section id="approach" className="section creed-section" aria-labelledby="creed-title">
+    <section id="approach" className="section creed-section reg--paper" aria-labelledby="creed-title">
       <div className="shell">
         <p className="creed__mark mono">
           <span>05</span> Approach — four habits

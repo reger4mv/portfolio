@@ -37,7 +37,7 @@ function Surface({
   if (mode === "glass") {
     return (
       <meshPhysicalMaterial
-        color="#e8e1d3"
+        color="#e8e8e8"
         transmission={lite ? 0 : 0.94}
         thickness={lite ? 0 : 0.9}
         roughness={0.1}
@@ -54,7 +54,7 @@ function Surface({
 
   return (
     <meshPhysicalMaterial
-      color="#cfc7b6"
+      color="#cfcfcf"
       metalness={1}
       roughness={lite ? 0.18 : 0.07}
       envMapIntensity={lite ? 1.2 : 1.7}
@@ -78,15 +78,15 @@ function OrbitCage({ quality, mode }: { quality: Quality; mode: SurfaceMode }) {
     <group ref={ref}>
       <mesh>
         <torusGeometry args={[0.62, 0.11, seg, quality === "lite" ? 48 : 120]} />
-        <Surface mode={mode} quality={quality} color="#cfc7b6" />
+        <Surface mode={mode} quality={quality} color="#cfcfcf" />
       </mesh>
       <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
         <torusGeometry args={[0.62, 0.055, seg, quality === "lite" ? 40 : 96]} />
-        <Surface mode={mode} quality={quality} color="#b4ab9a" />
+        <Surface mode={mode} quality={quality} color="#b4b4b4" />
       </mesh>
       <mesh rotation={[0.55, Math.PI / 2, 0.3]}>
         <torusGeometry args={[0.62, 0.028, 8, quality === "lite" ? 40 : 96]} />
-        <Surface mode={mode} quality={quality} color="#8a8375" />
+        <Surface mode={mode} quality={quality} color="#8a8a8a" />
       </mesh>
     </group>
   );
@@ -102,12 +102,12 @@ function GlassPrism({ quality, mode }: { quality: Quality; mode: SurfaceMode }) 
     <group>
       <mesh ref={ref} rotation={[0.12, 0.4, 0.08]}>
         <cylinderGeometry args={[0.56, 0.56, 1.24, 6, 1, false]} />
-        <Surface mode={mode} quality={quality} color="#ded5c3" />
+        <Surface mode={mode} quality={quality} color="#dedede" />
       </mesh>
       <mesh rotation={[0.12, 0.4, 0.08]}>
         <cylinderGeometry args={[0.56, 0.56, 1.24, 6, 1, true]} />
         <meshBasicMaterial
-          color="#e8e1d3"
+          color="#e8e8e8"
           wireframe
           transparent
           opacity={0.14}
@@ -129,9 +129,9 @@ function WireLattice({ quality, mode }: { quality: Quality; mode: SurfaceMode })
       <mesh ref={ref}>
         <icosahedronGeometry args={[0.78, 1]} />
         {mode === "wire" ? (
-          <meshBasicMaterial color="#e4663c" wireframe />
+          <meshBasicMaterial color="#b6ff3b" wireframe />
         ) : (
-          <Surface mode={mode} quality={quality} color="#cfc7b6" />
+          <Surface mode={mode} quality={quality} color="#cfcfcf" />
         )}
       </mesh>
       <mesh scale={0.42}>
@@ -180,7 +180,7 @@ function ParticleField({ quality }: { quality: Quality }) {
       </bufferGeometry>
       <pointsMaterial
         size={0.019}
-        color="#d8d7d2"
+        color="#d8d8d8"
         transparent
         opacity={0.75}
         sizeAttenuation
@@ -365,7 +365,7 @@ export function InteractiveObjects({
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -1.34, 0]}>
         <circleGeometry args={[3.6, 64]} />
         <meshStandardMaterial
-          color="#0c0c0d"
+          color="#0a0a0a"
           metalness={0.6}
           roughness={0.5}
           envMapIntensity={0.5}
@@ -376,15 +376,15 @@ export function InteractiveObjects({
       {light === "studio" ? (
         <>
           <ambientLight intensity={0.18} />
-          <directionalLight position={[3, 5, 4]} intensity={2.2} color="#f6f4ee" />
-          <directionalLight position={[-4, 1, 2]} intensity={0.5} color="#e4663c" />
+          <directionalLight position={[3, 5, 4]} intensity={2.2} color="#f2f2f2" />
+          <directionalLight position={[-4, 1, 2]} intensity={0.5} color="#b6ff3b" />
         </>
       ) : null}
       {light === "dusk" ? (
         <>
           <ambientLight intensity={0.1} color="#2a2b4d" />
-          <directionalLight position={[-3, 2.2, 3.4]} intensity={2.6} color="#ff784f" />
-          <directionalLight position={[3.4, -1, -2]} intensity={1.5} color="#c2a13d" />
+          <directionalLight position={[-3, 2.2, 3.4]} intensity={2.6} color="#b6ff3b" />
+          <directionalLight position={[3.4, -1, -2]} intensity={1.5} color="#cfcfcf" />
         </>
       ) : null}
       {light === "mono" ? (

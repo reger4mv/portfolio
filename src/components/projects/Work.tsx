@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects, type Project } from "@/data/projects";
 import { ProjectPlate } from "@/components/projects/ProjectPlate";
 import { ProjectStudy, studyRatios } from "@/components/projects/studies";
+import { Angel } from "@/components/system/Angel";
 import { CursorImageReveal, type RevealPreview } from "@/components/interaction/CursorImageReveal";
 import { SplitText } from "@/components/ui/SplitText";
 import { scrollToY } from "@/lib/scroll";
@@ -235,6 +236,7 @@ export function Work() {
             <div className="sequence__track" ref={trackRef}>
               {/* 01 — title card */}
               <article className="panel panel--intro">
+                <Angel variant="work" />
                 <div className="panel__inner">
                   <p className="panel__eyebrow mono">02 — Selected work</p>
                   <h2 className="panel__display" id="work-title">

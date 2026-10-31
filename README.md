@@ -177,6 +177,9 @@ disabled entirely on coarse pointers unless noted.
 | `Plate` (`matte`) | project imagery | Clip-path aperture entry (rise / wipe / scale — one per project), media parallax behind the clipped frame, 2–4° pointer tilt, caption fade. |
 | `CursorImageReveal` | work index (closing panel) | Hover or keyboard-focus a project name and its study floats after the pointer with a lag, stepping clear of the label and staying inside the viewport. Layered images crossfade on switch, so nothing blanks or reloads. Portalled out of the horizontal track, never mounted for coarse pointers (rows carry inline thumbnails instead), placed without float under reduced motion. |
 | `SplitText` | project titles, footer name | Per-character hover displacement. `aria-hidden`; the accessible name comes from an `sr-only` sibling. |
+| `Loader` | first paint | The `#SWAG` screen: waits on fonts + load, 620 ms floor, 2.6 s ceiling, CRT power-off. Hidden by a `<noscript>` rule if the client never boots. |
+| `Angel` | hero, about, work, contact, footer | The "seen this angel?" watermark, screen-blended, scrubbed 60–90 px of parallax. Five fixed placements, never over copy, never a heading. |
+| `Sigil` | hero, contact, skills, footer | Five hand-drawn marks on one 200×200 grid with non-scaling hairlines. One per composition, in the empty space only. |
 | `ScrollProgress` | nav bottom edge | Writes one transform from rAF; no re-renders. |
 | Nav indicator | nav | A single hairline slides to the active section instead of five underlines flickering. |
 | Skills marker | capabilities | One marker slides between rows; the detail panel wipes on change. |
@@ -280,27 +283,39 @@ specific width.
 
 ## Design system
 
+Black is the page. Silver is the ink. Chrome is jewellery — it appears on the masthead
+and the loader, never as a background wash.
+
 | Token | Value |
 | --- | --- |
-| Paper (default surface) | `#E8E1D3` · `#DED5C3` · `#D2C8B4` |
-| Ink (opt-in `reg--ink`) | `#17150F` · `#221E16` · `#2B261C` |
-| Oxide — text accent, rules, focus | `#9E3A20` |
-| Project pigments | Kaminari `#D9603A` · Totem `#C2A13D` · Regera `#8FA883` |
+| Void / ink / lifted | `#000000` · `#0D0D0D` · `#191919` |
+| Chrome / bone / silver | `#EDEDED` · `#E8E8E8` · `#AFAFAF` |
+| Smoke / ash (annotation, hairlines) | `#8A8A8A` · `#6E6E6E` |
+| Acid — anything live or interactive | `#B6FF3B` |
+| Blood — one stamp, never body copy | `#C1373B` |
 
-Type: **Bricolage Grotesque Variable** (display, `wght 200–800`, `wdth 75–100`),
-**Archivo Variable** (all reading text), **Azeret Mono Variable** (indices, labels,
-section marks). Three faces, all self-hosted, no third-party requests.
+One section inverts to bone (`reg--paper`, the approach page). It is a photocopied
+page pasted into the black book, not a light theme.
 
-There is one display voice. Hierarchy comes from case, weight, width and space rather than
-from a second typeface: uppercase is reserved for the hero masthead, panel eyebrows and
-monospace marks; everything else is set in sentence case. Display widths run 86–93% so the
-headlines read as a deliberate choice, not a default.
+Type: **Archivo Variable** used across its *width* axis — display is compressed to
+`62%` and set uppercase, running text sits at `100%`, and the rare editorial line
+stretches to `125%` at weight 300. **Azeret Mono Variable** carries every technical
+annotation. Two families, no serif, no italic, no third voice.
 
-Contrast was computed, not eyeballed — every text pair in the table clears WCAG AA
-(`#5F5747` muted ink on paper is 5.49:1, oxide on paper 5.24:1, ember on ink 5.44:1).
-Default is paper; dark is a section-level opt-in, never the site default.
+Contrast is computed, not eyeballed: bone on black 17.1:1, silver 9.6:1, smoke 6.1:1,
+acid 17.4:1, and on the paper register ink 16.2:1 / muted 6.1:1. Every text pair clears
+WCAG AA.
 
-Motion language: masked line reveals for display type, one clip reveal per long paragraph,
-vertical rules that extend, damped camera movement and the cursor image reveal on the work
-index. Fades are the exception, not the rule, and `prefers-reduced-motion` removes all of
-it — including the cursor follower and the sculpture's idle drift.
+Texture: one grain layer at 3.8% over the whole page, a CRT raster only where a screen
+is implied (loader, project plates), and a metallic ramp clipped to glyphs in two places.
+
+### The two supplied images
+
+| Asset | Role |
+| --- | --- |
+| `public/assets/swag.png` | The loading screen. Displayed at its own aspect ratio on pure black, never recreated in type, revealed with a short flicker and an RGB split, then a CRT power-off. It waits for `document.fonts.ready` and the window load event, holds a 620 ms floor and a 2.6 s ceiling, and is skipped entirely under `prefers-reduced-motion` (one 220 ms fade). |
+| `public/assets/angel.png` | The recurring signature. Screen-blended so its black field drops out, placed in five deliberate spots (hero, about margin, work handoff, contact, footer colophon) with 60–90 px of scrubbed parallax. `aria-hidden`, `pointer-events: none`, never over copy, never a heading. |
+
+Both live in `public/assets/` and nothing else references them, so replacing either file
+swaps the identity without touching code.
+
