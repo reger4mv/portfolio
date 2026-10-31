@@ -164,7 +164,7 @@ export function Hero() {
             <Line text={site.firstName} />
             <span className="hero__sup">
               <span className="serif">creative developer</span>
-              <span className="mono">self-taught</span>
+              <span className="accent-note">self-taught</span>
             </span>
           </span>
           <span className="hero__line" aria-hidden="true">

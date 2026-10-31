@@ -216,7 +216,13 @@ const TREATMENT: Record<string, { variant: PlateVariant; parallax: number; tilt:
   regera: { variant: "scale", parallax: 13, tilt: 4 },
 };
 
-export function ProjectPlate({ project }: { project: Project }) {
+export function ProjectPlate({
+  project,
+  entry = "scroll",
+}: {
+  project: Project;
+  entry?: "scroll" | "manual";
+}) {
   const Mark = marks[project.mark];
   const treatment = TREATMENT[project.slug] ?? {
     variant: "rise" as PlateVariant,
@@ -227,8 +233,9 @@ export function ProjectPlate({ project }: { project: Project }) {
   return (
     <Plate
       variant={treatment.variant}
-      parallax={treatment.parallax}
+      parallax={entry === "manual" ? 0 : treatment.parallax}
       tilt={treatment.tilt}
+      entry={entry}
       className={`project-plate project-plate--${project.slug}`}
       caption={
         <>

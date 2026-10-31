@@ -18,6 +18,13 @@ interface PlateProps {
   cursorLabel?: string;
   className?: string;
   caption?: React.ReactNode;
+  /**
+   * "scroll" — the plate reveals itself on vertical scroll (default).
+   * "manual" — the plate is animated by an ancestor timeline instead, e.g.
+   * inside the horizontal sequence where ScrollTrigger's vertical start
+   * position would never trigger for an off-screen panel.
+   */
+  entry?: "scroll" | "manual";
 }
 
 /**
@@ -40,6 +47,7 @@ export function Plate({
   cursorLabel = "View",
   className = "",
   caption,
+  entry = "scroll",
 }: PlateProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -61,6 +69,13 @@ export function Plate({
     }
 
     const ctx = gsap.context(() => {
+      if (entry === "manual") {
+        // Ancestor owns the motion; make sure nothing is left clipped.
+        gsap.set(frame, { clipPath: "inset(0% 0% 0% 0%)" });
+        gsap.set(media, { scale: 1, xPercent: 0 });
+        return;
+      }
+
       /* ── entry ─────────────────────────────────────────────
          The window (frame) is clipped, the media only scales — so the reveal
          is a true aperture opening rather than an image sliding inside it. */
@@ -169,7 +184,7 @@ export function Plate({
       cleanupTilt();
       ctx.revert();
     };
-  }, [variant, parallax, tilt]);
+  }, [variant, parallax, tilt, entry]);
 
   return (
     <figure

@@ -31,7 +31,6 @@
 
   /* Type */
   --font-display: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Instrument Serif", "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
 
   --fs-hero: clamp(3.6rem, 12.1vw, 12.5rem);
@@ -114,6 +113,13 @@ a {
   text-decoration: none;
 }
 
+em,
+i,
+cite {
+  /* No cursive or italic anywhere in this design. */
+  font-style: normal;
+}
+
 button {
   font: inherit;
   color: inherit;
@@ -176,11 +182,14 @@ svg {
   color: var(--fg-muted);
 }
 
-.serif {
-  font-family: var(--font-serif);
+/* Accent voice: no cursive anywhere — accents are marked in the mono index
+   face, which reads as annotation rather than decoration. */
+.serif,
+.accent-note {
+  font-family: var(--font-mono);
   font-weight: 400;
-  font-style: italic;
-  letter-spacing: -0.012em;
+  font-style: normal;
+  letter-spacing: 0.02em;
   text-transform: none;
 }
 
@@ -835,8 +844,11 @@ html.has-cursor [data-cursor] {
 }
 
 .hero__sup .serif {
-  font-size: clamp(1rem, 1.7vw, 1.6rem);
-  color: var(--bone);
+  font-family: var(--font-mono);
+  font-size: clamp(0.6875rem, 0.9vw, 0.82rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
   white-space: nowrap;
   line-height: 1;
 }
@@ -853,12 +865,15 @@ html.has-cursor [data-cursor] {
   border: 0;
 }
 
-.mono {
+/* Was previously an unscoped `.mono` rule, which rotated every mono label on
+   the page. The vertical treatment belongs to the hero's accent note only. */
+.hero__sup .accent-note {
   writing-mode: vertical-rl;
   letter-spacing: 0.24em;
   font-size: 0.5625rem;
   color: var(--fg-muted);
   padding-bottom: 0.15em;
+  text-transform: uppercase;
 }
 
 .hero__bottom {
@@ -1044,9 +1059,9 @@ html.has-cursor [data-cursor] {
 }
 
 .about__heading em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
   letter-spacing: -0.02em;
   text-transform: none;
   color: var(--accent);
@@ -1126,7 +1141,7 @@ html.has-cursor [data-cursor] {
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: end;
-  margin-bottom: clamp(3rem, 7vw, 6rem);
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .work__heading {
@@ -1144,260 +1159,464 @@ html.has-cursor [data-cursor] {
 
 .work__heading em,
 .display em {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
   letter-spacing: -0.02em;
   text-transform: none;
   color: var(--accent);
 }
 
-.work__list {
-  display: grid;
-  gap: clamp(5rem, 12vw, 10rem);
+/* =================================================================
+   SEQUENCE — vertical scroll drives a horizontal journey
+   ================================================================= */
+
+.sequence {
+  padding-bottom: 0;
 }
 
-/* ---------- project shell ---------- */
-
-.project {
+.sequence__stage {
   position: relative;
-  --project-accent: var(--accent);
 }
 
-.project__head {
+.sequence__pin {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 1.6vh, 1.25rem);
+}
+
+.sequence__viewport {
+  position: relative;
+  overflow: hidden;
+  margin-inline: calc(var(--gutter) * -1);
+}
+
+.sequence__track {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  will-change: transform;
+}
+
+/* progress rail under the sequence */
+.sequence__bar {
   display: grid;
   grid-template-columns: auto 1fr auto;
-  align-items: baseline;
-  gap: clamp(0.75rem, 2vw, 2rem);
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid var(--line-soft);
-}
-
-.project__index {
-  font-family: var(--font-mono);
-  font-size: clamp(1.35rem, 2.4vw, 2.15rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: var(--project-accent);
-  font-variant-numeric: tabular-nums;
-}
-
-.project__discipline {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-muted);
-}
-
-.project__status {
-  display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--fg-dim);
+  gap: 1rem;
+  padding-inline: var(--gutter);
 }
 
-.project__status::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--project-accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--project-accent) 18%, transparent);
+.sequence__bar-track {
+  position: relative;
+  height: 1px;
+  background: var(--line-soft);
+  overflow: hidden;
 }
 
-.project__body {
-  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+.sequence__bar-fill {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
 }
 
-/* A — Kaminari: copy held left, tall plate bleeding off the right edge */
-.project__body--a {
+/* ---------- panel shell ---------- */
+
+.panel {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: clamp(1.5rem, 3vh, 2.5rem) var(--gutter);
+  border-left: 1px solid var(--line-soft);
+  background: var(--ink);
+}
+
+.panel:first-child {
+  border-left: 0;
+}
+
+/* Vertical (default) widths first: in a column, a panel is just the column. */
+.panel--intro,
+.panel--outro,
+.panel--project {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ---------- intro / outro composition ---------- */
+
+.panel__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
-  gap: clamp(1.75rem, 4.5vw, 4.5rem);
-  align-items: start;
+  gap: clamp(1.25rem, 3vh, 2.25rem);
+  max-width: 46rem;
 }
 
-.project--a .project-plate {
-  margin-right: calc(var(--gutter) * -1);
+.panel__eyebrow {
+  font-size: 0.625rem;
+  letter-spacing: 0.24em;
+  color: var(--accent);
 }
 
-/* B — Totem: the plate pins while its spec column travels past */
-.project__body--split {
-  display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
-  gap: clamp(1.75rem, 4.5vw, 4.5rem);
-  align-items: start;
-}
-
-.project__sticky {
-  position: sticky;
-  top: calc(var(--nav-h) + clamp(1rem, 3vh, 2.5rem));
-}
-
-.project--b .project-plate {
-  margin-left: calc(var(--gutter) * -1);
-}
-
-/* C — Regera: the plate starts small and settles, copy rides over its edge */
-.project__body--c {
-  display: grid;
-  grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr);
-  gap: clamp(1.75rem, 4vw, 4rem);
-  align-items: end;
-}
-
-.project--c .project-plate {
-  margin-top: clamp(-6rem, -6vw, -3rem);
-}
-
-.project--c .project__text {
-  padding-bottom: 0.35rem;
-}
-
-/* ---------- project type ---------- */
-
-.project__title {
-  font-size: clamp(2.5rem, 7.2vw, 6.6rem);
+.panel__display {
+  font-size: clamp(3rem, 8.6vw, 7.5rem);
   font-weight: 500;
   line-height: 0.86;
   letter-spacing: -0.045em;
   text-transform: uppercase;
-  margin-bottom: 0.85rem;
 }
 
-.split {
+.panel__lede {
+  max-width: 42ch;
+  color: var(--fg-dim);
+  line-height: 1.7;
+}
+
+.panel__edge {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(1.5rem, 3vh, 2.5rem);
+  font-size: 0.5625rem;
+  letter-spacing: 0.22em;
+  color: var(--fg-muted);
+  writing-mode: vertical-rl;
+}
+
+.panel__closing {
+  font-size: clamp(1.4rem, 2.8vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  max-width: 22ch;
+  text-wrap: balance;
+}
+
+.panel__next {
   display: inline-flex;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.4rem;
+  transition: gap 0.4s var(--ease-out), color 0.4s, border-color 0.4s;
 }
 
-.split__char {
-  display: inline-block;
-  transition:
-    transform 0.6s var(--ease-out),
-    color 0.4s var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 14ms);
+.panel__next:hover {
+  gap: 1.2rem;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .project:hover .split__char:nth-child(odd) {
-    transform: translateY(0.055em);
-  }
+/* ---------- project panel ---------- */
 
-  .project:hover .split__char:nth-child(even) {
-    transform: translateY(-0.055em);
-  }
+.panel__head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: clamp(1rem, 2vw, 2rem);
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
 }
 
-.project__tagline {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: clamp(1.1rem, 1.9vw, 1.7rem);
-  line-height: 1.3;
+.panel__index {
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.1em;
+  color: var(--project-accent);
+}
+
+.panel__discipline,
+.panel__status {
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  color: var(--fg-muted);
+}
+
+.panel__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
   color: var(--fg-dim);
-  margin-bottom: 1.35rem;
-  max-width: 26ch;
 }
 
-.project__desc {
+.panel__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--project-accent);
+}
+
+.panel__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  align-items: center;
+  min-height: 0;
+  flex: 1;
+}
+
+.panel__type {
+  display: grid;
+  gap: 0.85rem;
+  align-content: center;
+  min-width: 0;
+}
+
+.panel__title {
+  font-size: clamp(2.1rem, 5.2vw, 4.6rem);
+  font-weight: 500;
+  line-height: 0.86;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+}
+
+.panel__tagline {
+  font-family: var(--font-display);
+  font-size: clamp(0.95rem, 1.35vw, 1.2rem);
+  line-height: 1.45;
+  color: var(--fg);
+  max-width: 30ch;
+}
+
+.panel__desc {
+  font-size: var(--fs-small);
+  line-height: 1.7;
+  color: var(--fg-muted);
   max-width: 46ch;
-  color: var(--fg-dim);
-  line-height: 1.72;
   text-wrap: pretty;
 }
 
-.project__facts {
+.panel__facts {
   display: grid;
-  gap: 0.9rem;
-  margin-top: clamp(1.5rem, 2.5vw, 2.25rem);
-  padding-top: 1.1rem;
+  gap: 0.55rem;
+  margin-top: 0.35rem;
+  padding-top: 0.85rem;
   border-top: 1px solid var(--line-soft);
 }
 
-.project__fact {
+.panel__facts > div {
   display: grid;
-  grid-template-columns: 8.5rem 1fr;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
   gap: 1rem;
   align-items: baseline;
 }
 
-.project__fact dt {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.panel__facts dt {
+  font-size: 0.5625rem;
+  letter-spacing: 0.16em;
   color: var(--fg-muted);
 }
 
-.project__fact dd {
+.panel__facts dd {
   margin: 0;
-  font-size: var(--fs-small);
-  color: var(--fg-dim);
-  line-height: 1.65;
-}
-
-.project__stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem 0.5rem;
-}
-
-.project__stack li {
-  font-size: var(--fs-small);
+  font-size: 0.8rem;
+  line-height: 1.6;
   color: var(--fg-dim);
 }
 
-.project__stack li:not(:last-child)::after {
-  content: " /";
-  color: var(--fg-muted);
-  opacity: 0.5;
-}
-
-.project__link {
+.panel__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  margin-top: 0.35rem;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-  color: var(--fg);
+  gap: 0.45rem;
   border-bottom: 1px solid var(--line);
-  padding-bottom: 0.35rem;
-  transition: color 0.4s, border-color 0.4s, gap 0.4s var(--ease-out);
+  padding-bottom: 0.15rem;
+  color: var(--fg);
+  transition: color 0.35s, border-color 0.35s;
 }
 
-.project__link:hover,
-.project__link:focus-visible {
+.panel__link:hover {
   color: var(--project-accent);
   border-color: var(--project-accent);
-  gap: 1rem;
 }
 
-.project__link--none {
+.panel__link--none {
   color: var(--fg-muted);
   border-bottom-style: dashed;
-  cursor: default;
 }
 
-.project__link--none:hover {
+.panel__step {
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
   color: var(--fg-muted);
-  border-color: var(--line);
-  gap: 0.6rem;
+}
+
+.panel__visual {
+  min-width: 0;
+  height: 100%;
+  max-height: clamp(20rem, 58vh, 40rem);
+  align-self: center;
+}
+
+.panel__visual .matte {
+  height: 100%;
+  display: flex;
+}
+
+.panel__visual .matte__frame {
+  flex: 1;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+/* each project gets a different ground and plate proportion */
+
+.panel--totem {
+  background: var(--charcoal);
+}
+
+.panel--totem .panel__grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr);
+}
+
+.panel--totem .panel__visual {
+  order: -1;
+  max-height: clamp(20rem, 62vh, 44rem);
+}
+
+.panel--regera {
+  background: var(--graphite);
+}
+
+.panel--regera .panel__grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.6fr);
+  align-items: end;
+}
+
+.panel--regera .panel__visual {
+  max-height: clamp(16rem, 46vh, 30rem);
+}
+
+/* ---------- smaller viewports: panels read as stacked spreads ---------- */
+
+@media (max-width: 1023px), (prefers-reduced-motion: reduce) {
+  .panel__grid,
+  .panel--totem .panel__grid,
+  .panel--regera .panel__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(1.25rem, 3.5vw, 2rem);
+    align-content: center;
+  }
+
+  .panel--totem .panel__visual {
+    order: 0;
+  }
+
+  .panel__visual,
+  .panel--totem .panel__visual {
+    max-height: clamp(14rem, 40vh, 26rem);
+  }
+
+  .panel__edge {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel__head {
+    grid-template-columns: auto 1fr;
+    row-gap: 0.45rem;
+  }
+
+  .panel__status {
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  .panel__discipline {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .panel__facts > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.1rem;
+  }
+
+  .panel__display {
+    font-size: clamp(2.6rem, 13vw, 4.6rem);
+  }
+
+  .panel__title {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+
+  .sequence__bar {
+    display: none;
+  }
+
+  .sequence__viewport {
+    margin-inline: 0;
+  }
+
+  .panel {
+    padding-inline: 0;
+    border-left: 0;
+  }
+}
+
+/* ---------- vertical fallback (no JS, small screens, reduced motion) ---------- */
+
+.sequence__track {
+  flex-direction: column;
+}
+
+.sequence__track > .panel {
+  min-height: 100svh;
+}
+
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .sequence__track {
+    flex-direction: row;
+    height: 100%;
+  }
+
+  /* Horizontal widths: only meaningful once the track is a row. */
+  .panel--intro,
+  .panel--outro {
+    width: 100vw;
+  }
+
+  .panel--project {
+    width: clamp(30rem, 88vw, 96rem);
+    /* Each spread is a sheet sliding over the last one: a soft shadow cast
+       to the left gives the horizontal stack its depth cue. */
+    box-shadow: -2.5rem 0 4.5rem -1.5rem rgba(0, 0, 0, 0.85);
+  }
+
+  .panel--intro {
+    box-shadow: none;
+  }
+
+  .sequence__pin {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    justify-content: center;
+    padding-block: calc(var(--nav-h) + 0.5rem) clamp(1.25rem, 3vh, 2rem);
+  }
+
+  .sequence__viewport {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .sequence__track > .panel {
+    min-height: 0;
+    height: 100%;
+  }
 }
 
 /* ---------- MATTE — the plate system ---------- */
-
-.project__plate-wrap {
-  min-width: 0;
-}
 
 .matte {
   position: relative;
@@ -1907,23 +2126,12 @@ html.has-cursor [data-cursor] {
   padding-block: var(--section-y);
 }
 
-/* Stage is usually the height of its contents; the effect grows it to
-   add travel. The sticky viewport holds while the stage scrolls. */
-.creed__stage {
-  position: relative;
-}
-
-.creed__pin {
-  display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem);
-  padding-block: clamp(1.5rem, 4vh, 2.5rem);
-}
-
 .creed__intro {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
   gap: clamp(1.5rem, 4vw, 4rem);
   align-items: end;
+  margin-bottom: clamp(2.25rem, 5vw, 3.75rem);
 }
 
 .creed__statement {
@@ -1936,8 +2144,8 @@ html.has-cursor [data-cursor] {
 }
 
 .creed__statement em {
-  font-family: var(--font-serif);
-  font-style: italic;
+  font-family: var(--font-display);
+  font-style: normal;
   text-transform: none;
   letter-spacing: -0.02em;
   color: var(--accent);
@@ -1952,28 +2160,36 @@ html.has-cursor [data-cursor] {
   text-wrap: pretty;
 }
 
-.creed__viewport {
-  overflow: hidden;
-}
-
-.creed__track {
-  display: grid;
-  gap: 0;
+/* Four principles, read top to bottom. */
+.creed__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line-soft);
 }
 
 .creed__panel {
   position: relative;
   display: grid;
-  gap: 0.7rem;
-  padding-block: clamp(1.25rem, 2.5vw, 1.9rem);
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: clamp(1rem, 3vw, 2.5rem);
+  align-items: start;
+  padding-block: clamp(1.4rem, 3vw, 2.25rem);
   border-top: 1px solid var(--line-soft);
-  align-content: start;
 }
 
 .creed__panel-index {
   color: var(--accent);
   font-size: 0.5625rem;
   letter-spacing: 0.2em;
+  padding-top: 0.6rem;
+}
+
+.creed__panel-text {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(1rem, 3.5vw, 3rem);
+  align-items: start;
 }
 
 .creed__panel-title {
@@ -1982,97 +2198,33 @@ html.has-cursor [data-cursor] {
   letter-spacing: -0.03em;
   line-height: 1;
   text-transform: uppercase;
+  text-wrap: balance;
 }
 
 .creed__panel-body {
   color: var(--fg-dim);
   line-height: 1.7;
   font-size: var(--fs-small);
-  max-width: 42ch;
+  max-width: 46ch;
   text-wrap: pretty;
 }
 
+/* The rule now sits at the row's own right edge — a quiet full stop. */
 .creed__panel-rule {
-  display: block;
-  width: 100%;
-  height: 1px;
-  margin-top: 0.4rem;
-  background: linear-gradient(to right, var(--line), transparent);
+  display: none;
 }
 
-.creed__meter {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: clamp(1rem, 2vw, 2rem);
-}
-
-.creed__meter .mono {
-  font-size: 0.5625rem;
-  letter-spacing: 0.16em;
-}
-
-.creed__meter-bar {
-  position: relative;
-  display: block;
-  height: 1px;
-  background: var(--line-soft);
-  overflow: hidden;
-}
-
-.creed__meter-fill {
-  position: absolute;
-  inset: 0;
-  display: block;
-  background: var(--accent);
-  transform: scaleX(0);
-  transform-origin: left center;
-}
-
-/* ---------- horizontal track, desktop only ---------- */
-
-@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
-  .creed__pin {
-    position: sticky;
-    top: 0;
-    height: 100svh;
-    align-content: center;
-    gap: clamp(1.5rem, 4vh, 3rem);
-    padding-block: calc(var(--nav-h) + 1rem) clamp(2rem, 5vh, 3.5rem);
+@media (max-width: 980px) {
+  .creed__panel,
+  .creed__panel-text {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
   }
 
-  .creed__viewport {
-    overflow: hidden;
+  .creed__panel-index {
+    padding-top: 0;
   }
 
-  .creed__track {
-    display: flex;
-    gap: clamp(1.25rem, 2.6vw, 2.5rem);
-    padding-inline: var(--gutter);
-    will-change: transform;
-  }
-
-  .creed__panel {
-    flex: 0 0 clamp(20rem, 30vw, 27rem);
-    border-top: 1px solid var(--line);
-    border-right: 1px solid var(--line-soft);
-    padding-right: clamp(1.25rem, 2.4vw, 2rem);
-    min-height: 14rem;
-  }
-
-  .creed__panel-rule {
-    margin-top: auto;
-  }
-
-  .creed__meter {
-    max-width: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .creed__meter-bar {
-    display: none;
-  }
 }
 
 /* ---------- 13. CONTACT ---------- */
@@ -2096,8 +2248,9 @@ html.has-cursor [data-cursor] {
 }
 
 .contact__heading em {
-  font-family: var(--font-serif);
-  font-style: italic;
+  font-family: var(--font-display);
+  font-style: normal;
+  font-weight: 500;
   text-transform: none;
   letter-spacing: -0.025em;
   color: var(--accent);
@@ -2239,11 +2392,11 @@ a.channel:hover .channel__arrow {
 
 .footer__sub {
   display: block;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.26em;
-  letter-spacing: -0.01em;
-  text-transform: none;
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 0.16em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--fg-muted);
   padding-top: 0.5em;
 }
@@ -2348,30 +2501,6 @@ a.channel:hover .channel__arrow {
   }
 }
 
-/* Short laptop viewports: the pinned track must still fit the screen. */
-@media (min-width: 1024px) and (max-height: 760px) and (prefers-reduced-motion: no-preference) {
-  .creed__pin {
-    padding-block: calc(var(--nav-h) + 0.75rem) 1.25rem;
-    gap: 1rem;
-  }
-
-  .creed__statement {
-    font-size: clamp(1.5rem, 3.1vw, 2.6rem);
-  }
-
-  .creed__statement {
-    font-size: clamp(1.6rem, 3.4vw, 2.9rem);
-  }
-
-  .creed__panel {
-    min-height: 11rem;
-  }
-
-  .creed__panel-body {
-    font-size: 0.85rem;
-  }
-}
-
 /* ---------- 17. RESPONSIVE ---------- */
 
 /* Laptop / small desktop */
@@ -2391,42 +2520,6 @@ a.channel:hover .channel__arrow {
 
   .about__rule {
     display: none;
-  }
-
-  /* Plates stop bleeding off the page and stand on their own. */
-  .project__body--a,
-  .project__body--c,
-  .project__body--split {
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.5rem, 3.5vw, 2.25rem);
-  }
-
-  .project--a .project-plate,
-  .project--b .project-plate {
-    margin-right: 0;
-    margin-left: 0;
-  }
-
-  .project--c .project-plate {
-    margin-top: 0;
-    order: -1;
-  }
-
-  .project__body--a .project__plate-wrap,
-  .project__body--c .project__plate-wrap {
-    order: -1;
-  }
-
-  .project__sticky {
-    position: static;
-  }
-
-  .project-plate--kaminari .matte__frame {
-    aspect-ratio: 16 / 11;
-  }
-
-  .project-plate--totem .matte__frame {
-    aspect-ratio: 16 / 10;
   }
 
   .work__intro {
@@ -2500,28 +2593,15 @@ a.channel:hover .channel__arrow {
     padding-left: 1.1rem;
   }
 
-  .creed__intro {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.25rem;
-  }
 
   .creed__statement {
     font-size: clamp(1.85rem, 5.4vw, 3.2rem);
     max-width: 26ch;
   }
 
-  .creed__panel {
-    padding-block: 1.1rem;
-    gap: 0.55rem;
-  }
 
-  .creed__panel-body {
-    max-width: 56ch;
-  }
 
-  .creed__meter {
-    display: none;
-  }
+
 
   .lab__intro {
     grid-template-columns: minmax(0, 1fr);
@@ -2650,41 +2730,6 @@ a.channel:hover .channel__arrow {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.2rem;
     padding-block: 0.7rem;
-  }
-
-  .work__list {
-    gap: clamp(3.5rem, 12vw, 5rem);
-  }
-
-  .project__head {
-    grid-template-columns: auto 1fr;
-    row-gap: 0.45rem;
-  }
-
-  .project__status {
-    grid-column: 2;
-    justify-self: end;
-  }
-
-  .project__discipline {
-    grid-column: 1 / -1;
-    order: 3;
-  }
-
-  .project__title {
-    font-size: clamp(2.4rem, 13vw, 4.2rem);
-  }
-
-  .project__fact {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.25rem;
-  }
-
-  /* One plate silhouette on small screens keeps the rhythm readable. */
-  .project-plate--kaminari .matte__frame,
-  .project-plate--totem .matte__frame,
-  .project-plate--regera .matte__frame {
-    aspect-ratio: 4 / 3;
   }
 
   .project-plate--regera .matte__frame::after {
